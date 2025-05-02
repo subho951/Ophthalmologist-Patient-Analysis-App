@@ -6,7 +6,9 @@ use App\Models\TestTab;
 use App\Models\TestParameter;
 use App\Models\Test;
 use App\Models\TestResultParameter;
+use App\Models\GeneralSetting;
 use App\Helpers\Helper;
+$generalSetting             = GeneralSetting::find('1');
 $controllerRoute      = $module['controller_route'];
 $current_url          = url()->current();
 ?>
@@ -59,7 +61,7 @@ $current_url          = url()->current();
                 <h6>Polypodial Choroidal Vasculopathy Score : <span class="fw-light"><?=$row->test_score?>/<?=$row->test_fullscore?></span></h6>
               </div>
               <div class="col-md-6">
-                <h6>Polypodial Choroidal Vasculopathy Status : <span class="fw-light"><span class="badge <?=(($row->test_score > 70)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span></span></h6>
+                <h6>Polypodial Choroidal Vasculopathy Status : <span class="fw-light"><span class="badge <?=(($row->test_score >= $generalSetting->test_result_cut_off_marks)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span></span></h6>
               </div>
             </div>
             <div class="row mt-3">

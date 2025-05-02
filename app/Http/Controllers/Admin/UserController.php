@@ -378,6 +378,7 @@ class UserController extends Controller
                     'linkedin_profile'                  => $postData['linkedin_profile'],
                     'youtube_profile'                   => $postData['youtube_profile'],
                     'tax_percent'                       => $postData['tax_percent'],
+                    'test_result_cut_off_marks'         => $postData['test_result_cut_off_marks'],
                     'site_logo'                         => $site_logo,
                     'site_footer_logo'                  => $site_footer_logo,
                     'site_favicon'                      => $site_favicon,
