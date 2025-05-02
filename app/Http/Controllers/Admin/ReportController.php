@@ -8,108 +8,113 @@ use Illuminate\Validation\Rule;
 use App\Models\GeneralSetting;
 use App\Models\Admin;
 use App\Models\Brand;
+use App\Models\Doctor;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Patient;
 use App\Models\Product;
 use App\Models\ProductDiscountVoucher;
 use App\Models\ProductMultipleBuy;
 use App\Models\Supplier;
 use App\Models\Size;
+use App\Models\Test;
 use App\Models\Unit;
 
 use Auth;
 use Session;
 use Helper;
 use Hash;
+use Illuminate\Support\Facades\DB;
+use PHPUnit\TextUI\Help;
+
 class ReportController extends Controller
 {
     public function __construct()
     {        
         $this->data = array(
-            'title'             => 'Report',
+            'title'             => 'Reports',
             'controller'        => 'ReportController',
-            'controller_route'  => 'brands',
+            'controller_route'  => 'test-report',
             'primary_key'       => 'id',
         );
     }
-    /* advance search report */
-        public function advanceSearchReport(Request $request){
-            $data['module']                 = $this->data;
-            $title                          = 'Advance Search ' . $this->data['title'];
-            $page_name                      = 'report.advance-search-report';
-            $data['brands']                 = Brand::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
-            $data['suppliers']              = Supplier::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
-
-            $data['brand_id']               = '';
-            $data['supplier_id']            = '';
-            $data['from_date']              = '';
-            $data['to_date']                = '';
-            echo $this->admin_after_login_layout($title,$page_name,$data);
-        }
-    /* advance search report */
-    /* sale report */
+    
+    /* test report */
         public function testReport(Request $request){
             $data['module']                 = $this->data;
-            $title                          = 'Sale ' . $this->data['title'];
-            $page_name                      = 'report.test-report';
-            $data['brands']                 = Brand::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
-            $data['suppliers']              = Supplier::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
-            $data['operators']              = Admin::select('id', 'name')->where('status', '=', 1)->where('type', '=', 'SO')->orderBy('name', 'ASC')->get();
-
-            $data['brand_id']               = '';
-            $data['supplier_id']            = '';
+            $title                          = 'Test ' . $this->data['title'];
+            $page_name                      = 'report.test-report';                        
             $data['from_date']              = '';
             $data['to_date']                = '';
-            $data['delivery_mode']          = '';
-            $data['payment_mode']           = '';
-            $data['operator_id']            = '';
+            $data['doctorId']          = '';
+            $data['patientId']           = '';
+            $data['diagnosisDate']            = '';
             $data['rows']                   = [];
             $data['is_search']              = 0;
 
             if ($request->isMethod('get') && $request->has('mode')) {
-                // $brand_id           = $request->brand_id;
-                // $supplier_id        = $request->supplier_id;
+                if (
+                    !$request->filled('from_date') &&
+                    !$request->filled('to_date') &&
+                    !$request->filled('doctor') &&
+                    !$request->filled('patient') &&
+                    !$request->filled('diagnosis_date')
+                ) {
+                    return back()
+                        ->withInput()
+                        ->withErrors(['filter' => 'At least one field must be filled.']);
+                }
+                
                 $fromDate           = $request->from_date;
                 $toDate             = $request->to_date;
-                $deliveryMode       = $request->delivery_mode;
-                $paymentMode        = $request->payment_mode;
-                $operatorId         = $request->operator_id;                
-
-                $data['rows']       = Order::query()
-                                        ->where('status', 5) // fixed condition
-                                        ->when(request('from_date'), fn ($query, $fromDate) => $query->whereDate('order_date', '>=', $fromDate))
-                                        ->when(request('to_date'), fn ($query, $toDate) => $query->whereDate('order_date', '<=', $toDate))
-                                        ->when(request('delivery_mode'), fn ($query, $deliveryMode) => $query->where('delivery_mode', $deliveryMode))
-                                        ->when(request('payment_mode'), fn ($query, $paymentMode) => $query->where('payment_mode', $paymentMode))
-                                        ->when(request('operator_id'), fn ($query, $operatorId) => $query->where('operator_id', $operatorId))
+                $doctorid       = $request->doctor;
+                $patientid        = $request->patient;
+                $diagnosisdate         = $request->diagnosis_date;                
+                // DB::enableQueryLog();
+                $data['rows']       = Test::query()
+                                        ->where('status', 1) // fixed condition
+                                        ->when(request('from_date'), fn ($query, $fromDate) => $query->whereDate('test_date', '>=', $fromDate))
+                                        ->when(request('to_date'), fn ($query, $toDate) => $query->whereDate('test_date', '<=', $toDate))
+                                        ->when(request('doctor'), fn ($query, $doctorid) => $query->where('doctor_id', $doctorid))
+                                        ->when(request('patient'), fn ($query, $patientid) => $query->where('patient_id', $patientid))
+                                        ->when(request('diagnosis_date'), fn ($query, $diagnosisdate) => $query->where('diagnosis_date', $diagnosisdate))
                                         ->get();
+                                            // dd(DB::getQueryLog());
+                // Helper::pr($data['rows']);
+                // echo count($data['rows']);
+                // $data['response'] = [];
                 $response           = [];
                 if($data['rows']){
-                    foreach($data['rows'] as $row){
-                        $getOrderDetails = OrderDetail::where('order_id', $row->id)->get();
-                        if($getOrderDetails){
-                            foreach($getOrderDetails as $getOrderDetail){
-                                $getProduct = Product::where('id', $getOrderDetail->item_id)->first();
-                                if($getProduct){
-                                    $profit     = ($getProduct->retail_price_inc_tax - $getProduct->cost_price_inc_tax);
-                                    $gp         = (($profit / $getProduct->cost_price_inc_tax) * 100);
-                                    $response[]           = [
-                                        'sku'           => $getProduct->sku,
-                                        'product_name'  => $getProduct->receipt_short_name,
-                                        'qty'           => $getOrderDetail->qty,
-                                        'buy_ex'        => number_format($getProduct->cost_price_inc_tax,2),
-                                        'sell_ex'       => number_format($getProduct->retail_price_inc_tax,2),
-                                        'gp'            => number_format($gp,2),
-                                    ];
-                                }
-                            }
-                        }
+                    foreach($data['rows'] as $row){                          
+                        $getpatientDetails = Patient::where('id', $row->patient_id)->first();                        
+                        // Helper::pr($getpatientDetails);
+                        $response[]           = [
+                            'test_id'                => $row->id,
+                            'test_no'           => $row->test_no,
+                            'doctor_name'       => $row->doctor_name,
+                            'patient_name'      => $getpatientDetails->name,
+                            'diagnosis_date'    => $row->diagnosis_date,
+                            'test_date'         => $row->test_date,
+                            'test_time'         => $row->test_time,
+                            'test_total_weight' => $row->test_total_weight,
+                            'test_result'       => $row->test_result,
+                            'test_fullscore'    => $row->test_fullscore,
+                            'test_score'        => $row->test_score,                                        
+                        ];
                     }
                 }
                 $data['response'] = $response;
+                $data['response_count'] = count($response);
+                $data['row_count'] = count($data['rows']);
+                $data['from_date'] = $fromDate;
+                $data['to_date'] = $toDate;
+                $data['doctorId'] = $doctorid;
+                $data['patientId'] = $patientid;
+                $data['diagnosisDate'] = $diagnosisdate;
                 // Helper::pr($response,0);
                 // Helper::pr($data['rows']);
-                if(count($response) > 0){
+                // echo count($response);
+                if(count($response) >= 0){
                     $data['is_search'] = 1;
                 }
             }
