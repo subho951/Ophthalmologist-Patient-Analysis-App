@@ -166,12 +166,16 @@ $current_url = url()->current();
                            <textarea class="form-control" id="facebook_tracking_code" name="facebook_tracking_code" rows="5"><?=$setting->facebook_tracking_code?></textarea>
                         </div>
 
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-3">
                            <label class="form-label" for="whatsapp_no">Whatsapp No.</label>
                            <div class="input-group input-group-merge">
                               <span class="input-group-text">IN (+91)</span>
                               <input type="text" id="whatsapp_no" name="whatsapp_no" class="form-control" value="<?=$setting->whatsapp_no?>" />
                            </div>
+                        </div>
+                        <div class="mb-3 col-md-3">
+                           <label for="test_result_cut_off_marks" class="form-label">Test Result Cut-off Score</label>
+                           <input class="form-control" type="text" id="test_result_cut_off_marks" name="test_result_cut_off_marks" value="<?=$setting->test_result_cut_off_marks?>" />
                         </div>
                         <div class="mb-3 col-md-6">
                            <label for="twitter_profile" class="form-label">Twitter Profile</label>
@@ -195,6 +199,7 @@ $current_url = url()->current();
                            <label for="youtube_profile" class="form-label">Youtube Profile</label>
                            <input class="form-control" type="text" id="youtube_profile" name="youtube_profile" value="<?=$setting->youtube_profile?>" />
                         </div>
+                        
 
                         <div class="mb-3 col-md-4">
                            <div class="d-flex align-items-start align-items-sm-center gap-4">

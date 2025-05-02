@@ -6,7 +6,9 @@ use App\Models\TestTab;
 use App\Models\TestParameter;
 use App\Models\Test;
 use App\Models\TestResultParameter;
+use App\Models\GeneralSetting;
 use App\Helpers\Helper;
+$generalSetting             = GeneralSetting::find('1');
 $controllerRoute      = $module['controller_route'];
 $current_url          = url()->current();
 ?>
@@ -47,6 +49,9 @@ $current_url          = url()->current();
                 <h6>Email : <span class="fw-light"><?=(($getPatient)?$getPatient->email:'')?></span></h6>
                 <h6>Phone : <span class="fw-light"><?=(($getPatient)?$getPatient->phone:'')?></span></h6>
                 <h6>DOB : <span class="fw-light"><?=(($getPatient)?date_format(date_create($getPatient->dob), "M d, Y"):'')?></span> (<span class="fw-light">Age : <?=(($getPatient)?$getPatient->age:'')?></span>)</h6>
+                <h6>Country : <span class="fw-light"><?=(($getPatient)?$getPatient->country:'')?></span></h6>
+                <h6>State : <span class="fw-light"><?=(($getPatient)?$getPatient->state:'')?></span></h6>
+                <h6>City : <span class="fw-light"><?=(($getPatient)?$getPatient->city:'')?></span></h6>
                 <h6>Pincode : <span class="fw-light"><?=(($getPatient)?$getPatient->pincode:'')?></span></h6>
                 <h6>Gender : <span class="fw-light"><?=(($getPatient)?$getPatient->gender:'')?></span></h6>
                 <h6>Affected Eye : <span class="fw-light"><?=(($getPatient)?$getPatient->eye:'')?></span></h6>
@@ -59,7 +64,7 @@ $current_url          = url()->current();
                 <h6>Polypodial Choroidal Vasculopathy Score : <span class="fw-light"><?=$row->test_score?>/<?=$row->test_fullscore?></span></h6>
               </div>
               <div class="col-md-6">
-                <h6>Polypodial Choroidal Vasculopathy Status : <span class="fw-light"><span class="badge <?=(($row->test_score > 70)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span></span></h6>
+                <h6>Polypodial Choroidal Vasculopathy Status : <span class="fw-light"><span class="badge <?=(($row->test_score >= $generalSetting->test_result_cut_off_marks)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span></span></h6>
               </div>
             </div>
             <div class="row mt-3">
