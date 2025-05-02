@@ -28,7 +28,7 @@ $current_url          = url()->current();
                   <th scope="col">Phone</th>
                   <th scope="col">DOB</th>
                   <th scope="col">Age</th>
-                  <th scope="col">Pincode</th>
+                  <th scope="col">Address Info</th>
                   <th scope="col">Gender</th>
                   <th scope="col">Eye</th>
                   <th scope="col">Co-morbidities</th>
@@ -50,7 +50,12 @@ $current_url          = url()->current();
                     <td><?=$row->phone?></td>
                     <td><?=date_format(date_create($row->dob), "M d, Y")?></td>
                     <td><?=$row->age?></td>
-                    <td><?=$row->pincode?></td>
+                    <td>
+                      Country : <span style="font-size: 12px;"><?=$row->country?></span><br>
+                      State : <span style="font-size: 12px;"><?=$row->state?></span><br>
+                      City : <span style="font-size: 12px;"><?=$row->city?></span><br>
+                      Pincode : <span style="font-size: 12px;"><?=$row->pincode?></span>
+                    </td>
                     <td><?=$row->gender?></td>
                     <td><?=$row->eye?></td>
                     <td>

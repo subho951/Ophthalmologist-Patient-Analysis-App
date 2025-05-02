@@ -49,6 +49,9 @@ $current_url          = url()->current();
                 <h6>Email : <span class="fw-light"><?=(($getPatient)?$getPatient->email:'')?></span></h6>
                 <h6>Phone : <span class="fw-light"><?=(($getPatient)?$getPatient->phone:'')?></span></h6>
                 <h6>DOB : <span class="fw-light"><?=(($getPatient)?date_format(date_create($getPatient->dob), "M d, Y"):'')?></span> (<span class="fw-light">Age : <?=(($getPatient)?$getPatient->age:'')?></span>)</h6>
+                <h6>Country : <span class="fw-light"><?=(($getPatient)?$getPatient->country:'')?></span></h6>
+                <h6>State : <span class="fw-light"><?=(($getPatient)?$getPatient->state:'')?></span></h6>
+                <h6>City : <span class="fw-light"><?=(($getPatient)?$getPatient->city:'')?></span></h6>
                 <h6>Pincode : <span class="fw-light"><?=(($getPatient)?$getPatient->pincode:'')?></span></h6>
                 <h6>Gender : <span class="fw-light"><?=(($getPatient)?$getPatient->gender:'')?></span></h6>
                 <h6>Affected Eye : <span class="fw-light"><?=(($getPatient)?$getPatient->eye:'')?></span></h6>
