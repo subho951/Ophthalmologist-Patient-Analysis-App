@@ -16,6 +16,9 @@ use App\Models\UserSubscription;
 use Auth;
 use Mail;
 use App\Mail\ForgotPwdMail;
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Test;
 use Dompdf\Dompdf;
 use PDF;
 use Session;
@@ -248,7 +251,11 @@ class UserController extends Controller
     /* authentication */
     /* dashboard */
         public function dashboard(){
-            $data                           = [];
+            // $data                           = [];
+            $data['doctr_count']            = Doctor::where('status', '=', 1)->count();
+            $data['patient_count']          = Patient::where('status', '=', 1)->count();
+            $data['test_count']             = Test::where('status', '=', 1)->count();
+            $data['rows']                   = Test::where('status', '!=', 3)->orderBy('id', 'DESC')->limit(10)->get();
             $title                          = 'Dashboard';
             $page_name                      = 'dashboard';
             echo $this->admin_after_login_layout($title,$page_name,$data);
