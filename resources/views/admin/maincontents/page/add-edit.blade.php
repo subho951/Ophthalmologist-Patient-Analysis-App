@@ -1,33 +1,14 @@
 <?php
 use App\Helpers\Helper;
-$controllerRoute = $module['controller_route'];
+$controllerRoute                = $module['controller_route'];
 ?>
-<div class="pagetitle">
-  <h1><?=$page_header?></h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="<?=url('admin/dashboard')?>">Home</a></li>
-      <li class="breadcrumb-item active"><a href="<?=url('admin/' . $controllerRoute . '/list/')?>"><?=$module['title']?> List</a></li>
-      <li class="breadcrumb-item active"><?=$page_header?></li>
-    </ol>
-  </nav>
-</div><!-- End Page Title -->
-<section class="section profile">
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-4">
+    <span class="text-muted fw-light"><a href="<?=url('admin/dashboard')?>">Dashboard</a> /</span>
+    <span class="text-muted fw-light"><a href="<?=url('admin/' . $controllerRoute . '/list/')?>"><?=$module['title']?> List</a> /</span>
+    <?=$page_header?>
+  </h4>
   <div class="row">
-    <div class="col-xl-12">
-      @if(session('success_message'))
-        <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show autohide" role="alert">
-          {{ session('success_message') }}
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      @endif
-      @if(session('error_message'))
-        <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show autohide" role="alert">
-          {{ session('error_message') }}
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      @endif
-    </div>
     <?php
     if($row){
       $page_name            = $row->page_name;
@@ -43,9 +24,10 @@ $controllerRoute = $module['controller_route'];
       $page_video           = '';
     }
     ?>
-    <div class="col-xl-12">
+    <div class="col-md-12">
       <div class="card">
-        <div class="card-body pt-3">
+        <div class="card-body">
+          <small class="text-danger">Star (*) marked fields are mandatory</small>
           <form method="POST" action="" enctype="multipart/form-data">
             @csrf
             <div class="row mb-3">
@@ -57,7 +39,7 @@ $controllerRoute = $module['controller_route'];
             <div class="row mb-3">
               <label for="page_content" class="col-md-2 col-lg-2 col-form-label">Page Content</label>
               <div class="col-md-10 col-lg-10">
-                <textarea type="text" name="page_content" class="form-control ckeditor" id="page_content" rows="5" required><?=$page_content?></textarea>
+                <textarea type="text" name="page_content" class="form-control" id="ckeditor1" rows="5" required><?=$page_content?></textarea>
               </div>
             </div>
             <div class="row mb-3">
@@ -94,7 +76,6 @@ $controllerRoute = $module['controller_route'];
                 </div>
               </div>
             </div>
-
             <div class="row mb-3">
               <label for="page_video" class="col-md-2 col-lg-2 col-form-label">Page Video</label>
               <div class="col-md-10 col-lg-10">
@@ -114,7 +95,6 @@ $controllerRoute = $module['controller_route'];
                 <small class="text-info">Enter Vimeo video link</small>
               </div>
             </div>
-
             <div class="text-center">
               <button type="submit" class="btn btn-primary"><?=(($row)?'Save':'Add')?></button>
             </div>
@@ -123,6 +103,4 @@ $controllerRoute = $module['controller_route'];
       </div>
     </div>
   </div>
-</section>
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</div>

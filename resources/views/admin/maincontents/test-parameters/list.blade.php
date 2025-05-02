@@ -22,7 +22,9 @@ $current_url          = url()->current();
                   <th scope="col">#</th>
                   <th scope="col">Test Tab</th>
                   <th scope="col">Name</th>
+                  <th scope="col">Weight</th>
                   <th scope="col">Hints</th>
+                  <th scope="col">Options</th>
                   <th scope="col">Rank</th>
                   <th scope="col">Action</th>
                 </tr>
@@ -38,7 +40,17 @@ $current_url          = url()->current();
                       ?>
                     </td>
                     <td><?=$row->name?></td>
+                    <td><?=$row->weight?></td>
                     <td><?=$row->hints?></td>
+                    <td>
+                      <?php if($row->options != ''){?>
+                        <ul>
+                          <?php if(!empty(json_decode($row->options))) { for($k=0;$k<count(json_decode($row->options));$k++){?>
+                            <li><?=((json_decode($row->options)[$k])?'YES':'NO')?></li>
+                          <?php } } ?>
+                        </ul>
+                      <?php }?>
+                    </td>
                     <td><?=$row->rank?></td>
                     <td>
                       <a href="<?=url('admin/' . $controllerRoute . '/edit/'.Helper::encoded($row->id))?>" class="btn btn-outline-primary btn-sm" title="Edit <?=$module['title']?>"><i class="fa fa-edit"></i></a>

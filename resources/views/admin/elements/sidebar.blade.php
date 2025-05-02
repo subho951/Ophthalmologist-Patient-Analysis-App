@@ -131,6 +131,13 @@ $user_type = session('type');
       </ul>
    </li>
    <!-- Login Logs -->
+   <li class="menu-item <?=(($pageSegment == 'page')?'active':'')?>">
+      <a href="<?=url('admin/page/list')?>" class="menu-link">
+         <i class="menu-icon fa-solid fa-file"></i>
+         <div data-i18n="Pages">Pages</div>
+      </a>
+   </li>
+   <!-- Login Logs -->
    <li class="menu-item <?=(($pageSegment == 'login-logs')?'active':'')?>">
       <a href="<?=url('admin/login-logs')?>" class="menu-link">
          <i class="menu-icon tf-icons fa fa-sign-in"></i>

@@ -1,5 +1,6 @@
 <?php
 use App\Models\TestTab;
+use App\Models\Test;
 use App\Helpers\Helper;
 $controllerRoute      = $module['controller_route'];
 $current_url          = url()->current();
@@ -45,8 +46,8 @@ $current_url          = url()->current();
                       <?php } else {?>
                         <a href="<?=url('admin/' . $controllerRoute . '/change-status/'.Helper::encoded($row->id))?>" class="btn btn-outline-warning btn-sm" title="Deactivate <?=$module['title']?>"><i class="fa fa-times"></i></a>
                       <?php }?>
-                      
-                      <a target="_blank" href="<?=url('admin/' . $controllerRoute . '/doctors-tests/'.Helper::encoded($row->id))?>" class="btn btn-outline-info btn-sm" title="<?=$module['title']?> Test List"><i class="fa fa-list"></i>&nbsp;Test List</a>
+                      <?php $testCount = Test::where('status', 1)->where('doctor_id', $row->id)->count();?>
+                      <a target="_blank" href="<?=url('admin/' . $controllerRoute . '/doctors-tests/'.Helper::encoded($row->id))?>" class="btn btn-info btn-sm" title="<?=$module['title']?> Test List"><i class="fa fa-list"></i>&nbsp;Test List (<?=$testCount?>)</a>
                     </td>
                   </tr>
                 <?php } }?>

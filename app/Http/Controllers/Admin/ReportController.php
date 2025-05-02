@@ -48,10 +48,10 @@ class ReportController extends Controller
         }
     /* advance search report */
     /* sale report */
-        public function saleReport(Request $request){
+        public function testReport(Request $request){
             $data['module']                 = $this->data;
             $title                          = 'Sale ' . $this->data['title'];
-            $page_name                      = 'report.sale-report';
+            $page_name                      = 'report.test-report';
             $data['brands']                 = Brand::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
             $data['suppliers']              = Supplier::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
             $data['operators']              = Admin::select('id', 'name')->where('status', '=', 1)->where('type', '=', 'SO')->orderBy('name', 'ASC')->get();

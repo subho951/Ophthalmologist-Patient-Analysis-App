@@ -1,4 +1,5 @@
 <?php
+use App\Models\Patient;
 use App\Models\Doctor;
 use App\Helpers\Helper;
 $controllerRoute      = $module['controller_route'];
@@ -49,9 +50,9 @@ $current_url          = url()->current();
                     <td><?=date_format(date_create($row->diagnosis_date), "M d, Y")?></td>
                     <td><?=date_format(date_create($row->test_date), "M d, Y")?> <?=date_format(date_create($row->test_time), "h:i A")?></td>
                     <td><?=$row->test_score?>/<?=$row->test_fullscore?></td>
-                    <td><?=$row->test_result?></td>
+                    <td><span class="badge <?=(($row->test_score > 70)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span></td>
                     <td>
-                      <a href="<?=url('admin/' . $controllerRoute . '/test-details/'.Helper::encoded($row->id))?>" class="btn btn-outline-primary btn-sm" title="Edit <?=$module['title']?>"><i class="fa fa-info-circle"></i></a>
+                      <a target="_blank" href="<?=url('admin/' . $controllerRoute . '/test-details/'.Helper::encoded($row->id))?>" class="btn btn-outline-primary btn-sm" title="Edit <?=$module['title']?>"><i class="fa fa-info-circle"></i></a>
                     </td>
                   </tr>
                 <?php } }?>

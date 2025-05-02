@@ -69,11 +69,11 @@ class TestController extends Controller
             $data['row']                    = Test::where($this->data['primary_key'], '=', $id)->first();
             $data['module']                 = $this->data;
             $title                          = 'Test Details : ' . (($data['row'])?$data['row']->test_no:'');
-            $page_name                      = 'doctor.test-details';
-            $data['rows']                   = TestResultParameter::where('test_id', '=', $id)
-                                                ->where('status', '=', 1)
-                                                ->orderBy('id', 'DESC')
-                                                ->get();
+            $page_name                      = 'test.test-details';
+            // $data['rows']                   = TestResultParameter::where('test_id', '=', $id)
+            //                                     ->where('status', '=', 1)
+            //                                     ->orderBy('id', 'DESC')
+            //                                     ->get();
             echo $this->admin_after_login_layout($title,$page_name,$data);
         }
     /* test details */

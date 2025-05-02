@@ -17,6 +17,7 @@ use Session;
 use Helper;
 use Hash;
 use DB;
+use DateTime;
 class PatientController extends Controller
 {
     public function __construct()
@@ -62,12 +63,18 @@ class PatientController extends Controller
                 if($this->validate($request, $rules)){
                     $checkData = Patient::where('name', 'LIKE', '%'.$postData['name'].'%')->where('status', '!=', 3)->where('id', '!=', $id)->first();
                     if(!$checkData){
+                        $dob        = date_format(date_create($postData['dob']), "Y-m-d");
+                        $dobDate    = new DateTime($dob);
+                        $today      = new DateTime();
+                        $age        = $today->diff($dobDate)->y;
+
                         $fields = [
                             'doctor_id'                     => $postData['doctor_id'],
                             'name'                          => $postData['name'],
                             'email'                         => $postData['email'],
                             'phone'                         => $postData['phone'],
                             'dob'                           => $postData['dob'],
+                            'age'                           => $age,
                             'pincode'                       => $postData['pincode'],
                             'gender'                        => $postData['gender'],
                             'eye'                           => $postData['eye'],

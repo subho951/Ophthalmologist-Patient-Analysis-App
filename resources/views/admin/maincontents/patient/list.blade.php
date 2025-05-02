@@ -1,6 +1,7 @@
 <?php
 use App\Models\Doctor;
 use App\Models\Comorbidity;
+use App\Models\Test;
 use App\Helpers\Helper;
 $controllerRoute      = $module['controller_route'];
 $current_url          = url()->current();
@@ -26,6 +27,7 @@ $current_url          = url()->current();
                   <th scope="col">Email</th>
                   <th scope="col">Phone</th>
                   <th scope="col">DOB</th>
+                  <th scope="col">Age</th>
                   <th scope="col">Pincode</th>
                   <th scope="col">Gender</th>
                   <th scope="col">Eye</th>
@@ -47,6 +49,7 @@ $current_url          = url()->current();
                     <td><?=$row->email?></td>
                     <td><?=$row->phone?></td>
                     <td><?=date_format(date_create($row->dob), "M d, Y")?></td>
+                    <td><?=$row->age?></td>
                     <td><?=$row->pincode?></td>
                     <td><?=$row->gender?></td>
                     <td><?=$row->eye?></td>
@@ -64,8 +67,8 @@ $current_url          = url()->current();
                       <?php } else {?>
                         <a href="<?=url('admin/' . $controllerRoute . '/change-status/'.Helper::encoded($row->id))?>" class="btn btn-outline-warning btn-sm" title="Deactivate <?=$module['title']?>"><i class="fa fa-times"></i></a>
                       <?php }?>
-                      
-                      <a target="_blank" href="<?=url('admin/' . $controllerRoute . '/patients-tests/'.Helper::encoded($row->id))?>" class="btn btn-outline-info btn-sm" title="<?=$module['title']?> Test List"><i class="fa fa-list"></i>&nbsp;Test List</a>
+                      <?php $testCount = Test::where('status', 1)->where('patient_id', $row->id)->count();?>
+                      <a target="_blank" href="<?=url('admin/' . $controllerRoute . '/patients-tests/'.Helper::encoded($row->id))?>" class="btn btn-info btn-sm" title="<?=$module['title']?> Test List"><i class="fa fa-list"></i>&nbsp;Test List (<?=$testCount?>)</a>
                     </td>
                   </tr>
                 <?php } }?>

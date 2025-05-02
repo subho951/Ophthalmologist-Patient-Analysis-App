@@ -41,6 +41,7 @@ class TestParameterController extends Controller
                 $rules = [
                     'test_tab_id'               => 'required',
                     'name'                      => 'required',
+                    'weight'                    => 'required',
                     'hints'                     => 'required',
                     'rank'                      => 'required',
                 ];
@@ -50,6 +51,8 @@ class TestParameterController extends Controller
                         $fields = [
                             'test_tab_id'             => $postData['test_tab_id'],
                             'name'                    => $postData['name'],
+                            'weight'                  => $postData['weight'],
+                            'options'                 => json_encode($postData['options']),
                             'hints'                   => $postData['hints'],
                             'rank'                    => $postData['rank'],
                             'status'                  => ((array_key_exists("status",$postData))?1:0),
@@ -84,6 +87,7 @@ class TestParameterController extends Controller
                 $rules = [
                     'test_tab_id'               => 'required',
                     'name'                      => 'required',
+                    'weight'                    => 'required',
                     'hints'                     => 'required',
                     'rank'                      => 'required',
                 ];
@@ -93,6 +97,8 @@ class TestParameterController extends Controller
                         $fields = [
                             'test_tab_id'             => $postData['test_tab_id'],
                             'name'                    => $postData['name'],
+                            'weight'                  => $postData['weight'],
+                            'options'                 => json_encode($postData['options']),
                             'hints'                   => $postData['hints'],
                             'rank'                    => $postData['rank'],
                             'status'                  => ((array_key_exists("status",$postData))?1:0),
