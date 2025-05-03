@@ -42,7 +42,7 @@ class TestParameterController extends Controller
                     'test_tab_id'               => 'required',
                     'name'                      => 'required',
                     'weight'                    => 'required',
-                    'hints'                     => 'required',
+                    // 'hints'                     => 'required',
                     'rank'                      => 'required',
                 ];
                 if($this->validate($request, $rules)){
