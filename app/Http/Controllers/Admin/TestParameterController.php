@@ -57,7 +57,7 @@ class TestParameterController extends Controller
                             'rank'                    => $postData['rank'],
                             'status'                  => ((array_key_exists("status",$postData))?1:0),
                         ];
-                        Helper::pr($fields);
+                        // Helper::pr($fields);
                         TestParameter::insert($fields);
                         return redirect("admin/" . $this->data['controller_route'] . "/list")->with('success_message', $this->data['title'].' Inserted Successfully !!!');
                     } else {
@@ -89,7 +89,7 @@ class TestParameterController extends Controller
                     'test_tab_id'               => 'required',
                     'name'                      => 'required',
                     'weight'                    => 'required',
-                    'hints'                     => 'required',
+                    // 'hints'                     => 'required',
                     'rank'                      => 'required',
                 ];
                 if($this->validate($request, $rules)){
