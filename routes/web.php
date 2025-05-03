@@ -120,6 +120,7 @@ Route::get('/db-test', function () {
             /* patients */
                 Route::get('patients/list', 'PatientController@list');
                 // Route::match(['get', 'post'], 'patients/add', 'PatientController@add');
+                Route::get('/get-states/{country_id}', 'PatientController@getStates');
                 Route::match(['get', 'post'], 'patients/edit/{id}', 'PatientController@edit');
                 Route::get('patients/delete/{id}', 'PatientController@delete');
                 Route::get('patients/change-status/{id}', 'PatientController@change_status');

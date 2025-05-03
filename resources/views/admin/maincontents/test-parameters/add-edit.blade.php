@@ -65,7 +65,7 @@ $controllerRoute                = $module['controller_route'];
               </div>
               <div class="mb-3 col-md-6">
                  <label for="hints" class="form-label">Hints <small class="text-danger">*</small></label>
-                 <textarea class="form-control" id="hints" name="hints" required rows="3"><?=$hints?></textarea>
+                 <textarea class="form-control" id="hints" name="hints" rows="3"><?=$hints?></textarea>
               </div>
               <div class="col-md-6">
                 <label for="status" class="form-label d-block">Status <small class="text-danger">*</small></label>

@@ -9,6 +9,8 @@ use App\Models\GeneralSetting;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Comorbidity;
+use App\Models\Country;
+use App\Models\State;
 use App\Models\Test;
 use App\Models\TestResultParameter;
 
@@ -47,6 +49,8 @@ class PatientController extends Controller
             $data['row']                    = Patient::where($this->data['primary_key'], '=', $id)->first();
             $data['comorbodities']          = Comorbidity::select('id', 'name')->where('status', 1)->orderBy('id', 'ASC')->get();
             $data['doctors']                = Doctor::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->get();
+            $data['country']                = Country::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->get();
+            $data['state']                  = State::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->get();   
             if($request->isMethod('post')){
                 $postData = $request->all();
                 $rules = [
@@ -55,6 +59,9 @@ class PatientController extends Controller
                     'email'                         => 'required',
                     'phone'                         => 'required',
                     'dob'                           => 'required',
+                    'country'                       => 'required',
+                    'state'                         => 'required',
+                    'city'                          => 'required',
                     'pincode'                       => 'required',
                     'gender'                        => 'required',
                     'eye'                           => 'required',
@@ -68,6 +75,9 @@ class PatientController extends Controller
                         $today      = new DateTime();
                         $age        = $today->diff($dobDate)->y;
 
+                        $country_id = Country::Select('name')->where('id', $postData['country'])->first();
+                        $state_id   = State::Select('name')->where('id', $postData['state'])->first();
+                    
                         $fields = [
                             'doctor_id'                     => $postData['doctor_id'],
                             'name'                          => $postData['name'],
@@ -75,12 +85,16 @@ class PatientController extends Controller
                             'phone'                         => $postData['phone'],
                             'dob'                           => $postData['dob'],
                             'age'                           => $age,
+                            'country'                       => $country_id->name,
+                            'state'                         => $state_id->name,
+                            'city'                          => $postData['city'],
                             'pincode'                       => $postData['pincode'],
                             'gender'                        => $postData['gender'],
                             'eye'                           => $postData['eye'],
                             'comorbidities_id'              => $postData['comorbidities_id'],
                             'status'                        => ((array_key_exists("status",$postData))?1:0),
                         ];
+                        // Helper::pr($fields);
                         Patient::where($this->data['primary_key'], '=', $id)->update($fields);
                         return redirect("admin/" . $this->data['controller_route'] . "/list")->with('success_message', $this->data['title'].' Updated Successfully !!!');
                     } else {
@@ -133,4 +147,13 @@ class PatientController extends Controller
             echo $this->admin_after_login_layout($title,$page_name,$data);
         }
     /* doctor tests */
+    /* get states */
+        public function getStates(Request $request, $country_id){
+            $countryid                     = $country_id;
+            // DB::enableQueryLog();
+            $data['states']                 = State::where('country_id', '=', $countryid)->where('status', 1)->orderBy('name', 'ASC')->get();
+            // dd(DB::getQueryLog());
+            return response()->json($data);
+        }
+    /* get states */
 }

@@ -21,6 +21,9 @@ $controllerRoute                = $module['controller_route'];
       $eye                    = $row->eye;
       $comorbidities_id       = $row->comorbidities_id;
       $status                 = $row->status;
+      $countryId              = $row->country;
+      $state                  = $row->state;
+      $city                   = $row->city;
     } else {
       $doctor_id              = '';
       $name                   = '';
@@ -32,6 +35,9 @@ $controllerRoute                = $module['controller_route'];
       $eye                    = '';
       $comorbidities_id       = '';
       $status                 = '';
+      $countryId              = '';
+      $state                  = '';
+      $city                   = '';
     }
     ?>
     <div class="col-md-12">
@@ -67,6 +73,29 @@ $controllerRoute                = $module['controller_route'];
               <div class="mb-3 col-md-6">
                  <label for="dob" class="form-label">DOB <small class="text-danger">*</small></label>
                  <input class="form-control" type="date" id="dob" name="dob" value="<?=$dob?>" required autofocus />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="country" class="form-label">Country <small class="text-danger">*</small></label>                  
+                  <select name="country" class="form-control" id="country" required>
+                      <option value="" selected>Select</option>
+                      @if ($country)
+                          @foreach ($country as $data)
+                              <option value="{{ $data->id }}" @selected($data->id == $countryId)>
+                                  {{ $data->name }}</option>
+                          @endforeach
+                      @endif
+                  </select>                  
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="state" class="form-label">State <small class="text-danger">*</small></label>                                     
+                  <select name="state" class="form-control" id="state" required>
+                      <option value="" selected>Select State</option>
+                  </select>                  
+              </div>
+              <div class="mb-3 col-md-6">
+                  <label for="city" class="form-label">City <small class="text-danger">*</small></label>                  
+                    <input type="text" name="city" class="form-control" id="city"
+                        value="{{ old('city', $city ) }}" required>                  
               </div>
               <div class="mb-3 col-md-6">
                  <label for="pincode" class="form-label">Pincode <small class="text-danger">*</small></label>
@@ -116,3 +145,32 @@ $controllerRoute                = $module['controller_route'];
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#country').on('change', function () {
+      // console.log("Country changed");
+        var countryId = $(this).val();
+        if (countryId) {
+            $.ajax({
+                url: '{{ url("admin/get-states") }}/' + countryId,
+                type: 'GET',
+                success: function (data) {                                    
+                    $.each(data.states, function (key, value) {
+                        $('#state').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                  // ✅ Auto-select the first state (if any exist)
+                  if (data.states.length > 0) {
+                      $('#state').val(data.states[0].id);
+                  }
+                },
+                error: function (xhr) {
+                    console.error("AJAX error:", xhr.responseText);
+                }
+            });
+        } else {
+            $('#state').empty().append('<option value="">Select State</option>');
+        }
+    });
+  });
+</script>
