@@ -57,6 +57,7 @@ class TestParameterController extends Controller
                             'rank'                    => $postData['rank'],
                             'status'                  => ((array_key_exists("status",$postData))?1:0),
                         ];
+                        Helper::pr($fields);
                         TestParameter::insert($fields);
                         return redirect("admin/" . $this->data['controller_route'] . "/list")->with('success_message', $this->data['title'].' Inserted Successfully !!!');
                     } else {
