@@ -120,12 +120,18 @@ class ApiController extends Controller
                         'page_name'                 => $pageContent->page_name,
                         'page_content'              => $pageContent->page_content
                     ];
+                    http_response_code(200);
+                    $apiStatus          = TRUE;
+                    $apiMessage         = 'Data Available !!!';
+                    $apiExtraField      = 'response_code';
+                    $apiExtraData       = http_response_code();
+                } else {
+                    http_response_code(404);
+                    $apiStatus          = TRUE;
+                    $apiMessage         = 'Page not found !!!';
+                    $apiExtraField      = 'response_code';
+                    $apiExtraData       = http_response_code();
                 }
-                http_response_code(200);
-                $apiStatus          = TRUE;
-                $apiMessage         = 'Data Available !!!';
-                $apiExtraField      = 'response_code';
-                $apiExtraData       = http_response_code();
             } else {
                 http_response_code(400);
                 $apiStatus          = FALSE;
