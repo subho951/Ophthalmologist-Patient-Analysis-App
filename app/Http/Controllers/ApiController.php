@@ -192,7 +192,7 @@ class ApiController extends Controller
                                                         <tr><td style='padding: 8px 15px'>Ophthalmologist Patient Analysis App</td></tr>
                                                         <tr><td style='padding: 8px 15px'>This email is auto-generated from Ophthalmologist Patient Analysis App.</td></tr>
                                                     </table>";
-                    $this->sendMail($postData['email'], $subject, $message);                     
+                    $this->sendMail($email, $subject, $message);                     
                     $apiStatus                          = TRUE;
                     $apiMessage                         = 'SignUp Successfully !!!';                                    
                 }
