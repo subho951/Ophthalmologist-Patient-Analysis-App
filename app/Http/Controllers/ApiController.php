@@ -185,6 +185,59 @@ class ApiController extends Controller
             }
             $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
         }
+        public function signupVerifyOTP(Request $request)
+        {
+            $apiStatus          = TRUE;
+            $apiMessage         = '';
+            $apiResponse        = [];
+            $apiExtraField      = '';
+            $apiExtraData       = '';
+            $requestData        = $request->all();
+            $requiredFields     = ['email'];
+            $headerData         = $request->header();
+            if (!$this->validateArray($requiredFields, $requestData)){
+                $apiStatus          = FALSE;
+                $apiMessage         = 'All Data Are Not Present !!!';
+            }
+            if($headerData['key'][0] == env('PROJECT_KEY')){
+                $email                      = $requestData['email'];
+                $checkUser                  = Doctor::where('email', '=', $email)->where('status', '=', 1)->first();
+                if($checkUser){
+                    $remember_token  = rand(10000,99999);
+                    Doctor::where('id', '=', $checkUser->id)->update(['otp' => $remember_token]);
+                    $mailData                   = [
+                        'id'    => $checkUser->id,
+                        'email' => $checkUser->email,
+                        'phone' => $checkUser->phone,
+                        'otp'   => $remember_token,
+                    ];
+                    $generalSetting             = GeneralSetting::find('1');
+                    $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
+                    $message                    = view('email-templates.otp',$mailData);
+                    $this->sendMail($checkUser->email, $subject, $message);
+
+                    /* email log save */
+                        $postData2 = [
+                            'name'                  => $checkUser->name,
+                            'email'                 => $checkUser->email,
+                            'subject'               => $subject,
+                            'message'               => $message
+                        ];
+                        EmailLog::insert($postData2);
+                    /* email log save */                   
+                    $apiResponse                        = $mailData;
+                    $apiStatus                          = TRUE;
+                    $apiMessage                         = 'OTP Sent To Email For Validation !!!';
+                } else {                    
+                    $apiStatus                              = FALSE;
+                    $apiMessage                             = 'We Don\'t Recognize You !!!';
+                }
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = 'Unauthenticate Request !!!';
+            }
+            $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
+        }
         public function signin(Request $request)
         {
             $apiStatus          = TRUE;
