@@ -16,7 +16,7 @@ $generalSetting             = GeneralSetting::find('1');
           </div>
           <div>
             <h3 style="text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;">Hi, Welcome to <?=$generalSetting->site_name?>!</h3>
-            <h4 style="text-align: center; font-family: sans-serif; color: #5c5b5b ;">Your OTP</h4>
+            <h4 style="text-align: center; font-family: sans-serif; color: #5c5b5b ;">Your OTP For Email Validation</h4>
             <div style="display: flex; justify-content: center !important;">
                 <div style="padding: 12px; margin: 5px; border: 2px solid #f9233f;width: 17px; height: 17px; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 15px;
                 font-family: sans-serif;"><?=substr($otp, 0, 1)?></div>
