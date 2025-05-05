@@ -556,7 +556,7 @@ class ApiController extends Controller
             if($headerData['key'][0] == env('PROJECT_KEY')){
                 $checkEmail = Doctor::where('email', '=', $requestData['email'])->first();
                 if($checkEmail){
-                    $remember_token  = rand(1000,9999);
+                    $remember_token  = rand(10000,99999);
                     Doctor::where('id', '=', $checkEmail->id)->update(['otp' => $remember_token]);
                     $mailData                   = [
                         'id'    => $checkEmail->id,
@@ -668,7 +668,7 @@ class ApiController extends Controller
                 $id         = $requestData['id'];
                 $getUser    = Doctor::where('id', '=', $id)->first();
                 if($getUser){
-                    $remember_token = rand(1000,9999);
+                    $remember_token = rand(10000,99999);
                     $postData = [
                         'otp'        => $remember_token
                     ];
@@ -755,7 +755,7 @@ class ApiController extends Controller
                             ];
                             EmailLog::insert($postData2);
                         /* email log save */
-                        
+                        $apiResponse                        = $mailData;                        
                         $apiStatus                          = TRUE;
                         http_response_code(200);
                         $apiMessage                         = 'Password Reset Successfully !!!';
