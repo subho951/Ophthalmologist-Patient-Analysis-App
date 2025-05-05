@@ -614,11 +614,11 @@ class ApiController extends Controller
                 $apiMessage         = 'All Data Are Not Present !!!';
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
-                $getUser = Employees::where('id', '=', $requestData['id'])->first();
+                $getUser = Doctor::where('id', '=', $requestData['id'])->first();
                 if($getUser){
                     $remember_token  = $getUser->otp;
                     if($remember_token == $requestData['otp']){
-                        Employees::where('id', '=', $requestData['id'])->update(['otp' => 0]);
+                        Doctor::where('id', '=', $requestData['id'])->update(['otp' => $requestData['otp']]);
                         // $this->sendMail('subhomoysamanta1989@gmail.com', $requestData['subject'], $requestData['message']);
                         $apiResponse        = [
                             'id'    => $getUser->id,
@@ -638,7 +638,7 @@ class ApiController extends Controller
                 } else {
                     $apiStatus          = FALSE;
                     http_response_code(200);
-                    $apiMessage         = 'Teacher Not Found !!!';
+                    $apiMessage         = 'Doctor Not Found !!!';
                     $apiExtraField      = 'response_code';
                     $apiExtraData       = http_response_code();
                 }
