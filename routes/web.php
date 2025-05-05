@@ -148,5 +148,7 @@ Route::get('/db-test', function () {
     });
 /* Admin Panel */
 /* API */
-
+    Route::prefix('/api')->namespace('App\Http\Controllers')->group(function(){
+        Route::match(['get', 'post'], 'get-app-setting', 'ApiController@getAppSetting');
+    });
 /* API */
