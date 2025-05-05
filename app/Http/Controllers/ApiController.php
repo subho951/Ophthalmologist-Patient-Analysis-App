@@ -42,6 +42,8 @@ use Hash;
 use DB;
 use App\Libraries\CreatorJwt;
 use App\Libraries\JWT;
+use App\Models\Doctor;
+
 date_default_timezone_set("Asia/Calcutta");
 class ApiController extends Controller
 {
@@ -143,6 +145,46 @@ class ApiController extends Controller
         }
     /* before login screen */
     /* authentication */
+        public function signup(Request $request)
+        {
+            $apiStatus          = TRUE;
+            $apiMessage         = '';
+            $apiResponse        = [];
+            $apiExtraField      = '';
+            $apiExtraData       = '';
+            $requestData        = $request->all();
+            $requiredFields     = ['key', 'source', 'prefix', 'name', 'email', 'mobile'];
+            $headerData         = $request->header();
+            if (!$this->validateArray($requiredFields, $requestData)){
+                $apiStatus          = FALSE;
+                $apiMessage         = 'All Data Are Not Present !!!';
+            }
+            if($headerData['key'][0] == env('PROJECT_KEY')){
+                $prefix                     = $requestData['prefix'];
+                $email                      = $requestData['email'];                
+                $name                       = $requestData['name'];                
+                $mobile                     = $requestData['mobile'];                                
+                $checkUser                  = Doctor::where('email', '=', $email)->where('phone', '=', $mobile)->where('status', '=', 1)->first();
+                if($checkUser){                                                      
+                    $apiResponse            = [                        
+                        'initials'         => $prefix,
+                        'name'             => $name,
+                        'email'            => $email,
+                        'phone'            => $mobile,                                                                                
+                    ];  
+                    Doctor::insert($apiResponse);                      
+                    $apiStatus                          = TRUE;
+                    $apiMessage                         = 'SignUp Successfully !!!';                                     
+                } else {                    
+                    $apiStatus                              = FALSE;
+                    $apiMessage                             = 'Doctor Already exsist  !!!';
+                }
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = 'Unauthenticate Request !!!';
+            }
+            $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
+        }
         public function signin(Request $request)
         {
             $apiStatus          = TRUE;
