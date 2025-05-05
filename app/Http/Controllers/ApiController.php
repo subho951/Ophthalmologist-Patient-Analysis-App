@@ -171,7 +171,7 @@ class ApiController extends Controller
                 if($checkUser){                                                      
                     $apiStatus                              = FALSE;
                     $apiMessage                             = 'Doctor Already exsist  !!!';                             
-                } else {    
+                } else {                        
                     $apiResponse            = [                        
                         'initials'         => $prefix,
                         'name'             => $name,
@@ -180,9 +180,42 @@ class ApiController extends Controller
                         'phone'            => $mobile, 
                         'password'         => Hash::make($randomPassword),                                                                     
                     ];  
-                    Doctor::insert($apiResponse); 
-                    $subject                    = 'Subject: Your Login Credentials for Portal Access';
-                    $message                    = "<table width='100%' border='0' cellspacing='0' cellpadding='0' style='padding: 10px; background: #fff; width: 500px;'>
+                    $remember_token  = rand(10000,99999);
+                    $fields = [
+                        'initials'         => $prefix,
+                        'name'             => $name,
+                        'regn_no'          => $reg_no,
+                        'email'            => $email,
+                        'phone'            => $mobile, 
+                        'password'         => Hash::make($randomPassword),
+                        'otp'        => $remember_token
+                    ];     
+                    // Doctor::insert($fields);    
+                    $doctor = Doctor::create($fields);
+
+                    // Get the last inserted ID
+                    $lastInsertId = $doctor->id; 
+
+                    $mailData                   = [
+                        'id'    => $lastInsertId,
+                        'email' => $checkUser->email,                        
+                        'otp'   => $remember_token,
+                    ];
+                    $generalSetting             = GeneralSetting::find('1');
+                    $subject                    = $generalSetting->site_name.' :: SignIn Validate OTP';
+                    $message                    = view('email-templates.otp',$mailData);
+                    $this->sendMail($checkUser->email, $subject, $message);             
+                    /* email log save */
+                    $postData2 = [
+                        'name'                  => $name,
+                        'email'                 => $email,
+                        'subject'               => $subject,
+                        'message'               => $message
+                    ];
+                    EmailLog::insert($postData2);
+                /* email log save */                           
+                    $email_subject                    = 'Subject: Your Login Credentials for Portal Access';
+                    $email_message                    = "<table width='100%' border='0' cellspacing='0' cellpadding='0' style='padding: 10px; background: #fff; width: 500px;'>
                                                         <tr><td style='padding: 8px 15px'>Dear " . htmlspecialchars($name) . ",</td></tr>
                                                         <tr><td style='padding: 8px 15px'>Thank you for registering with us. Below are your credentials to access the portal:</td></tr>                                                                                                                            
                                                         <tr><td style='padding: 8px 15px'><strong>Email: </strong>" . htmlspecialchars($email) . "</td></tr>    
@@ -192,9 +225,9 @@ class ApiController extends Controller
                                                         <tr><td style='padding: 8px 15px'>Ophthalmologist Patient Analysis App</td></tr>
                                                         <tr><td style='padding: 8px 15px'>This email is auto-generated from Ophthalmologist Patient Analysis App.</td></tr>
                                                     </table>";
-                    $this->sendMail($email, $subject, $message);                     
+                    $this->sendMail($email, $email_subject, $email_message);                     
                     $apiStatus                          = TRUE;
-                    $apiMessage                         = 'SignUp Successfully !!!';                                    
+                    $apiMessage                         = 'OTP Sent To Email For Validation !!!';                                    
                 }
             } else {
                 $apiStatus          = FALSE;
@@ -223,45 +256,97 @@ class ApiController extends Controller
             $apiExtraField      = '';
             $apiExtraData       = '';
             $requestData        = $request->all();
-            $requiredFields     = ['email'];
+            $requiredFields     = ['key', 'source', 'id', 'otp', 'device_token', 'fcm_token'];
             $headerData         = $request->header();
             if (!$this->validateArray($requiredFields, $requestData)){
                 $apiStatus          = FALSE;
                 $apiMessage         = 'All Data Are Not Present !!!';
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
-                $email                      = $requestData['email'];
-                $checkUser                  = Doctor::where('email', '=', $email)->first();
+                $id                         = $requestData['id'];               
+                $otp                        = $requestData['otp'];
+                $device_type                = $headerData['source'][0];
+                $device_token               = $requestData['device_token'];
+                $fcm_token                  = $requestData['fcm_token'];                
+                $checkUser                  = Doctor::where('id', '=', $id)->first();
                 if($checkUser){
-                    $remember_token  = rand(10000,99999);
-                    Doctor::where('id', '=', $checkUser->id)->update(['otp' => $remember_token, 'status' => 1]);
-                    $mailData                   = [
-                        'id'    => $checkUser->id,
-                        'email' => $checkUser->email,
-                        'phone' => $checkUser->phone,
-                        'otp'   => $remember_token,
-                    ];
-                    $generalSetting             = GeneralSetting::find('1');
-                    $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
-                    $message                    = view('email-templates.otp',$mailData);
-                    $this->sendMail($checkUser->email, $subject, $message);
-
-                    /* email log save */
-                        $postData2 = [
+                    if($checkUser->otp == $otp){
+                        $objOfJwt               = new CreatorJwt();
+                        $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
+                        $user_id                = $checkUser->id;
+                        // Doctor::where('id', '=', $user_id)->update(['otp' => $otp]);
+                        Doctor::where('id', '=', $checkUser->id)->update(['otp' => $otp, 'status' => 1]);
+                        $fields     = [
+                            'user_id'               => $user_id,
+                            'device_type'           => $device_type,
+                            'device_token'          => $device_token,
+                            'fcm_token'             => $fcm_token,
+                            'app_access_token'      => $app_access_token,
+                        ];
+                        $checkUserTokenExist            = UserDevice::where('user_id', '=', $user_id)->where('published', '=', 1)->where('device_type', '=', $device_type)->where('device_token', '=', $device_token)->first();
+                        if(!$checkUserTokenExist){
+                            UserDevice::insert($fields);
+                        } else {
+                            UserDevice::where('id','=',$checkUserTokenExist->id)->update($fields);
+                        }
+                        $apiResponse            = [
+                            'user_id'               => $user_id,
                             'name'                  => $checkUser->name,
                             'email'                 => $checkUser->email,
-                            'subject'               => $subject,
-                            'message'               => $message
-                        ];
-                        EmailLog::insert($postData2);
-                    /* email log save */                   
-                    $apiResponse                        = $mailData;
-                    $apiStatus                          = TRUE;
-                    $apiMessage                         = 'OTP Sent To Email For Validation !!!';
-                } else {                    
-                    $apiStatus                              = FALSE;
-                    $apiMessage                             = 'We Don\'t Recognize You !!!';
-                }
+                            'phone'                 => $checkUser->phone,                           
+                            'device_type'           => $device_type,
+                            'device_token'          => $device_token,
+                            'fcm_token'             => $fcm_token,
+                            'app_access_token'      => $app_access_token,
+                        ];  
+                        /* user activity */
+                            $activityData = [
+                                'user_email'        => $checkUser->email,
+                                'user_name'         => $checkUser->name,
+                                'user_type'         => 'USER',
+                                'ip_address'        => $request->ip(),
+                                'activity_type'     => 1,
+                                'activity_details'  => 'SignUp Successfully !!!',
+                                'platform_type'     => 'ANDROID',
+                            ];
+                            UserActivity::insert($activityData); 
+                        /* user activity */                                                                        
+                        $apiStatus                          = TRUE;
+                        $apiMessage                         = 'SignUp Successfully !!!';
+                    } else {    
+                        /* user activity */
+                            $activityData = [
+                                'user_email'        => $checkUser->email,
+                                'user_name'         => $checkUser->name,
+                                'user_type'         => 'USER',
+                                'ip_address'        => $request->ip(),
+                                'activity_type'     => 0,
+                                'activity_details'  => 'OTP Mismatched !!!',
+                                'platform_type'     => 'ANDROID',
+                            ];
+                            UserActivity::insert($activityData); 
+                        /* user activity */                  
+                        $apiStatus                              = FALSE;
+                        http_response_code(200);
+                        $apiMessage                             = 'OTP Mismatched !!!';
+                        $apiExtraField      = 'response_code';
+                    }
+                }else {
+                        /* user activity */
+                            $activityData = [
+                                'user_email'        => $requestData['phone'],
+                                'user_name'         => '',
+                                'user_type'         => 'USER',
+                                'ip_address'        => $request->ip(),
+                                'activity_type'     => 0,
+                                'activity_details'  => 'We Don\'t Recognize You !!!',
+                                'platform_type'     => 'ANDROID',
+                            ];
+                            UserActivity::insert($activityData);
+                        /* user activity */
+                        $apiStatus                              = FALSE;
+                        $apiMessage                             = 'We Don\'t Recognize You !!!';
+                    }
             } else {
                 $apiStatus          = FALSE;
                 $apiMessage         = 'Unauthenticate Request !!!';
