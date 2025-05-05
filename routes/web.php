@@ -151,5 +151,7 @@ Route::get('/db-test', function () {
     Route::prefix('/api')->namespace('App\Http\Controllers')->group(function(){
         Route::match(['get'], 'get-app-setting', 'ApiController@getAppSetting');
         Route::match(['post'], 'get-static-pages', 'ApiController@getStaticPages');
+        Route::match(['post'], 'signup', 'ApiController@signup');
+        Route::match(['post'], 'signup-verify-otp', 'ApiController@signupVerifyOTP');
     });
 /* API */
