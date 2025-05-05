@@ -369,7 +369,7 @@ class ApiController extends Controller
             }
             $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
         }
-        public function signinWithMobile(Request $request)
+        public function signinWithEmail(Request $request)
         {
             $apiStatus          = TRUE;
             $apiMessage         = '';
@@ -377,22 +377,21 @@ class ApiController extends Controller
             $apiExtraField      = '';
             $apiExtraData       = '';
             $requestData        = $request->all();
-            $requiredFields     = ['phone'];
+            $requiredFields     = ['email'];
             $headerData         = $request->header();
             if (!$this->validateArray($requiredFields, $requestData)){
                 $apiStatus          = FALSE;
                 $apiMessage         = 'All Data Are Not Present !!!';
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
-                $phone                      = $requestData['phone'];
-                $checkUser                  = Employees::where('phone', '=', $phone)->where('status', '=', 1)->first();
+                $email                      = $requestData['phone'];
+                $checkUser                  = Doctor::where('email', '=', $email)->where('status', '=', 1)->first();
                 if($checkUser){
-                    $remember_token  = rand(1000,9999);
-                    Employees::where('id', '=', $checkUser->id)->update(['otp' => $remember_token]);
+                    $remember_token  = rand(10000,99999);
+                    Doctor::where('id', '=', $checkUser->id)->update(['otp' => $remember_token]);
                     $mailData                   = [
                         'id'    => $checkUser->id,
-                        'email' => $checkUser->email,
-                        'phone' => $checkUser->phone,
+                        'email' => $checkUser->email,                        
                         'otp'   => $remember_token,
                     ];
                     $generalSetting             = GeneralSetting::find('1');
@@ -408,20 +407,14 @@ class ApiController extends Controller
                             'message'               => $message
                         ];
                         EmailLog::insert($postData2);
-                    /* email log save */
-                    /* send sms */
-                        $name       = $checkUser->name;
-                        $message    = "Dear ".$name.", ".$remember_token." is your verification OTP for ProTime Manager at KEYLINE. Do not share this OTP with anyone for security reasons.";
-                        $mobileNo   = (($checkUser)?$checkUser->phone:'');
-                        $this->sendSMS($mobileNo,$message);
-                    /* send sms */
+                    /* email log save */                    
                     $apiResponse                        = $mailData;
                     $apiStatus                          = TRUE;
-                    $apiMessage                         = 'OTP Sent To Email & Phone Validation !!!';
+                    $apiMessage                         = 'OTP Sent To Email For Validation !!!';
                 } else {
                     /* user activity */
                         $activityData = [
-                            'user_email'        => $requestData['phone'],
+                            'user_email'        => $requestData['email'],
                             'user_name'         => '',
                             'user_type'         => 'USER',
                             'ip_address'        => $request->ip(),
