@@ -666,13 +666,13 @@ class ApiController extends Controller
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
                 $id         = $requestData['id'];
-                $getUser    = Employees::where('id', '=', $id)->first();
+                $getUser    = Doctor::where('id', '=', $id)->first();
                 if($getUser){
                     $remember_token = rand(1000,9999);
                     $postData = [
                         'otp'        => $remember_token
                     ];
-                    Employees::where('id', '=', $id)->update($postData);
+                    Doctor::where('id', '=', $id)->update($postData);
                     
                     $mailData                   = [
                         'id'    => $getUser->id,
@@ -703,7 +703,7 @@ class ApiController extends Controller
                 } else {
                     $apiStatus          = FALSE;
                     http_response_code(200);
-                    $apiMessage         = 'Teacher Not Found !!!';
+                    $apiMessage         = 'Doctor Not Found !!!';
                     $apiExtraField      = 'response_code';
                     $apiExtraData       = http_response_code();
                 }
