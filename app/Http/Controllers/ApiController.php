@@ -166,6 +166,9 @@ class ApiController extends Controller
                 $mobile                     = $requestData['mobile'];                                
                 $checkUser                  = Doctor::where('email', '=', $email)->where('phone', '=', $mobile)->where('status', '=', 1)->first();
                 if($checkUser){                                                      
+                    $apiStatus                              = FALSE;
+                    $apiMessage                             = 'Doctor Already exsist  !!!';                             
+                } else {    
                     $apiResponse            = [                        
                         'initials'         => $prefix,
                         'name'             => $name,
@@ -174,10 +177,7 @@ class ApiController extends Controller
                     ];  
                     Doctor::insert($apiResponse);                      
                     $apiStatus                          = TRUE;
-                    $apiMessage                         = 'SignUp Successfully !!!';                                     
-                } else {                    
-                    $apiStatus                              = FALSE;
-                    $apiMessage                             = 'Doctor Already exsist  !!!';
+                    $apiMessage                         = 'SignUp Successfully !!!';                                    
                 }
             } else {
                 $apiStatus          = FALSE;
