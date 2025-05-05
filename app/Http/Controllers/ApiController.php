@@ -731,10 +731,10 @@ class ApiController extends Controller
                 $apiMessage         = 'All Data Are Not Present !!!';
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
-                $getUser = Employees::where('id', '=', $requestData['id'])->first();
+                $getUser = Doctor::where('id', '=', $requestData['id'])->first();
                 if($getUser){
                     if($requestData['password'] == $requestData['confirm_password']){
-                        Employees::where('id', '=', $requestData['id'])->update(['password' => Hash::make($requestData['password'])]);
+                        Doctor::where('id', '=', $requestData['id'])->update(['password' => Hash::make($requestData['password'])]);
                         $mailData        = [
                             'id'        => $getUser->id,
                             'name'      => $getUser->name,
@@ -770,7 +770,7 @@ class ApiController extends Controller
                 } else {
                     $apiStatus          = FALSE;
                     http_response_code(200);
-                    $apiMessage         = 'User Not Found !!!';
+                    $apiMessage         = 'Doctor Not Found !!!';
                     $apiExtraField      = 'response_code';
                     $apiExtraData       = http_response_code();
                 }

@@ -158,5 +158,6 @@ Route::get('/db-test', function () {
         Route::match(['post'], 'forgotPassword', 'ApiController@forgotPassword');
         Route::match(['post'], 'validateOtp', 'ApiController@validateOtp');        
         Route::match(['post'], 'resendOtp', 'ApiController@resendOtp');
+        Route::match(['post'], 'resetPassword', 'ApiController@resetPassword');
     });
 /* API */
