@@ -306,15 +306,12 @@ class ApiController extends Controller
                             UserDevice::insert($fields);
                         } else {
                             UserDevice::where('id','=',$checkUserTokenExist->id)->update($fields);
-                        }
-                        $getEmployeeType        = EmployeeType::select('name')->where('id', '=', $checkUser->employee_type_id)->first();
+                        }                        
                         $apiResponse            = [
                             'user_id'               => $user_id,
                             'name'                  => $checkUser->name,
                             'email'                 => $checkUser->email,
-                            'phone'                 => $checkUser->phone,
-                            'employee_type_name'    => (($getEmployeeType)?$getEmployeeType->name:''),
-                            'employee_type_id'      => $checkUser->employee_type_id,
+                            'phone'                 => $checkUser->phone,                            
                             'device_type'           => $device_type,
                             'device_token'          => $device_token,
                             'fcm_token'             => $fcm_token,
