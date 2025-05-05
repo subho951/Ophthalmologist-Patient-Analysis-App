@@ -432,114 +432,112 @@ class ApiController extends Controller
                 $apiMessage         = 'Unauthenticate Request !!!';
             }
             $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
+        }        
+        public function signinValidateEmail(Request $request)
+        {
+            $apiStatus          = TRUE;
+            $apiMessage         = '';
+            $apiResponse        = [];
+            $apiExtraField      = '';
+            $apiExtraData       = '';
+            $requestData        = $request->all();
+            $requiredFields     = ['key', 'source', 'id', 'otp', 'device_token', 'fcm_token'];
+            $headerData         = $request->header();
+            if (!$this->validateArray($requiredFields, $requestData)){
+                $apiStatus          = FALSE;
+                $apiMessage         = 'All Data Are Not Present !!!';
+            }
+            if($headerData['key'][0] == env('PROJECT_KEY')){ 
+                $id                         = $requestData['id'];               
+                $otp                        = $requestData['otp'];
+                $device_type                = $headerData['source'][0];
+                $device_token               = $requestData['device_token'];
+                $fcm_token                  = $requestData['fcm_token'];
+                $checkUser                  = Doctor::where('id', '=', $id)->where('status', '=', 1)->first();
+                if($checkUser){
+                    if($checkUser->otp == $otp){
+                        $objOfJwt               = new CreatorJwt();
+                        $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
+                        $user_id                = $checkUser->id;
+                        Doctor::where('id', '=', $user_id)->update(['otp' => $otp]);
+                        $fields     = [
+                            'user_id'               => $user_id,
+                            'device_type'           => $device_type,
+                            'device_token'          => $device_token,
+                            'fcm_token'             => $fcm_token,
+                            'app_access_token'      => $app_access_token,
+                        ];
+                        $checkUserTokenExist            = UserDevice::where('user_id', '=', $user_id)->where('published', '=', 1)->where('device_type', '=', $device_type)->where('device_token', '=', $device_token)->first();
+                        if(!$checkUserTokenExist){
+                            UserDevice::insert($fields);
+                        } else {
+                            UserDevice::where('id','=',$checkUserTokenExist->id)->update($fields);
+                        }
+                        // $getEmployeeType        = EmployeeType::select('name')->where('id', '=', $checkUser->employee_type_id)->first();
+                        $apiResponse            = [
+                            'user_id'               => $user_id,
+                            'name'                  => $checkUser->name,
+                            'email'                 => $checkUser->email,
+                            'phone'                 => $checkUser->phone,                           
+                            'device_type'           => $device_type,
+                            'device_token'          => $device_token,
+                            'fcm_token'             => $fcm_token,
+                            'app_access_token'      => $app_access_token,
+                        ];
+                        /* user activity */
+                            $activityData = [
+                                'user_email'        => $checkUser->email,
+                                'user_name'         => $checkUser->name,
+                                'user_type'         => 'USER',
+                                'ip_address'        => $request->ip(),
+                                'activity_type'     => 1,
+                                'activity_details'  => 'SignIn Successfully !!!',
+                                'platform_type'     => 'ANDROID',
+                            ];
+                            UserActivity::insert($activityData);
+                        /* user activity */
+                        $apiStatus                          = TRUE;
+                        $apiMessage                         = 'SignIn Successfully !!!';
+                    } else {
+                        /* user activity */
+                            $activityData = [
+                                'user_email'        => $checkUser->email,
+                                'user_name'         => $checkUser->name,
+                                'user_type'         => 'USER',
+                                'ip_address'        => $request->ip(),
+                                'activity_type'     => 0,
+                                'activity_details'  => 'OTP Mismatched !!!',
+                                'platform_type'     => 'ANDROID',
+                            ];
+                            UserActivity::insert($activityData);
+                        /* user activity */
+                        $apiStatus          = FALSE;
+                        http_response_code(200);
+                        $apiMessage         = 'OTP Mismatched !!!';
+                        $apiExtraField      = 'response_code';
+                    }
+                } else {
+                    /* user activity */
+                        $activityData = [
+                            'user_email'        => $requestData['phone'],
+                            'user_name'         => '',
+                            'user_type'         => 'USER',
+                            'ip_address'        => $request->ip(),
+                            'activity_type'     => 0,
+                            'activity_details'  => 'We Don\'t Recognize You !!!',
+                            'platform_type'     => 'ANDROID',
+                        ];
+                        UserActivity::insert($activityData);
+                    /* user activity */
+                    $apiStatus                              = FALSE;
+                    $apiMessage                             = 'We Don\'t Recognize You !!!';
+                }
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = 'Unauthenticate Request !!!';
+            }
+            $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
         }
-        // public function signinValidateMobile(Request $request)
-        // {
-        //     $apiStatus          = TRUE;
-        //     $apiMessage         = '';
-        //     $apiResponse        = [];
-        //     $apiExtraField      = '';
-        //     $apiExtraData       = '';
-        //     $requestData        = $request->all();
-        //     $requiredFields     = ['phone', 'otp', 'device_token'];
-        //     $headerData         = $request->header();
-        //     if (!$this->validateArray($requiredFields, $requestData)){
-        //         $apiStatus          = FALSE;
-        //         $apiMessage         = 'All Data Are Not Present !!!';
-        //     }
-        //     if($headerData['key'][0] == env('PROJECT_KEY')){
-        //         $phone                      = $requestData['phone'];
-        //         $otp                        = $requestData['otp'];
-        //         $device_type                = $headerData['source'][0];
-        //         $device_token               = $requestData['device_token'];
-        //         $fcm_token                  = $requestData['fcm_token'];
-        //         $checkUser                  = Employees::where('phone', '=', $phone)->where('status', '=', 1)->first();
-        //         if($checkUser){
-        //             if($checkUser->otp == $otp){
-        //                 $objOfJwt               = new CreatorJwt();
-        //                 $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
-        //                 $user_id                = $checkUser->id;
-        //                 Employees::where('id', '=', $user_id)->update(['otp' => 0]);
-        //                 $fields     = [
-        //                     'user_id'               => $user_id,
-        //                     'device_type'           => $device_type,
-        //                     'device_token'          => $device_token,
-        //                     'fcm_token'             => $fcm_token,
-        //                     'app_access_token'      => $app_access_token,
-        //                 ];
-        //                 $checkUserTokenExist            = UserDevice::where('user_id', '=', $user_id)->where('published', '=', 1)->where('device_type', '=', $device_type)->where('device_token', '=', $device_token)->first();
-        //                 if(!$checkUserTokenExist){
-        //                     UserDevice::insert($fields);
-        //                 } else {
-        //                     UserDevice::where('id','=',$checkUserTokenExist->id)->update($fields);
-        //                 }
-        //                 $getEmployeeType        = EmployeeType::select('name')->where('id', '=', $checkUser->employee_type_id)->first();
-        //                 $apiResponse            = [
-        //                     'user_id'               => $user_id,
-        //                     'name'                  => $checkUser->name,
-        //                     'email'                 => $checkUser->email,
-        //                     'phone'                 => $checkUser->phone,
-        //                     'employee_type_name'    => (($getEmployeeType)?$getEmployeeType->name:''),
-        //                     'employee_type_id'      => $checkUser->employee_type_id,
-        //                     'device_type'           => $device_type,
-        //                     'device_token'          => $device_token,
-        //                     'fcm_token'             => $fcm_token,
-        //                     'app_access_token'      => $app_access_token,
-        //                 ];
-        //                 /* user activity */
-        //                     $activityData = [
-        //                         'user_email'        => $checkUser->email,
-        //                         'user_name'         => $checkUser->name,
-        //                         'user_type'         => 'USER',
-        //                         'ip_address'        => $request->ip(),
-        //                         'activity_type'     => 1,
-        //                         'activity_details'  => 'SignIn Successfully !!!',
-        //                         'platform_type'     => 'ANDROID',
-        //                     ];
-        //                     UserActivity::insert($activityData);
-        //                 /* user activity */
-        //                 $apiStatus                          = TRUE;
-        //                 $apiMessage                         = 'SignIn Successfully !!!';
-        //             } else {
-        //                 /* user activity */
-        //                     $activityData = [
-        //                         'user_email'        => $checkUser->email,
-        //                         'user_name'         => $checkUser->name,
-        //                         'user_type'         => 'USER',
-        //                         'ip_address'        => $request->ip(),
-        //                         'activity_type'     => 0,
-        //                         'activity_details'  => 'OTP Mismatched !!!',
-        //                         'platform_type'     => 'ANDROID',
-        //                     ];
-        //                     UserActivity::insert($activityData);
-        //                 /* user activity */
-        //                 $apiStatus          = FALSE;
-        //                 http_response_code(200);
-        //                 $apiMessage         = 'OTP Mismatched !!!';
-        //                 $apiExtraField      = 'response_code';
-        //             }
-        //         } else {
-        //             /* user activity */
-        //                 $activityData = [
-        //                     'user_email'        => $requestData['phone'],
-        //                     'user_name'         => '',
-        //                     'user_type'         => 'USER',
-        //                     'ip_address'        => $request->ip(),
-        //                     'activity_type'     => 0,
-        //                     'activity_details'  => 'We Don\'t Recognize You !!!',
-        //                     'platform_type'     => 'ANDROID',
-        //                 ];
-        //                 UserActivity::insert($activityData);
-        //             /* user activity */
-        //             $apiStatus                              = FALSE;
-        //             $apiMessage                             = 'We Don\'t Recognize You !!!';
-        //         }
-        //     } else {
-        //         $apiStatus          = FALSE;
-        //         $apiMessage         = 'Unauthenticate Request !!!';
-        //     }
-        //     $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
-        // }
         public function forgotPassword(Request $request){
             $apiStatus          = TRUE;
             $apiMessage         = '';
