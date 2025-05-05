@@ -384,7 +384,7 @@ class ApiController extends Controller
                 $apiMessage         = 'All Data Are Not Present !!!';
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
-                $email                      = $requestData['phone'];
+                $email                      = $requestData['email'];
                 $checkUser                  = Doctor::where('email', '=', $email)->where('status', '=', 1)->first();
                 if($checkUser){
                     $remember_token  = rand(10000,99999);
