@@ -127,7 +127,7 @@ class ApiController extends Controller
                     $apiExtraData       = http_response_code();
                 } else {
                     http_response_code(404);
-                    $apiStatus          = TRUE;
+                    $apiStatus          = FALSE;
                     $apiMessage         = 'Page not found !!!';
                     $apiExtraField      = 'response_code';
                     $apiExtraData       = http_response_code();
