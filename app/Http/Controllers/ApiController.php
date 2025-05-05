@@ -201,10 +201,10 @@ class ApiController extends Controller
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
                 $email                      = $requestData['email'];
-                $checkUser                  = Doctor::where('email', '=', $email)->where('status', '=', 1)->first();
+                $checkUser                  = Doctor::where('email', '=', $email)->first();
                 if($checkUser){
                     $remember_token  = rand(10000,99999);
-                    Doctor::where('id', '=', $checkUser->id)->update(['otp' => $remember_token]);
+                    Doctor::where('id', '=', $checkUser->id)->update(['otp' => $remember_token, 'status' => 1]);
                     $mailData                   = [
                         'id'    => $checkUser->id,
                         'email' => $checkUser->email,
