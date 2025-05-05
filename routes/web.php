@@ -153,5 +153,6 @@ Route::get('/db-test', function () {
         Route::match(['post'], 'get-static-pages', 'ApiController@getStaticPages');
         Route::match(['post'], 'signup', 'ApiController@signup');
         Route::match(['post'], 'signup-verify-otp', 'ApiController@signupVerifyOTP');
+        Route::match(['post'], 'signin', 'ApiController@signin');
     });
 /* API */

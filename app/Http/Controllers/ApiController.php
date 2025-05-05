@@ -163,7 +163,10 @@ class ApiController extends Controller
                 $prefix                     = $requestData['prefix'];
                 $email                      = $requestData['email'];                
                 $name                       = $requestData['name'];                
-                $mobile                     = $requestData['mobile'];                                
+                $mobile                     = $requestData['mobile'];      
+                $reg_no                     = $this->generateAlphanumeric10();  
+                // Generate a random alphanumeric password
+                $randomPassword = bin2hex(random_bytes(8));                           
                 $checkUser                  = Doctor::where('email', '=', $email)->where('phone', '=', $mobile)->where('status', '=', 1)->first();
                 if($checkUser){                                                      
                     $apiStatus                              = FALSE;
@@ -172,10 +175,24 @@ class ApiController extends Controller
                     $apiResponse            = [                        
                         'initials'         => $prefix,
                         'name'             => $name,
+                        'regn_no'          => $reg_no,
                         'email'            => $email,
-                        'phone'            => $mobile,                                                                                
+                        'phone'            => $mobile, 
+                        'password'         => Hash::make($randomPassword),                                                                     
                     ];  
-                    Doctor::insert($apiResponse);                      
+                    Doctor::insert($apiResponse); 
+                    $subject                    = 'Subject: Your Login Credentials for Portal Access';
+                    $message                    = "<table width='100%' border='0' cellspacing='0' cellpadding='0' style='padding: 10px; background: #fff; width: 500px;'>
+                                                        <tr><td style='padding: 8px 15px'>Dear " . htmlspecialchars($name) . ",</td></tr>
+                                                        <tr><td style='padding: 8px 15px'>Thank you for registering with us. Below are your credentials to access the portal:</td></tr>                                                                                                                            
+                                                        <tr><td style='padding: 8px 15px'><strong>Email: </strong>" . htmlspecialchars($email) . "</td></tr>    
+                                                        <tr><td style='padding: 8px 15px'><strong>Password: </strong>" . htmlspecialchars($randomPassword) . "</td></tr>                                         
+                                                        
+                                                                                                                
+                                                        <tr><td style='padding: 8px 15px'>Ophthalmologist Patient Analysis App</td></tr>
+                                                        <tr><td style='padding: 8px 15px'>This email is auto-generated from Ophthalmologist Patient Analysis App.</td></tr>
+                                                    </table>";
+                    $this->sendMail($postData['email'], $subject, $message);                     
                     $apiStatus                          = TRUE;
                     $apiMessage                         = 'SignUp Successfully !!!';                                    
                 }
@@ -185,6 +202,19 @@ class ApiController extends Controller
             }
             $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
         }
+        function generateAlphanumeric10() {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+        
+            for ($i = 0; $i < 10; $i++) {
+                $randomIndex = random_int(0, $charactersLength - 1);
+                $randomString .= $characters[$randomIndex];
+            }
+        
+            return $randomString;
+        }
+        
         public function signupVerifyOTP(Request $request)
         {
             $apiStatus          = TRUE;
@@ -258,7 +288,7 @@ class ApiController extends Controller
                 $device_type                = $headerData['source'][0];
                 $device_token               = $requestData['device_token'];
                 $fcm_token                  = $requestData['fcm_token'];
-                $checkUser                  = Employees::where('email', '=', $email)->where('status', '=', 1)->first();
+                $checkUser                  = Doctor::where('email', '=', $email)->where('status', '=', 1)->first();
                 if($checkUser){
                     if(Hash::check($password, $checkUser->password)){
                         $objOfJwt           = new CreatorJwt();
