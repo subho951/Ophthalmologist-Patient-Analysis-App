@@ -1180,7 +1180,7 @@ class ApiController extends Controller
                     $getUser    = Doctor::where('id', '=', $uId)->first();
                     if($getUser){
                         $postData = [
-                                    'initials'          => $requestData['initials'],
+                                    'initials'          => $requestData['prefix'],
                                     'name'                      => $requestData['name'],
                                     'email'                 => $requestData['email'],
                                     'reg_no'               => $requestData['reg_no'],
