@@ -14,6 +14,7 @@ use Auth;
 use Session;
 use Helper;
 use Hash;
+use Illuminate\Http\Request;
 use stripe;
 
 class FrontController extends Controller
