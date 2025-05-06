@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\DB;
 
 
@@ -26,11 +27,37 @@ class FrontController extends Controller
             return view('front.page-content', $data);
         }
     /* page */
-    public function deleteaccount()
+    public function deleteaccount(Request $request)
     {
+        if($request->isMethod('get')){
+            $postData           = $request->all();
+            $Entityname         = $postData['entityname'];
+            $email             = $postData['email'];
+            $phone           = $postData['phone'];
+            $comment           = $postData['comment'];
+            $rules = [                                 
+                'email'                => 'required'
+            ];
+            $doctor         = Doctor::where('email', $email)->first();
+            if($doctor){
+                $doctor_id         = $doctor->id;
+            }
+            if ($this->validate($request, $rules)) {
+                $fields = [
+                    'status'         => 3,
+                    'approve_date'   => date('Y-m-d H:i:s'),               
+                ];
+                Helper::pr($fields);
+                Doctor::where('id', $doctor_id)->update($fields);
+                return redirect('delete-account')->with('success_message', 'Delete acoount successfully');
+            } else {
+                return redirect('delete-account')->with('error_message', 'Please enter valid email');
+            }
+        }
         $data = [];
         $title                          = 'Delete Account';
-        $page_name                      = 'delete-account';        
+        $page_name                      = 'delete-account';     
+
         return view('delete-account', $data);
         // echo $this->front_before_login_layout($title, $page_name, $data);
     }
