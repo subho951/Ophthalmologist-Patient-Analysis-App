@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1 style="text-align: center;">Delete Account</h1>
-    <form method="POST" action="">
+    <form method="POST" action="{{ route('delete-account-update') }}">
     @csrf
     <label>Entity Name:</label>
     <input type="text" name="entity_name" required><br>
