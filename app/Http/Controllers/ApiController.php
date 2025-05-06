@@ -212,12 +212,13 @@ class ApiController extends Controller
                     ];
                     EmailLog::insert($postData2);
                 /* email log save */       
-                    $general_Setting             = GeneralSetting::find('1');                    
+                    // $general_Setting             = GeneralSetting::find('1');     
+                    $logoUrl = env('UPLOADS_URL') . $generalSetting->site_logo;               
                     $email_subject      = 'Your Login Credentials for Portal Access';
                     $email_message      = " <section style='padding: 80px 0; height: 80vh; margin: 0 15px;'>
                                                 <div style='max-width: 600px; background: #ffffff; margin: 0 auto; border-radius: 15px; padding: 20px 15px; box-shadow: 0 0 30px -5px #ccc;'>
                                                     <div style='text-align: center;'>
-                                                        <img src='<?=env('UPLOADS_URL').$general_Setting->site_logo?>' alt=' style=' width: 100%; max-width: 250px;'>
+                                                        <img src=' " . $logoUrl ." ' alt=' style=' width: 100%; max-width: 250px;'>
                                                     </div>
                                                     <div>
                                                         <h3 style='text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;'>Hi, Welcome to <?=$general_Setting->site_name?>!</h3>
