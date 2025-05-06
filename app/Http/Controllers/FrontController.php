@@ -45,7 +45,7 @@ class FrontController extends Controller
             $Entityname         = $postData['entity_name'];
             $email             = $postData['email'];
             $phone           = $postData['phone'];
-            $comment           = $postData['comment'];
+            $comment           = !empty($request->comment) ? $request->comment : null;
             $rules = [                                 
                 'email'                => 'required'
             ];
