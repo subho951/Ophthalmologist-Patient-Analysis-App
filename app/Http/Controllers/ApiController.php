@@ -1303,11 +1303,10 @@ class ApiController extends Controller
                     if($getTokenValue['status']){
                         $uId        = $getTokenValue['data'][1];
                         $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
-                        $getUser    = Employees::where('id', '=', $uId)->first();
-                        if($getUser){
-                            $getEmployeeType     = EmployeeType::select('name')->where('id', '=', $getUser->employee_type_id)->first();
+                        $getUser    = Doctor::where('id', '=', $uId)->first();
+                        if($getUser){                            
                             $fields = [
-                                'user_type'                 => (($getEmployeeType)?$getEmployeeType->name:''),
+                                'user_type'                 => 'DOCTOR',
                                 'entity_name'               => $getUser->name,
                                 'email'                     => $getUser->email,
                                 'is_email_verify'           => 1,
@@ -1477,8 +1476,7 @@ class ApiController extends Controller
     }
 
     /*
-    code: Deblina
-    Get co-morbidities    
+    code: Deblina        
     */
     public function getcomorbidities(Request $request){
         $apiStatus          = TRUE;
