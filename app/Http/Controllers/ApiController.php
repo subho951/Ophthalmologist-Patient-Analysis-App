@@ -200,7 +200,7 @@ class ApiController extends Controller
                         'otp'   => $remember_token,
                     ];
                     $generalSetting             = GeneralSetting::find('1');
-                    $subject                    = $generalSetting->site_name.' :: SignIn Validate OTP';
+                    $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
                     $message                    = view('email-templates.otp',$mailData);
                     $this->sendMail($email, $subject, $message);             
                     /* email log save */
@@ -211,24 +211,25 @@ class ApiController extends Controller
                         'message'               => $message
                     ];
                     EmailLog::insert($postData2);
-                /* email log save */                           
+                /* email log save */       
+                    $general_Setting             = GeneralSetting::find('1');                    
                     $email_subject      = 'Your Login Credentials for Portal Access';
                     $email_message      = " <section style='padding: 80px 0; height: 80vh; margin: 0 15px;'>
                                                 <div style='max-width: 600px; background: #ffffff; margin: 0 auto; border-radius: 15px; padding: 20px 15px; box-shadow: 0 0 30px -5px #ccc;'>
                                                     <div style='text-align: center;'>
-                                                        <img src='<?=env('UPLOADS_URL').$generalSetting->site_logo?>' alt=' style=' width: 100%; max-width: 250px;'>
+                                                        <img src='<?=env('UPLOADS_URL').$general_Setting->site_logo?>' alt=' style=' width: 100%; max-width: 250px;'>
                                                     </div>
                                                     <div>
-                                                        <h3 style='text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;'>Hi, Welcome to <?=$generalSetting->site_name?>!</h3>
+                                                        <h3 style='text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;'>Hi, Welcome to <?=$general_Setting->site_name?>!</h3>
                                                         <h4 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'>Dear " . htmlspecialchars($name) . ", <br> Thank you for registering with us. Below are your credentials to access the portal:</h4>
                                                         <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Email:</b>" . htmlspecialchars($email) . " </h5>
                                                         <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Password:</b> " . htmlspecialchars($randomPassword) . "</h5>
                                                     </div>
                                                 </div>
                                                 <div style='border-top: 2px solid #ccc; margin-top: 50px; text-align: center; font-family: sans-serif;'>
-                                                    <div style='text-align: center; margin: 15px 0 10px;'><?=$generalSetting->site_name?></div>
-                                                    <div style='text-align: center; margin: 15px 0 10px;'>Phone: <?=$generalSetting->site_phone?></div>
-                                                    <div style='text-align: center; margin: 15px 0 10px;'>Email: <?=$generalSetting->site_mail?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'><?=$general_Setting->site_name?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'>Phone: <?=$general_Setting->site_phone?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'>Email: <?=$general_Setting->site_mail?></div>
                                                 </div>                                        
                                             </section>";
                     $this->sendMail($email, $email_subject, $email_message);                     
