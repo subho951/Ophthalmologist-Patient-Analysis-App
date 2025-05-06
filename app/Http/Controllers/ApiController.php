@@ -1069,31 +1069,25 @@ class ApiController extends Controller
                 if($getTokenValue['status']){
                     $uId        = $getTokenValue['data'][1];
                     $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
-                    $getUser    = Employees::where('id', '=', $uId)->first();
+                    $getUser    = Doctor::where('id', '=', $uId)->first();
                     if($getUser){
-                        $getEmployeeType     = EmployeeType::select('name', 'is_report')->where('id', '=', $getUser->employee_type_id)->first();
+                        // $getEmployeeType     = EmployeeType::select('name', 'is_report')->where('id', '=', $getUser->employee_type_id)->first();
                         $profileData    = [
-                            'employee_no'           => $getUser->employee_no,
-                            'employee_type_id'      => (($getEmployeeType)?$getEmployeeType->name:''),
-                            'is_report'             => (($getEmployeeType)?$getEmployeeType->is_report:0),
-                            'name'                  => $getUser->name,
-                            'email'                 => $getUser->email,
-                            'alt_email'             => $getUser->alt_email,
-                            'phone'                 => $getUser->phone,
-                            'whatsapp_no'           => $getUser->whatsapp_no,
-                            'short_bio'             => $getUser->short_bio,
-                            'dob'                   => (($getUser->dob != '')?date_format(date_create($getUser->dob), "M d, Y"):''),
-                            'doj'                   => (($getUser->doj != '')?date_format(date_create($getUser->doj), "M d, Y"):''),
-                            'qualification'         => (($getUser->qualification != '')?$getUser->qualification:''),
-                            'created_at'            => date_format(date_create($getUser->created_at), "M d, Y h:i A"),
-                            'profile_image'         => (($getUser->profile_image != '')?env('UPLOADS_URL').'user/'.$getUser->profile_image:env('NO_USER_IMAGE')),
+                            'id'                => $getUser->id,                            
+                            'initials'          => $getUser->initials,                            
+                            'name'              => $getUser->name,
+                            'regn_no'           => $getUser->regn_no,
+                            'email'             => $getUser->email,                           
+                            'phone'             => $getUser->phone,                                                        
+                            'created_at'        => date_format(date_create($getUser->created_at), "M d, Y h:i A"),
+                            'profile_image'     => (($getUser->profile_image != '')?env('UPLOADS_URL').'user/'.$getUser->profile_image:env('NO_USER_IMAGE')),
                         ];
                         $apiStatus          = TRUE;
                         $apiMessage         = 'Data Available !!!';
                         $apiResponse        = $profileData;
                     } else {
                         $apiStatus          = FALSE;
-                        $apiMessage         = 'User Not Found !!!';
+                        $apiMessage         = 'Doctor Not Found !!!';
                     }
                 } else {
                     $apiStatus                      = FALSE;
