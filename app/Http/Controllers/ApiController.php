@@ -1533,7 +1533,7 @@ class ApiController extends Controller
             if($comorbidities){
                 foreach ($comorbidities as $row) {
                     $doctrs = Doctor::where('id', '=', $row->doctor_id)->first();
-                    $comorbidities = Comorbidity::where('id', '=', $row->comorbidity_id)->first();
+                    $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();
                     if($comorbidities){
                         $comorbidity_name = $comorbidities->name;
                     } else {
