@@ -892,7 +892,7 @@ class ApiController extends Controller
                     /* user activity */
                         $getTokenValue              = $this->tokenAuth($app_access_token);
                         $uId                        = $getTokenValue['data'][1];
-                        $getUser                    = Employees::where('id', '=', $uId)->first();
+                        $getUser                    = Doctor::where('id', '=', $uId)->first();
                         $activityData = [
                             'user_email'        => (($getUser)?$getUser->email:''),
                             'user_name'         => (($getUser)?$getUser->name:''),
