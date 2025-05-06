@@ -1515,4 +1515,65 @@ class ApiController extends Controller
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
+    public function getpatient(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $comorbidities = Patient::where('status', '=', 1)->orderBy('name', 'ASC')->get();
+            if($comorbidities){
+                foreach ($comorbidities as $row) {
+                    $doctrs = Doctor::where('id', '=', $row->doctor_id)->first();
+                    $comorbidities = Comorbidity::where('id', '=', $row->comorbidity_id)->first();
+                    if($comorbidities){
+                        $comorbidity_name = $comorbidities->name;
+                    } else {
+                        $comorbidity_name = '';
+                    }
+                    if($doctrs){
+                        $doctor_name = $doctrs->name;
+                    } else {
+                        $doctor_name = '';
+                    }
+                    $apiResponse[] = [
+                        'id'            => $row->id,
+                        'name'          => $row->name,
+                        'email'         => $row->email,
+                        'phone'         => $row->phone,
+                        'dob'          => $row->dob,
+                        'age'           => $row->age,
+                        'country'       => $row->country,
+                        'state'         => $row->state,
+                        'city'          => $row->city,
+                        'pincode'       => $row->pincode,
+                        'gender'        => $row->gender,
+                        'eye'           => $row->eye,
+                        'comorbidity'   => $comorbidity_name,
+                        'doctor_name'   => $doctor_name
+                    ];                    
+                }
+            }
+            http_response_code(200);
+            $apiStatus          = TRUE;
+            $apiMessage         = 'Data Available !!!';
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        } else {
+            http_response_code(200);
+            $apiStatus          = FALSE;
+            $apiMessage         = $this->getResponseCode(http_response_code());
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
 }

@@ -168,6 +168,7 @@ Route::get('/db-test', function () {
         Route::match(['get'], 'dashboard', 'ApiController@dashboard'); 
         Route::match(['post'], 'change-password', 'ApiController@changePassword'); 
         
-        Route::match(['get'], '/get-co-morbidities', 'ApiController@getcomorbidities');
+        Route::match(['get'], 'get-co-morbidities', 'ApiController@getcomorbidities');
+        Route::match(['get'], 'get-patient', 'ApiController@getpatient');
     });
 /* API */
