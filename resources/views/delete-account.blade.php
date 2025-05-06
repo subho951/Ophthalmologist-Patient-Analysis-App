@@ -8,23 +8,43 @@
 <body>
     <h1 style="text-align: center;">Delete Account</h1>
     @if(session('success_message'))
-    <div>{{ session('success_message') }}</div>
+    <div class="alert alert-success">
+        {{ session('success_message') }}
+    </div>
 @endif
-    <form method="POST" action="{{ route('delete-account.store') }}">
+
+@if(session('error_message'))
+    <div class="alert alert-danger">
+        {{ session('error_message') }}
+    </div>
+@endif
+
+<form method="POST" action="{{ route('delete-account.store') }}" class="w-50 mx-auto mt-4">
     @csrf
-    <label>Entity Name:</label>
-    <input type="text" name="entity_name" required><br>
 
-    <label>Email:</label>
-    <input type="email" name="email" required><br>
+    <div class="form-group">
+        <label for="entity_name">Entity Name</label>
+        <input type="text" class="form-control" id="entity_name" name="entity_name" required>
+    </div>
 
-    <label>Phone:</label>
-    <input type="text" name="phone" required><br>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
 
-    <label>Comments:</label>
-    <textarea name="comments"></textarea><br>
+    <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="text" class="form-control" id="phone" name="phone" required>
+    </div>
 
-    <button type="submit">Submit Request</button>
+    <div class="form-group">
+        <label for="comments">Comments (optional)</label>
+        <textarea class="form-control" id="comments" name="comments" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-danger w-100">Submit Delete Request</button>
+</form>
+
 </form>
 </body>
 </html>
