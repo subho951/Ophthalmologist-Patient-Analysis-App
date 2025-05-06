@@ -947,6 +947,7 @@ class ApiController extends Controller
                             $patient_count = Patient::where('status', '=', 1)->where('doctor_id', '=', $getUser->id)->count();
                             $test_count    = Test::where('status', '=', 1)->where('doctor_id', '=', $getUser->id)->count();
                             $apiResponse = [
+                                'doctorId'     => $getUser->id,
                                 'patientCount' => $patient_count,
                                 'testCount'    => $test_count
                             ];
