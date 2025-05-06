@@ -170,5 +170,6 @@ Route::get('/db-test', function () {
         
         Route::match(['get'], 'get-co-morbidities', 'ApiController@getcomorbidities');
         Route::match(['get'], 'get-patient', 'ApiController@getpatient');
+        Route::match(['get'], 'get-test-parameters', 'ApiController@gettest_parameters');
     });
 /* API */
