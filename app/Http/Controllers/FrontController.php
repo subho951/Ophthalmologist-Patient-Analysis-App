@@ -60,9 +60,9 @@ class FrontController extends Controller
                     'approve_date'   => date('Y-m-d H:i:s'),               
                 ];
                 // Helper::pr($fields);
-                DB::enableQueryLog();
+                // DB::enableQueryLog();
                 DeleteAccountRequest::where('id', $doctor_id)->update($fields);
-                dd(DB::getQueryLog());
+                // dd(DB::getQueryLog());
                 return redirect('delete-account')->with('success_message', 'Delete acoount successfully');
             } else {
                 return redirect('delete-account')->with('error_message', 'Please enter valid email');
