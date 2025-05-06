@@ -171,15 +171,7 @@ class ApiController extends Controller
                 if($checkUser){                                                      
                     $apiStatus                              = FALSE;
                     $apiMessage                             = 'Doctor Already exsist  !!!';                             
-                } else {                        
-                    $apiResponse            = [                        
-                        'initials'         => $prefix,
-                        'name'             => $name,
-                        'regn_no'          => $reg_no,
-                        'email'            => $email,
-                        'phone'            => $mobile, 
-                        'password'         => Hash::make($randomPassword),                                                                     
-                    ];  
+                } else {                                            
                     $remember_token  = rand(10000,99999);
                     $fields = [
                         'initials'         => $prefix,
@@ -191,11 +183,16 @@ class ApiController extends Controller
                         'otp'        => $remember_token
                     ];     
                     // Doctor::insert($fields);    
-                    $lastInsertId = DB::table('doctors')->insertGetId($fields);
-                    // $doctor = Doctor::create($fields);
-
-                    // Get the last inserted ID
-                    // $lastInsertId = $doctor->id; 
+                    $lastInsertId = DB::table('doctors')->insertGetId($fields);                    
+                    $apiResponse            = [  
+                        'id'                => $lastInsertId,     
+                        'initials'         => $prefix,
+                        'name'             => $name,
+                        'regn_no'          => $reg_no,
+                        'email'            => $email,
+                        'phone'            => $mobile, 
+                        'password'         => Hash::make($randomPassword),                                                                     
+                    ];  
 
                     $mailData                   = [
                         'id'    => $lastInsertId,
@@ -215,17 +212,25 @@ class ApiController extends Controller
                     ];
                     EmailLog::insert($postData2);
                 /* email log save */                           
-                    $email_subject                    = 'Subject: Your Login Credentials for Portal Access';
-                    $email_message                    = "<table width='100%' border='0' cellspacing='0' cellpadding='0' style='padding: 10px; background: #fff; width: 500px;'>
-                                                        <tr><td style='padding: 8px 15px'>Dear " . htmlspecialchars($name) . ",</td></tr>
-                                                        <tr><td style='padding: 8px 15px'>Thank you for registering with us. Below are your credentials to access the portal:</td></tr>                                                                                                                            
-                                                        <tr><td style='padding: 8px 15px'><strong>Email: </strong>" . htmlspecialchars($email) . "</td></tr>    
-                                                        <tr><td style='padding: 8px 15px'><strong>Password: </strong>" . htmlspecialchars($randomPassword) . "</td></tr>                                         
-                                                        
-                                                                                                                
-                                                        <tr><td style='padding: 8px 15px'>Ophthalmologist Patient Analysis App</td></tr>
-                                                        <tr><td style='padding: 8px 15px'>This email is auto-generated from Ophthalmologist Patient Analysis App.</td></tr>
-                                                    </table>";
+                    $email_subject      = 'Your Login Credentials for Portal Access';
+                    $email_message      = " <section style='padding: 80px 0; height: 80vh; margin: 0 15px;'>
+                                                <div style='max-width: 600px; background: #ffffff; margin: 0 auto; border-radius: 15px; padding: 20px 15px; box-shadow: 0 0 30px -5px #ccc;'>
+                                                    <div style='text-align: center;'>
+                                                        <img src='<?=env('UPLOADS_URL').$generalSetting->site_logo?>' alt=' style=' width: 100%; max-width: 250px;'>
+                                                    </div>
+                                                    <div>
+                                                        <h3 style='text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;'>Hi, Welcome to <?=$generalSetting->site_name?>!</h3>
+                                                        <h4 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'>Dear " . htmlspecialchars($name) . ", <br> Thank you for registering with us. Below are your credentials to access the portal:</h4>
+                                                        <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Email:</b>" . htmlspecialchars($email) . " </h5>
+                                                        <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Password:</b> " . htmlspecialchars($randomPassword) . "</h5>
+                                                    </div>
+                                                </div>
+                                                <div style='border-top: 2px solid #ccc; margin-top: 50px; text-align: center; font-family: sans-serif;'>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'><?=$generalSetting->site_name?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'>Phone: <?=$generalSetting->site_phone?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'>Email: <?=$generalSetting->site_mail?></div>
+                                                </div>                                        
+                                            </section>';
                     $this->sendMail($email, $email_subject, $email_message);                     
                     $apiStatus                          = TRUE;
                     $apiMessage                         = 'OTP Sent To Email For Validation !!!';                                    

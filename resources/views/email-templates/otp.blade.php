@@ -30,8 +30,7 @@ $generalSetting             = GeneralSetting::find('1');
                 font-family: sans-serif;"><?=substr($otp, 4, 1)?></div>
                 <!-- <div style="padding: 12px; margin: 5px; border: 2px solid #f9233f;width: 17px; height: 17px; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 15px;
                 font-family: sans-serif;"><?=substr($otp, 5, 1)?></div> -->
-            </div>
-            </table>
+            </div>            
           </div>
         </div>
         <div style="border-top: 2px solid #ccc; margin-top: 50px; text-align: center; font-family: sans-serif;">
