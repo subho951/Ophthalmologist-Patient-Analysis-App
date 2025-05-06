@@ -58,7 +58,7 @@ class FrontController extends Controller
                     'status'         => 3,
                     'approve_date'   => date('Y-m-d H:i:s'),               
                 ];
-                Helper::pr($fields);
+                // Helper::pr($fields);
                 Doctor::where('id', $doctor_id)->update($fields);
                 return redirect('delete-account')->with('success_message', 'Delete acoount successfully');
             } else {
