@@ -212,12 +212,7 @@ class ApiController extends Controller
                         'message'               => $message
                     ];
                     EmailLog::insert($postData2);
-                /* email log save */       
-                    // $general_Setting             = GeneralSetting::find('1');     
-                    // $logoUrl = env('UPLOADS_URL') . $generalSetting->site_logo;   
-                    // $site_name = $generalSetting->site_name;
-                    // $site_phone = $generalSetting->site_phone;
-                    // $site_mail = $generalSetting->site_mail;     
+                /* email log save */                                
                     $mailData2                   = [
                         'name'                  => $name,
                         'email'                 => $email,                       
@@ -816,39 +811,46 @@ class ApiController extends Controller
             if($headerData['key'][0] == env('PROJECT_KEY')){
                 $getUser = Doctor::where('id', '=', $requestData['id'])->first();
                 if($getUser){
-                    if($requestData['password'] == $requestData['confirm_password']){
-                        Doctor::where('id', '=', $requestData['id'])->update(['password' => Hash::make($requestData['password'])]);
-                        $mailData        = [
-                            'id'        => $getUser->id,
-                            'name'      => $getUser->name,
-                            'email'     => $getUser->email
-                        ];
-
-                        $generalSetting             = GeneralSetting::find('1');
-                        $subject                    = $generalSetting->site_name.' :: Reset Password';
-                        $message                    = view('email-templates.change-password',$mailData);
-                        $this->sendMail($getUser->email, $subject, $message);
-
-                        /* email log save */
-                            $postData2 = [
-                                'name'                  => $getUser->name,
-                                'email'                 => $getUser->email,
-                                'subject'               => $subject,
-                                'message'               => $message
+                    if (!empty($requestData['password']) && !empty($requestData['confirm_password'])) {
+                        if($requestData['password'] == $requestData['confirm_password']){
+                            Doctor::where('id', '=', $requestData['id'])->update(['password' => Hash::make($requestData['password'])]);
+                            $mailData        = [
+                                'id'        => $getUser->id,
+                                'name'      => $getUser->name,
+                                'email'     => $getUser->email
                             ];
-                            EmailLog::insert($postData2);
-                        /* email log save */
-                        $apiResponse                        = $mailData;                        
-                        $apiStatus                          = TRUE;
-                        http_response_code(200);
-                        $apiMessage                         = 'Password Reset Successfully !!!';
-                        $apiExtraField                      = 'response_code';
-                        $apiExtraData                       = http_response_code();
+
+                            $generalSetting             = GeneralSetting::find('1');
+                            $subject                    = $generalSetting->site_name.' :: Reset Password';
+                            $message                    = view('email-templates.change-password',$mailData);
+                            $this->sendMail($getUser->email, $subject, $message);
+
+                            /* email log save */
+                                $postData2 = [
+                                    'name'                  => $getUser->name,
+                                    'email'                 => $getUser->email,
+                                    'subject'               => $subject,
+                                    'message'               => $message
+                                ];
+                                EmailLog::insert($postData2);
+                            /* email log save */
+                            $apiResponse                        = $mailData;                        
+                            $apiStatus                          = TRUE;
+                            http_response_code(200);
+                            $apiMessage                         = 'Password Reset Successfully !!!';
+                            $apiExtraField                      = 'response_code';
+                            $apiExtraData                       = http_response_code();
+                        } else {
+                            $apiStatus          = FALSE;
+                            http_response_code(200);
+                            $apiMessage         = 'Password & Confirm Password Not Matched !!!';
+                            $apiExtraField      = 'response_code';
+                        }
                     } else {
-                        $apiStatus          = FALSE;
+                        $apiStatus = FALSE;
                         http_response_code(200);
-                        $apiMessage         = 'Password & Confirm Password Not Matched !!!';
-                        $apiExtraField      = 'response_code';
+                        $apiMessage = 'Password fields cannot be blank !!!';
+                        $apiExtraField = 'response_code';
                     }
                 } else {
                     $apiStatus          = FALSE;
