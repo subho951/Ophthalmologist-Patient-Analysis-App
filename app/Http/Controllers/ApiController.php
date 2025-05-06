@@ -1595,7 +1595,8 @@ class ApiController extends Controller
             $test_parameters = TestParameter::where('status', '=', 1)->orderBy('test_tab_id', 'ASC')->get();
             if($test_parameters){
                 foreach ($test_parameters as $row) {
-                    $test_tab = TestTab::where('id', '=', $row->test_tab_id)->first();                                        
+                    $test_tab = TestTab::where('id', '=', $row->test_tab_id)->first();        
+                    $optionsArray = json_decode($row->options, true);                                
                     if($test_tab){
                         $test_tab_name = $test_tab->name;
                     } else {
@@ -1606,7 +1607,7 @@ class ApiController extends Controller
                         'test_tab_name' => $test_tab_name,
                         'name'          => $row->name,
                         'weight'        => $row->weight,
-                        'options'       => implode(',', $row->options),
+                        'options'       => implode(',', $optionsArray),
                         'rank'          => $row->rank                        
                     ];                    
                 }
