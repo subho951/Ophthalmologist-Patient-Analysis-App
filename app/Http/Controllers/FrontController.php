@@ -64,13 +64,7 @@ class FrontController extends Controller
             } else {
                 return redirect('delete-account')->with('error_message', 'Please enter valid email');
             }
-        }
-        $data = [];
-        $title                          = 'Delete Account';
-        $page_name                      = 'delete-account';     
-
-        return view('delete-account', $data);
-        // echo $this->front_before_login_layout($title, $page_name, $data);
+        }        
     }
     public function cron_for_attendance_notification(){
         /* throw notification */
