@@ -7,6 +7,9 @@
 </head>
 <body>
     <h1 style="text-align: center;">Delete Account</h1>
+    @if(session('success_message'))
+    <div>{{ session('success_message') }}</div>
+@endif
     <form method="POST" action="{{ route('delete-account-update') }}">
     @csrf
     <label>Entity Name:</label>
