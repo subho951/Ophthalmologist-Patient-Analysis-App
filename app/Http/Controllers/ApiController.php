@@ -994,7 +994,7 @@ class ApiController extends Controller
                 if($getTokenValue['status']){
                     $uId        = $getTokenValue['data'][1];
                     $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
-                    $getUser    = Employees::where('id', '=', $uId)->first();
+                    $getUser    = Doctor::where('id', '=', $uId)->first();
                     if($getUser){
                         if(Hash::check($old_password, $getUser->password)){
                             if($new_password == $confirm_password){
@@ -1002,7 +1002,7 @@ class ApiController extends Controller
                                     $fields = [
                                         'password'                  => Hash::make($new_password)
                                     ];
-                                    Employees::where('id', '=', $uId)->update($fields);
+                                    Doctor::where('id', '=', $uId)->update($fields);
                                     // new password send mail
                                         $generalSetting                 = GeneralSetting::find('1');
                                         $subject                        = $generalSetting->site_name.' Change Password';
@@ -1036,7 +1036,7 @@ class ApiController extends Controller
                         }
                     } else {
                         $apiStatus          = FALSE;
-                        $apiMessage         = 'User Not Found !!!';
+                        $apiMessage         = 'Doctor Not Found !!!';
                     }
                 } else {
                     $apiStatus                      = FALSE;
