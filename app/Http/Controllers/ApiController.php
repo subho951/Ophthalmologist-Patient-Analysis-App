@@ -42,6 +42,7 @@ use Hash;
 use DB;
 use App\Libraries\CreatorJwt;
 use App\Libraries\JWT;
+use App\Models\Comorbidity;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Test;
@@ -1471,5 +1472,47 @@ class ApiController extends Controller
             return array('status' => FALSE, 'data' => '');
         }
         return array('status' => TRUE, 'data' => $decoded);
+    }
+
+    /*
+    code: Deblina
+    Get co-morbidities    
+    */
+    public function getcomorbidities(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $comorbidities = Comorbidity::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
+            if($comorbidities){
+                foreach ($comorbidities as $row) {
+                    $apiResponse[] = [
+                        'name'          => $row->name,
+                        'id'            => $row->id
+                    ];
+                }
+            }
+            http_response_code(200);
+            $apiStatus          = TRUE;
+            $apiMessage         = 'Data Available !!!';
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        } else {
+            http_response_code(200);
+            $apiStatus          = FALSE;
+            $apiMessage         = $this->getResponseCode(http_response_code());
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
 }

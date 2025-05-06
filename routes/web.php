@@ -166,6 +166,8 @@ Route::get('/db-test', function () {
         Route::match(['post'], 'update-profile', 'ApiController@updateProfile'); 
         Route::match(['post'], 'upload-profile-image', 'ApiController@uploadProfileImage');
         Route::match(['get'], 'dashboard', 'ApiController@dashboard'); 
-        Route::match(['post'], 'change-password', 'ApiController@changePassword');   
+        Route::match(['post'], 'change-password', 'ApiController@changePassword'); 
+        
+        Route::match(['get'], '/get-co-morbidities', 'ApiController@getcomorbidities');
     });
 /* API */
