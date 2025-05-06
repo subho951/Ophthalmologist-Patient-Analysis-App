@@ -41,7 +41,7 @@ class FrontController extends Controller
     {
         if($request->isMethod('post')){
             $postData           = $request->all();
-            Helper::pr($postData);
+            // Helper::pr($postData);
             $Entityname         = $postData['entity_name'];
             $email             = $postData['email'];
             $phone           = $postData['phone'];
