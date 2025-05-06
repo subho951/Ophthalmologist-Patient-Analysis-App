@@ -32,7 +32,7 @@ class FrontController extends Controller
     {
         if($request->isMethod('get')){
             $postData           = $request->all();
-            $Entityname         = $postData['entityname'];
+            $Entityname         = $postData['entity_name'];
             $email             = $postData['email'];
             $phone           = $postData['phone'];
             $comment           = $postData['comment'];
