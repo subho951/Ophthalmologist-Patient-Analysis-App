@@ -270,7 +270,7 @@ class ApiController extends Controller
                         $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
                         $user_id                = $checkUser->id;
                         // Doctor::where('id', '=', $user_id)->update(['otp' => $otp]);
-                        Doctor::where('id', '=', $checkUser->id)->update(['otp' => $otp, 'status' => 1]);
+                        Doctor::where('id', '=', $checkUser->id)->update(['otp' => 0, 'status' => 1]);
                         $fields     = [
                             'user_id'               => $user_id,
                             'device_type'           => $device_type,
@@ -539,7 +539,7 @@ class ApiController extends Controller
                         $objOfJwt               = new CreatorJwt();
                         $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
                         $user_id                = $checkUser->id;
-                        Doctor::where('id', '=', $user_id)->update(['otp' => $otp]);
+                        Doctor::where('id', '=', $user_id)->update(['otp' => 0]);
                         $fields     = [
                             'user_id'               => $user_id,
                             'device_type'           => $device_type,
@@ -696,7 +696,7 @@ class ApiController extends Controller
                 if($getUser){
                     $remember_token  = $getUser->otp;
                     if($remember_token == $requestData['otp']){
-                        Doctor::where('id', '=', $requestData['id'])->update(['otp' => $requestData['otp']]);
+                        Doctor::where('id', '=', $requestData['id'])->update(['otp' => 0]);
                         // $this->sendMail('subhomoysamanta1989@gmail.com', $requestData['subject'], $requestData['message']);
                         $apiResponse        = [
                             'id'    => $getUser->id,
