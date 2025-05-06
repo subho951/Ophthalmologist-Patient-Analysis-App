@@ -162,5 +162,6 @@ Route::get('/db-test', function () {
         Route::match(['post'], 'resetPassword', 'ApiController@resetPassword');
 
         Route::match(['get'], 'signout', 'ApiController@signout');        
+        Route::match(['get'], 'getProfile', 'ApiController@getProfile');        
     });
 /* API */
