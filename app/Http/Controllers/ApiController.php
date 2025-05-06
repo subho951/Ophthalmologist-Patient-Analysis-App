@@ -190,7 +190,7 @@ class ApiController extends Controller
                         'password'         => Hash::make($randomPassword),
                         'otp'        => $remember_token
                     ];     
-                    Doctor::insert($fields);    
+                    // Doctor::insert($fields);    
                     $lastInsertId = DB::table('doctors')->insertGetId($fields);
                     // $doctor = Doctor::create($fields);
 
