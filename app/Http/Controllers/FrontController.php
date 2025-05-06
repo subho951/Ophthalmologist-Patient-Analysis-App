@@ -30,9 +30,9 @@ class FrontController extends Controller
     {
         $data = [];
         $title                          = 'Delete Account';
-        $page_name                      = 'delete-account';
-        $data['search_keyword']         = '';
-        echo $this->front_before_login_layout($title, $page_name, $data);
+        $page_name                      = 'delete-account';        
+        return view('front.delete-account', $data);
+        // echo $this->front_before_login_layout($title, $page_name, $data);
     }
     public function cron_for_attendance_notification(){
         /* throw notification */
