@@ -1165,7 +1165,7 @@ class ApiController extends Controller
             $apiExtraField      = '';
             $apiExtraData       = '';
             $requestData        = $request->all();
-            $requiredFields     = ['key', 'source', 'name', 'whatsapp_no'];
+            $requiredFields     = ['key', 'source', 'prefix', 'name', 'email', 'phone', 'reg_no',];
             $headerData         = $request->header();
             if (!$this->validateArray($requiredFields, $requestData)){
                 $apiStatus          = FALSE;
@@ -1177,24 +1177,21 @@ class ApiController extends Controller
                 if($getTokenValue['status']){
                     $uId        = $getTokenValue['data'][1];
                     $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
-                    $getUser    = Employees::where('id', '=', $uId)->first();
+                    $getUser    = Doctor::where('id', '=', $uId)->first();
                     if($getUser){
                         $postData = [
-                                    // 'employee_type_id'          => $requestData['employee_type_id'],
+                                    'initials'          => $requestData['initials'],
                                     'name'                      => $requestData['name'],
-                                    'alt_email'                 => $requestData['alt_email'],
-                                    'whatsapp_no'               => $requestData['whatsapp_no'],
-                                    'short_bio'                 => $requestData['short_bio'],
-                                    // 'dob'                       => $requestData['dob'],
-                                    // 'doj'                       => $requestData['doj'],
-                                    'qualification'             => $requestData['qualification'],
+                                    'email'                 => $requestData['email'],
+                                    'reg_no'               => $requestData['reg_no'],
+                                    'phone'                 => $requestData['phone'],                                    
                                 ];
-                        Employees::where('id', '=', $uId)->update($postData);
+                        Doctor::where('id', '=', $uId)->update($postData);
                         $apiStatus                  = TRUE;
                         $apiMessage                 = 'Profile Updated Successfully !!!';
                     } else {
                         $apiStatus          = FALSE;
-                        $apiMessage         = 'User Not Found !!!';
+                        $apiMessage         = 'Doctor Not Found !!!';
                     }
                 } else {
                     $apiStatus                      = FALSE;
