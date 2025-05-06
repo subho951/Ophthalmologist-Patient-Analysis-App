@@ -167,7 +167,7 @@ class ApiController extends Controller
                 $reg_no                     = $this->generateAlphanumeric10();  
                 // Generate a random alphanumeric password
                 $randomPassword = bin2hex(random_bytes(8));                           
-                $checkUser                  = Doctor::where('email', '=', $email)->where('phone', '=', $mobile)->where('status', '=', 1)->first();
+                $checkUser                  = Doctor::where('email', '=', $email)->where('phone', '=', $mobile)->first();
                 if($checkUser){                                                      
                     $apiStatus                              = FALSE;
                     $apiMessage                             = 'Doctor Already exsist  !!!';                             
