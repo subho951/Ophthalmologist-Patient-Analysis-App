@@ -1165,7 +1165,7 @@ class ApiController extends Controller
             $apiExtraField      = '';
             $apiExtraData       = '';
             $requestData        = $request->all();
-            $requiredFields     = ['key', 'source', 'prefix', 'name', 'email', 'mobile', 'reg_no',];
+            $requiredFields     = ['key', 'source', 'prefix', 'name', 'email', 'mobile', 'regn_no',];
             $headerData         = $request->header();
             if (!$this->validateArray($requiredFields, $requestData)){
                 $apiStatus          = FALSE;
@@ -1183,7 +1183,7 @@ class ApiController extends Controller
                                     'initials'          => $requestData['prefix'],
                                     'name'                      => $requestData['name'],
                                     'email'                 => $requestData['email'],
-                                    'reg_no'               => $requestData['reg_no'],
+                                    'regn_no'               => $requestData['regn_no'],
                                     'phone'                 => $requestData['mobile'],                                    
                                 ];
                         Doctor::where('id', '=', $uId)->update($postData);
