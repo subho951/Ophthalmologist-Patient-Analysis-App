@@ -28,7 +28,7 @@ Route::get('/db-test', function () {
     }
 });
 Route::match(['get', 'post'], '/delete-account', 'App\Http\Controllers\FrontController@deleteaccountview');
-Route::match(['get', 'post'], '/delete-account-update', 'App\Http\Controllers\FrontController@deleteaccount');
+Route::match(['get', 'post'], '/delete-account-update', 'App\Http\Controllers\FrontController@deleteaccount')->name('delete-account.store');
 /* Admin Panel */
     Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function(){
         Route::match(['get', 'post'], '/', 'UserController@login');

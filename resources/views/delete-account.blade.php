@@ -10,7 +10,7 @@
     @if(session('success_message'))
     <div>{{ session('success_message') }}</div>
 @endif
-    <form method="POST" action="{{ route('delete-account-update') }}">
+    <form method="POST" action="{{ route('delete-account.store') }}">
     @csrf
     <label>Entity Name:</label>
     <input type="text" name="entity_name" required><br>
