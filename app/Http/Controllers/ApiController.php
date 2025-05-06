@@ -230,7 +230,7 @@ class ApiController extends Controller
                                                     <div style='text-align: center; margin: 15px 0 10px;'>Phone: <?=$generalSetting->site_phone?></div>
                                                     <div style='text-align: center; margin: 15px 0 10px;'>Email: <?=$generalSetting->site_mail?></div>
                                                 </div>                                        
-                                            </section>';
+                                            </section>";
                     $this->sendMail($email, $email_subject, $email_message);                     
                     $apiStatus                          = TRUE;
                     $apiMessage                         = 'OTP Sent To Email For Validation !!!';                                    
