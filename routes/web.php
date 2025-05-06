@@ -163,6 +163,7 @@ Route::get('/db-test', function () {
 
         Route::match(['get'], 'signout', 'ApiController@signout');        
         Route::match(['get'], 'get-profile', 'ApiController@getProfile');
-        Route::match(['post'], 'update-profile', 'ApiController@updateProfile');     
+        Route::match(['post'], 'update-profile', 'ApiController@updateProfile'); 
+        Route::match(['post'], 'upload-profile-image', 'ApiController@uploadProfileImage');    
     });
 /* API */

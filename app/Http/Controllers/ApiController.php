@@ -1105,58 +1105,58 @@ class ApiController extends Controller
             }
             $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
         }
-        public function editProfile(Request $request)
-        {
-            $apiStatus          = TRUE;
-            $apiMessage         = '';
-            $apiResponse        = [];
-            $apiExtraField      = '';
-            $apiExtraData       = '';
-            $requestData        = $request->all();
-            $requiredFields     = ['key', 'source'];
-            $headerData         = $request->header();
-            if (!$this->validateArray($requiredFields, $requestData)){
-                $apiStatus          = FALSE;
-                $apiMessage         = 'All Data Are Not Present !!!';
-            }
-            if($headerData['key'][0] == env('PROJECT_KEY')){
-                $app_access_token           = $headerData['authorization'][0];
-                $getTokenValue              = $this->tokenAuth($app_access_token);
-                if($getTokenValue['status']){
-                    $uId        = $getTokenValue['data'][1];
-                    $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
-                    $getUser    = Employees::where('id', '=', $uId)->first();
-                    if($getUser){
-                        $getEmployeeType     = EmployeeType::select('name')->where('id', '=', $getUser->employee_type_id)->first();
-                        $profileData    = [
-                            'employee_type_id'      => $getUser->employee_type_id,
-                            'name'                  => $getUser->name,
-                            'email'                 => $getUser->email,
-                            'alt_email'             => $getUser->alt_email,
-                            'phone'                 => $getUser->phone,
-                            'whatsapp_no'           => $getUser->whatsapp_no,
-                            'short_bio'             => $getUser->short_bio,
-                            'dob'                   => $getUser->dob,
-                            'doj'                   => $getUser->doj,
-                            'qualification'         => (($getUser->qualification != '')?$getUser->qualification:''),
-                        ];
-                        $apiStatus          = TRUE;
-                        $apiMessage         = 'Data Available !!!';
-                        $apiResponse        = $profileData;
-                    } else {
-                        $apiStatus          = FALSE;
-                        $apiMessage         = 'User Not Found !!!';
-                    }
-                } else {
-                    $apiStatus                      = FALSE;
-                    $apiMessage                     = $getTokenValue['data'];
-                }                                               
-            } else {
-                $apiStatus          = FALSE;
-                $apiMessage         = 'Unauthenticate Request !!!';
-            }
-            $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
-        }
+        // public function editProfile(Request $request)
+        // {
+        //     $apiStatus          = TRUE;
+        //     $apiMessage         = '';
+        //     $apiResponse        = [];
+        //     $apiExtraField      = '';
+        //     $apiExtraData       = '';
+        //     $requestData        = $request->all();
+        //     $requiredFields     = ['key', 'source'];
+        //     $headerData         = $request->header();
+        //     if (!$this->validateArray($requiredFields, $requestData)){
+        //         $apiStatus          = FALSE;
+        //         $apiMessage         = 'All Data Are Not Present !!!';
+        //     }
+        //     if($headerData['key'][0] == env('PROJECT_KEY')){
+        //         $app_access_token           = $headerData['authorization'][0];
+        //         $getTokenValue              = $this->tokenAuth($app_access_token);
+        //         if($getTokenValue['status']){
+        //             $uId        = $getTokenValue['data'][1];
+        //             $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
+        //             $getUser    = Employees::where('id', '=', $uId)->first();
+        //             if($getUser){
+        //                 $getEmployeeType     = EmployeeType::select('name')->where('id', '=', $getUser->employee_type_id)->first();
+        //                 $profileData    = [
+        //                     'employee_type_id'      => $getUser->employee_type_id,
+        //                     'name'                  => $getUser->name,
+        //                     'email'                 => $getUser->email,
+        //                     'alt_email'             => $getUser->alt_email,
+        //                     'phone'                 => $getUser->phone,
+        //                     'whatsapp_no'           => $getUser->whatsapp_no,
+        //                     'short_bio'             => $getUser->short_bio,
+        //                     'dob'                   => $getUser->dob,
+        //                     'doj'                   => $getUser->doj,
+        //                     'qualification'         => (($getUser->qualification != '')?$getUser->qualification:''),
+        //                 ];
+        //                 $apiStatus          = TRUE;
+        //                 $apiMessage         = 'Data Available !!!';
+        //                 $apiResponse        = $profileData;
+        //             } else {
+        //                 $apiStatus          = FALSE;
+        //                 $apiMessage         = 'User Not Found !!!';
+        //             }
+        //         } else {
+        //             $apiStatus                      = FALSE;
+        //             $apiMessage                     = $getTokenValue['data'];
+        //         }                                               
+        //     } else {
+        //         $apiStatus          = FALSE;
+        //         $apiMessage         = 'Unauthenticate Request !!!';
+        //     }
+        //     $this->response_to_json($apiStatus, $apiMessage, $apiResponse);
+        // }
         public function updateProfile(Request $request)
         {
             $apiStatus          = TRUE;
@@ -1223,7 +1223,7 @@ class ApiController extends Controller
                 if($getTokenValue['status']){
                     $uId        = $getTokenValue['data'][1];
                     $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
-                    $getUser    = Employees::where('id', '=', $uId)->first();
+                    $getUser    = Doctor::where('id', '=', $uId)->first();
                     if($getUser){
                         $profile_image  = $requestData['profile_image'];
                         if(!empty($profile_image)){
@@ -1262,12 +1262,12 @@ class ApiController extends Controller
                         $postData = [
                                     'profile_image'         => $profile_image
                                 ];
-                        Employees::where('id', '=', $uId)->update($postData);
+                        Doctor::where('id', '=', $uId)->update($postData);
                         $apiStatus                  = TRUE;
                         $apiMessage                 = 'Profile Image Uploaded Successfully !!!';
                     } else {
                         $apiStatus          = FALSE;
-                        $apiMessage         = 'User Not Found !!!';
+                        $apiMessage         = 'Doctor Not Found !!!';
                     }
                 } else {
                     $apiStatus                      = FALSE;
