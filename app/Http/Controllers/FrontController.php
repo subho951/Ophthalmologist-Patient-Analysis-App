@@ -9,7 +9,7 @@ use App\Models\GeneralSetting;
 use App\Models\Page;
 use App\Models\Notification;
 use App\Models\NotificationTemplate;
-
+use App\Models\TestParameter;
 use Auth;
 use Session;
 use Helper;
@@ -49,7 +49,7 @@ class FrontController extends Controller
             $rules = [                                 
                 'email'                => 'required'
             ];
-            $doctor         = Doctor::where('email', $email)->first();
+            $doctor         = TestParameter::where('email', $email)->first();
             if($doctor){
                 $doctor_id         = $doctor->id;
             }
@@ -60,7 +60,7 @@ class FrontController extends Controller
                 ];
                 // Helper::pr($fields);
                 DB::enableQueryLog();
-                Doctor::where('id', $doctor_id)->update($fields);
+                TestParameter::where('id', $doctor_id)->update($fields);
                 dd(DB::getQueryLog());
                 return redirect('delete-account')->with('success_message', 'Delete acoount successfully');
             } else {
