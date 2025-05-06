@@ -43,6 +43,8 @@ use DB;
 use App\Libraries\CreatorJwt;
 use App\Libraries\JWT;
 use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Test;
 
 date_default_timezone_set("Asia/Calcutta");
 class ApiController extends Controller
@@ -940,23 +942,19 @@ class ApiController extends Controller
                     if($getTokenValue['status']){
                         $uId        = $getTokenValue['data'][1];
                         $expiry     = date('d/m/Y H:i:s', $getTokenValue['data'][4]);
-                        $getUser    = Employees::where('id', '=', $uId)->first();
+                        $getUser    = Doctor::where('id', '=', $uId)->first();
                         if($getUser){
-                            $bannerImages = [];
-                            $banners = Banner::select('banner_image')->where('status', '=', 1)->orderBy('id', 'DESC')->get();
-                            if($banners){
-                                foreach($banners as $banner){
-                                    $bannerImages[] = env('UPLOADS_URL').'banners/'.$banner->banner_image;
-                                }
-                            }
+                            $patient_count = Patient::where('status', '=', 1)->where('doctor_id', '=', $getUser->id)->count();
+                            $test_count    = Test::where('status', '=', 1)->where('doctor_id', '=', $getUser->id)->count();
                             $apiResponse = [
-                                'bannerImages' => $bannerImages
+                                'patientCount' => $patient_count,
+                                'testCount'    => $test_count
                             ];
                             $apiStatus          = TRUE;
                             $apiMessage         = 'Data Available !!!';
                         } else {
                             $apiStatus          = FALSE;
-                            $apiMessage         = 'User Not Found !!!';
+                            $apiMessage         = 'Doctor Not Found !!!';
                         }
                     } else {
                         $apiStatus                      = FALSE;
