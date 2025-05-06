@@ -37,8 +37,7 @@ $generalSetting             = GeneralSetting::find('1');
           <div style="text-align: center; margin: 15px 0 10px;"><?=$generalSetting->site_name?></div>
           <div style="text-align: center; margin: 15px 0 10px;">Phone: <?=$generalSetting->site_phone?></div>
           <div style="text-align: center; margin: 15px 0 10px;">Email: <?=$generalSetting->site_mail?></div>
-        </div>
-      </div>
+        </div>      
     </section>
   </body>
 </html>

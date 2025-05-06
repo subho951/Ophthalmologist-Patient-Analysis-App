@@ -153,7 +153,7 @@ class ApiController extends Controller
             $apiExtraField      = '';
             $apiExtraData       = '';
             $requestData        = $request->all();
-            $requiredFields     = ['key', 'source', 'prefix', 'name', 'email', 'mobile'];
+            $requiredFields     = ['key', 'source', 'prefix', 'name', 'email', 'mobile', 'reg_no'];
             $headerData         = $request->header();
             if (!$this->validateArray($requiredFields, $requestData)){
                 $apiStatus          = FALSE;
@@ -164,7 +164,8 @@ class ApiController extends Controller
                 $email                      = $requestData['email'];                
                 $name                       = $requestData['name'];                
                 $mobile                     = $requestData['mobile'];      
-                $reg_no                     = $this->generateAlphanumeric10();  
+                $reg_no                     = $requestData['reg_no'];
+                // $reg_no                     = $this->generateAlphanumeric10();  
                 // Generate a random alphanumeric password
                 $randomPassword = bin2hex(random_bytes(8));                           
                 $checkUser                  = Doctor::where('email', '=', $email)->where('phone', '=', $mobile)->first();
