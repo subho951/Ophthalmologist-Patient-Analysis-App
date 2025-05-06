@@ -1064,6 +1064,12 @@ class ApiController extends Controller
                 $apiMessage         = 'All Data Are Not Present !!!';
             }
             if($headerData['key'][0] == env('PROJECT_KEY')){
+                // Check 'authorization' header exists
+                if (!isset($headerData['authorization'][0])) {
+                    $apiStatus          = FALSE;
+                    $apiMessage         = 'Authorization header missing !!!';
+                    // return $this->response_to_json(false, 'Authorization header missing !!!', []);
+                }
                 $app_access_token           = $headerData['authorization'][0];
                 $getTokenValue              = $this->tokenAuth($app_access_token);
                 if($getTokenValue['status']){
