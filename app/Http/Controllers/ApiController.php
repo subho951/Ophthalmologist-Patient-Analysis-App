@@ -198,13 +198,13 @@ class ApiController extends Controller
 
                     $mailData                   = [
                         'id'    => $lastInsertId,
-                        'email' => $checkUser->email,                        
+                        'email' => $email,                        
                         'otp'   => $remember_token,
                     ];
                     $generalSetting             = GeneralSetting::find('1');
                     $subject                    = $generalSetting->site_name.' :: SignIn Validate OTP';
                     $message                    = view('email-templates.otp',$mailData);
-                    $this->sendMail($checkUser->email, $subject, $message);             
+                    $this->sendMail($email, $subject, $message);             
                     /* email log save */
                     $postData2 = [
                         'name'                  => $name,
