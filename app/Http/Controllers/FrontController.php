@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
+use App\Models\DeleteAccountRequest;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\DB;
 
@@ -49,7 +50,7 @@ class FrontController extends Controller
             $rules = [                                 
                 'email'                => 'required'
             ];
-            $doctor         = TestParameter::where('email', $email)->first();
+            $doctor         = DeleteAccountRequest::where('email', $email)->first();
             if($doctor){
                 $doctor_id         = $doctor->id;
             }
@@ -60,7 +61,7 @@ class FrontController extends Controller
                 ];
                 // Helper::pr($fields);
                 DB::enableQueryLog();
-                TestParameter::where('id', $doctor_id)->update($fields);
+                DeleteAccountRequest::where('id', $doctor_id)->update($fields);
                 dd(DB::getQueryLog());
                 return redirect('delete-account')->with('success_message', 'Delete acoount successfully');
             } else {
