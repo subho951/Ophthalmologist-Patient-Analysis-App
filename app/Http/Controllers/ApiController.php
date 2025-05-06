@@ -221,16 +221,16 @@ class ApiController extends Controller
                                                         <img src=' " . $logoUrl ." ' alt=' style=' width: 100%; max-width: 250px;'>
                                                     </div>
                                                     <div>
-                                                        <h3 style='text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;'>Hi, Welcome to <?=$general_Setting->site_name?>!</h3>
+                                                        <h3 style='text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;'>Hi, Welcome to <?=$generalSetting->site_name?>!</h3>
                                                         <h4 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'>Dear " . htmlspecialchars($name) . ", <br> Thank you for registering with us. Below are your credentials to access the portal:</h4>
                                                         <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Email:</b>" . htmlspecialchars($email) . " </h5>
                                                         <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Password:</b> " . htmlspecialchars($randomPassword) . "</h5>
                                                     </div>
                                                 </div>
                                                 <div style='border-top: 2px solid #ccc; margin-top: 50px; text-align: center; font-family: sans-serif;'>
-                                                    <div style='text-align: center; margin: 15px 0 10px;'><?=$general_Setting->site_name?></div>
-                                                    <div style='text-align: center; margin: 15px 0 10px;'>Phone: <?=$general_Setting->site_phone?></div>
-                                                    <div style='text-align: center; margin: 15px 0 10px;'>Email: <?=$general_Setting->site_mail?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'><?=$generalSetting->site_name?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'>Phone: <?=$generalSetting->site_phone?></div>
+                                                    <div style='text-align: center; margin: 15px 0 10px;'>Email: <?=$generalSetting->site_mail?></div>
                                                 </div>                                        
                                             </section>";
                     $this->sendMail($email, $email_subject, $email_message);                     
