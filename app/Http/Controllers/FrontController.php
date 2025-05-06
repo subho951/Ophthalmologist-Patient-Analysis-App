@@ -39,7 +39,7 @@ class FrontController extends Controller
     }
     public function deleteaccount(Request $request)
     {
-        if($request->isMethod('get')){
+        if($request->isMethod('post')){
             $postData           = $request->all();
             Helper::pr($postData);
             $Entityname         = $postData['entity_name'];
