@@ -1749,15 +1749,15 @@ class ApiController extends Controller
                         ];                    
                     }
                 }
+                http_response_code(200);
+                $apiStatus          = TRUE;
+                $apiMessage         = 'Data Available !!!';
+                $apiExtraField      = 'response_code';
+                $apiExtraData       = http_response_code();
             } else {
                 $apiStatus          = FALSE;
                 $apiMessage         = $getTokenValue['data'];
-            }            
-            http_response_code(200);
-            $apiStatus          = TRUE;
-            $apiMessage         = 'Data Available !!!';
-            $apiExtraField      = 'response_code';
-            $apiExtraData       = http_response_code();
+            }                        
         } else {
             http_response_code(200);
             $apiStatus          = FALSE;
