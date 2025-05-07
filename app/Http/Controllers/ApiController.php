@@ -1954,7 +1954,7 @@ class ApiController extends Controller
         $apiExtraField      = '';
         $apiExtraData       = '';
         $requestData        = $request->all();
-        $requiredFields     = ['key', 'source', 'patient_name', 'email', 'dob', 'mobile', 'age', 'country_id', 'state_id', 'city', 'pincode', 'gender', 'eye', 'comorbidities_id', 'comorbidities_note', 'doctor_name', 'diagnosis_date'];
+        $requiredFields     = ['key', 'source', 'patient_name', 'dob', 'mobile', 'country_id', 'state_id', 'city', 'gender', 'eye', 'comorbidities_id', 'comorbidities_note', 'doctor_name', 'diagnosis_date'];
         $headerData         = $request->header();
         if (!$this->validateArray($requiredFields, $requestData)){
             $apiStatus          = FALSE;
@@ -1966,35 +1966,31 @@ class ApiController extends Controller
             if($getTokenValue['status']){
                 $uId        = $getTokenValue['data'][1];  
                 $apiResponse = [
-                    'patient_name'         => $requestData['patient_name'],
-                    'email'                => $requestData['email'],
-                    'dob'                  => $requestData['dob'],
-                    'age'                  => $requestData['age'],
+                    'patient_name'         => $requestData['patient_name'],                    
+                    'dob'                  => $requestData['dob'],                    
                     'mobile'               => $requestData['mobile'],
                     'country_id'           => $requestData['country_id'],
                     'state_id'             => $requestData['state_id'],
-                    'city'                 => $requestData['city'],
-                    'pincode'              => $requestData['pincode'],
+                    'city'                 => $requestData['city'],                    
                     'gender'               => $requestData['gender'],
                     'eye'                  => $requestData['eye'],
                     'comorbidities_id'     => $requestData['comorbidities_id'],
                     'comorbidities_note'   => $requestData['comorbidities_note'],
                     'doctor_name'          => $requestData['doctor_name'],
                     'diagnosis_date'       => $requestData['diagnosis_date'],
-                    'created_by'            => $uId,
-                    'created_at'           => date('Y-m-d H:i:s'),
+                    'created_by'            => $uId                    
                 ];  
                 $fields = [
                     'doctor_id'            => $uId,
                     'name'                 => $requestData['patient_name'],
-                    'email'                => $requestData['email'],
+                    'email'                => !empty($requestData['email']) ? $requestData['email'] : null,
                     'dob'                  => $requestData['dob'],
-                    'age'                  => $requestData['age'],
+                    'age'                  => !empty($requestData['age']) ? $requestData['age'] : null,
                     'phone'               => $requestData['mobile'],
                     'country'           => $requestData['country_id'],
                     'state'             => $requestData['state_id'],
                     'city'                 => $requestData['city'],
-                    'pincode'              => $requestData['pincode'],
+                    'pincode'              => !empty($requestData['pincode']) ? $requestData['pincode'] : null,
                     'gender'               => $requestData['gender'],
                     'eye'                  => $requestData['eye'],
                     'comorbidities_id'     => $requestData['comorbidities_id'],
