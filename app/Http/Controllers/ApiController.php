@@ -1230,11 +1230,11 @@ class ApiController extends Controller
                         $profile_image  = $requestData['profile_image'];
                         if(!empty($profile_image)){
                             $profile_image      = $profile_image;
-                            $upload_type        = $profile_image[0]['type'];
+                            $upload_type        = $profile_image['type'];
                             if($upload_type == 'image/jpeg' || $upload_type == 'image/jpg' || $upload_type == 'image/png' || $upload_type == 'image/gif'){
-                                $upload_base64      = $profile_image[0]['base64'];
+                                $upload_base64      = $profile_image['base64'];
                                 $img                = $upload_base64;
-                                $proof_type         = $profile_image[0]['type'];
+                                $proof_type         = $profile_image['type'];
                                 if($proof_type == 'image/png'){
                                     $extn = 'png';
                                 } elseif($proof_type == 'image/jpg'){
@@ -1248,7 +1248,7 @@ class ApiController extends Controller
                                 }
                                 $data               = base64_decode($img);
                                 $fileName           = uniqid() . '.' . $extn;
-                                $file               = 'public/uploads/user/' . $fileName;
+                                $file               = 'public/uploads/doctor/' . $fileName;
                                 $success            = file_put_contents($file, $data);
                                 $profile_image      = $fileName;
                             } else {
