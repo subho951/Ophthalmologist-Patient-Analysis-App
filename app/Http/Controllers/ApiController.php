@@ -172,11 +172,54 @@ class ApiController extends Controller
                 $reg_no                     = $requestData['reg_no'];
                 // $reg_no                     = $this->generateAlphanumeric10();  
                 // Generate a random alphanumeric password
-                $randomPassword = bin2hex(random_bytes(8));                           
+                                        
                 $checkUser                  = Doctor::where('email', '=', $email)->where('phone', '=', $mobile)->first();
                 if($checkUser){                                                      
-                    $apiStatus                              = FALSE;
-                    $apiMessage                             = 'Doctor Already exsist  !!!';                             
+                    $user_status = $checkUser->status;
+                    if($user_status == 0){
+                        $remember_token  = rand(10000,99999);
+                        $updatefields = [
+                            'initials'         => $prefix,
+                            'name'             => $name,
+                            'regn_no'          => $reg_no,
+                            'email'            => $email,
+                            'phone'            => $mobile,                             
+                            'otp'        => $remember_token
+                        ];
+                        $apiResponse            = [  
+                            'id'                => $checkUser->id,     
+                            'initials'         => $prefix,
+                            'name'             => $name,
+                            'regn_no'          => $reg_no,
+                            'email'            => $email,
+                            'phone'            => $mobile, 
+                            'otp'               => $remember_token,                                                                     
+                        ]; 
+                        Doctor::where('id', '=', $checkUser->id)->update($updatefields);
+                        $mailData                   = [
+                            'id'    => $checkUser->id,
+                            'email' => $email,                        
+                            'otp'   => $remember_token,
+                        ];
+                        $generalSetting             = GeneralSetting::find('1');
+                        $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
+                        $message                    = view('email-templates.otp',$mailData);
+                        $this->sendMail($email, $subject, $message);             
+                        /* email log save */
+                            $postData2 = [
+                                'name'                  => $name,
+                                'email'                 => $email,
+                                'subject'               => $subject,
+                                'message'               => $message
+                            ];
+                            EmailLog::insert($postData2);
+                        /* email log save */ 
+                        $apiStatus                              = TRUE;
+                        $apiMessage                             = 'Again Email send for Sign up otp validation  !!!';                                                                   
+                    } else {  
+                        $apiStatus                              = FALSE;
+                        $apiMessage                             = 'Doctor Already exsist Plz sign in with cretentials  !!!';                       
+                    }                            
                 } else {                                            
                     $remember_token  = rand(10000,99999);
                     $fields = [
@@ -184,8 +227,7 @@ class ApiController extends Controller
                         'name'             => $name,
                         'regn_no'          => $reg_no,
                         'email'            => $email,
-                        'phone'            => $mobile, 
-                        'password'         => Hash::make($randomPassword),
+                        'phone'            => $mobile,                         
                         'otp'        => $remember_token
                     ];     
                     // Doctor::insert($fields);    
@@ -196,8 +238,8 @@ class ApiController extends Controller
                         'name'             => $name,
                         'regn_no'          => $reg_no,
                         'email'            => $email,
-                        'phone'            => $mobile, 
-                        'password'         => Hash::make($randomPassword),                                                                     
+                        'phone'            => $mobile,                          
+                        'otp'               => $remember_token,                                                                   
                     ];  
 
                     $mailData                   = [
@@ -217,15 +259,7 @@ class ApiController extends Controller
                         'message'               => $message
                     ];
                     EmailLog::insert($postData2);
-                /* email log save */                                
-                    $mailData2                   = [
-                        'name'                  => $name,
-                        'email'                 => $email,                       
-                        'randomPassword'   => $randomPassword,
-                    ];       
-                    $email_subject      = 'Your Login Credentials for Portal Access';
-                    $email_message      = view('email-templates.cretential',$mailData2);
-                    $this->sendMail($email, $email_subject, $email_message);                     
+                /* email log save */                                                                      
                     $apiStatus                          = TRUE;
                     $apiMessage                         = 'OTP Sent To Email For Validation !!!';                                    
                 }
@@ -275,7 +309,9 @@ class ApiController extends Controller
                         $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
                         $user_id                = $checkUser->id;
                         // Doctor::where('id', '=', $user_id)->update(['otp' => $otp]);
-                        Doctor::where('id', '=', $checkUser->id)->update(['otp' => 0, 'status' => 1]);
+                        $randomPassword = bin2hex(random_bytes(8)); 
+                        $password = Hash::make($randomPassword);  
+                        Doctor::where('id', '=', $checkUser->id)->update(['password' => $password, 'otp' => 0, 'status' => 1]);
                         $fields     = [
                             'user_id'               => $user_id,
                             'device_type'           => $device_type,
@@ -293,6 +329,7 @@ class ApiController extends Controller
                             'user_id'               => $user_id,
                             'name'                  => $checkUser->name,
                             'email'                 => $checkUser->email,
+                            'password'              => $randomPassword,
                             'phone'                 => $checkUser->phone,                           
                             'device_type'           => $device_type,
                             'device_token'          => $device_token,
@@ -310,7 +347,25 @@ class ApiController extends Controller
                                 'platform_type'     => 'ANDROID',
                             ];
                             UserActivity::insert($activityData); 
-                        /* user activity */                                                                        
+                        /* user activity */  
+                        $mailData                   = [
+                            'id'    => $checkUser->id,
+                            'email' => $checkUser->email,                        
+                            'password'   => $randomPassword,
+                        ];
+                        $generalSetting             = GeneralSetting::find('1');
+                        $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';                                                                      
+                        $message                    = view('email-templates.cretential',$mailData);
+                        $this->sendMail($checkUser->email, $subject, $message);
+                        /* email log save */
+                            $postData2 = [
+                                'name'                  => $checkUser->name,
+                                'email'                 => $checkUser->email,
+                                'subject'               => $subject,
+                                'message'               => $message
+                            ];
+                            EmailLog::insert($postData2);
+                        /* email log save */                        
                         $apiStatus                          = TRUE;
                         $apiMessage                         = 'SignUp Successfully !!!';
                     } else {    
@@ -1088,7 +1143,7 @@ class ApiController extends Controller
                             'email'             => $getUser->email,                           
                             'phone'             => $getUser->phone,                                                        
                             'created_at'        => date_format(date_create($getUser->created_at), "M d, Y h:i A"),
-                            'profile_image'     => (($getUser->profile_image != '')?env('UPLOADS_URL').'doctor/'.$getUser->profile_image:env('NO_USER_IMAGE')),
+                            'profile_image'     => (($getUser->profile_image != '')?env('UPLOADS_URL').'user/'.$getUser->profile_image:env('NO_USER_IMAGE')),
                         ];
                         $apiStatus          = TRUE;
                         $apiMessage         = 'Data Available !!!';
@@ -1230,11 +1285,11 @@ class ApiController extends Controller
                         $profile_image  = $requestData['profile_image'];
                         if(!empty($profile_image)){
                             $profile_image      = $profile_image;
-                            $upload_type        = $profile_image['type'];
+                            $upload_type        = $profile_image[0]['type'];
                             if($upload_type == 'image/jpeg' || $upload_type == 'image/jpg' || $upload_type == 'image/png' || $upload_type == 'image/gif'){
-                                $upload_base64      = $profile_image['base64'];
+                                $upload_base64      = $profile_image[0]['base64'];
                                 $img                = $upload_base64;
-                                $proof_type         = $profile_image['type'];
+                                $proof_type         = $profile_image[0]['type'];
                                 if($proof_type == 'image/png'){
                                     $extn = 'png';
                                 } elseif($proof_type == 'image/jpg'){
@@ -1248,7 +1303,7 @@ class ApiController extends Controller
                                 }
                                 $data               = base64_decode($img);
                                 $fileName           = uniqid() . '.' . $extn;
-                                $file               = 'public/uploads/doctor/' . $fileName;
+                                $file               = 'public/uploads/user/' . $fileName;
                                 $success            = file_put_contents($file, $data);
                                 $profile_image      = $fileName;
                             } else {

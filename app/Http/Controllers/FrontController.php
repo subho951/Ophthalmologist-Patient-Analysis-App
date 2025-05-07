@@ -83,12 +83,8 @@ class FrontController extends Controller
                     'comments'         => $comment,
                     'created_at'      => date('Y-m-d H:i:s'),                    
                     'status'          => 1,                                  
-                ];
-                // Helper::pr($fields);
-                // DB::enableQueryLog();
-                DeleteAccountRequest::insert($fields2);
-                // DeleteAccountRequest::where('id', $doctor_id)->update($fields);
-                // dd(DB::getQueryLog());
+                ];                
+                DeleteAccountRequest::insert($fields2);                
                 return redirect('delete-account')->with('success_message', 'Delete account request send successfully');
             } else {
                 return redirect('delete-account')->with('error_message', 'Please enter valid data');
