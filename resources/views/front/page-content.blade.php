@@ -28,10 +28,7 @@
       <div class="container" data-tm-padding-bottom="220px">
          <a class="d-flex justify-content-center mb-5" href="javascript:void(0);">
            <img class="zi-2" src="<?=env('UPLOADS_URL').$generalSetting->site_logo?>" alt="Image Description" style="width: 8rem;">
-         </a>
-         <?php
-         Helper::pr($page);
-         ?>
+         </a>         
          <h4><?=(($page)?$page->page_name:'')?></h4>
          <div class="section-content">
             <div class="row">
