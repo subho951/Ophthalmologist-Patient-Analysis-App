@@ -350,6 +350,7 @@ class ApiController extends Controller
                         /* user activity */  
                         $mailData                   = [
                             'id'    => $checkUser->id,
+                            'name'  => $checkUser->name,
                             'email' => $checkUser->email,                        
                             'password'   => $randomPassword,
                         ];
@@ -682,6 +683,7 @@ class ApiController extends Controller
                             /* user activity */
                             $mailData                   = [
                                 'id'    => $checkUser->id,
+                                'name'  => $checkUser->name,
                                 'email' => $checkUser->email,                        
                                 'password'   => $randomPassword,
                             ];
