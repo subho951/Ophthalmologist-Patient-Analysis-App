@@ -56,9 +56,9 @@ class FrontController extends Controller
             ];
             
             if ($this->validate($request, $rules)) {
-                $email_validation    = DeleteAccountRequest::where('email', $email)->first();
-                $user_id           = $email_validation->id;
+                $email_validation    = DeleteAccountRequest::where('email', $email)->first();               
                 if($email_validation){
+                    $user_id           = $email_validation->id;
                     $fields = [
                         'user_type'       => $user_type,
                         'entity_name'     => $Entityname,
