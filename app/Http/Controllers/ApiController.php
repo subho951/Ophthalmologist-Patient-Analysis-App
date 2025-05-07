@@ -1088,7 +1088,7 @@ class ApiController extends Controller
                             'email'             => $getUser->email,                           
                             'phone'             => $getUser->phone,                                                        
                             'created_at'        => date_format(date_create($getUser->created_at), "M d, Y h:i A"),
-                            'profile_image'     => (($getUser->profile_image != '')?env('UPLOADS_URL').'user/'.$getUser->profile_image:env('NO_USER_IMAGE')),
+                            'profile_image'     => (($getUser->profile_image != '')?env('UPLOADS_URL').'doctor/'.$getUser->profile_image:env('NO_USER_IMAGE')),
                         ];
                         $apiStatus          = TRUE;
                         $apiMessage         = 'Data Available !!!';
