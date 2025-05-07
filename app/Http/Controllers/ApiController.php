@@ -1789,7 +1789,7 @@ class ApiController extends Controller
                         'name'    => $param->name,
                         'weight'  => $param->weight,
                         'options' => implode(',', $optionsArray),
-                        'rank'    => $param->rank
+                        'hints'    => $param->hints
                     ];
                 }    
                 $apiResponse[] = [
