@@ -43,29 +43,56 @@ class FrontController extends Controller
         if($request->isMethod('post')){
             $postData           = $request->all();
             // Helper::pr($postData);
+            $user_type         = $postData['user_type'];
             $Entityname         = $postData['entity_name'];
             $email             = $postData['email'];
             $phone           = $postData['phone'];
             $comment           = !empty($request->comment) ? $request->comment : null;
             $rules = [                                 
-                'email'                => 'required'
+                'user_type'           => 'required',
+                'entity_name'         => 'required',
+                'email'               => 'required|email',
+                'phone'               => 'required|numeric',                
             ];
-            $doctor         = DeleteAccountRequest::where('email', $email)->first();
-            if($doctor){
-                $doctor_id         = $doctor->id;
-            }
+            
             if ($this->validate($request, $rules)) {
-                $fields = [
-                    'status'         => 3,
-                    'approve_date'   => date('Y-m-d H:i:s'),               
+                $email_validation    = DeleteAccountRequest::where('email', $email)->first();
+                $user_id           = $email_validation->id;
+                if($email_validation){
+                    $fields = [
+                        'user_type'       => $user_type,
+                        'entity_name'     => $Entityname,
+                        'email'           => $email,
+                        'is_email_verify' => 1,
+                        'is_phone_verify' => 1,
+                        'phone'           => $phone,
+                        'comment'         => $comment,
+                        'created_at'      => date('Y-m-d H:i:s'), 
+                        'updated_at'    => date('Y-m-d H:i:s'),             
+                        'status'          => 1,                                  
+                    ];
+                    DeleteAccountRequest::where('id', $user_id)->update($fields);
+                }
+                $fields2 = [
+                    'user_type'       => $user_type,
+                    'entity_name'     => $Entityname,
+                    'email'           => $email,
+                    'is_email_verify' => 1,
+                    'is_phone_verify' => 1,
+                    'phone'           => $phone,
+                    'comment'         => $comment,
+                    'created_at'      => date('Y-m-d H:i:s'),                    
+                    'status'          => 1,                                  
                 ];
                 // Helper::pr($fields);
                 // DB::enableQueryLog();
-                DeleteAccountRequest::where('id', $doctor_id)->update($fields);
+                DeleteAccountRequest::insert($fields2);
+                // DeleteAccountRequest::where('id', $doctor_id)->update($fields);
                 // dd(DB::getQueryLog());
-                return redirect('delete-account')->with('success_message', 'Delete acoount successfully');
+                return redirect('delete-account')->with('success_message', 'Delete account request send successfully');
             } else {
-                return redirect('delete-account')->with('error_message', 'Please enter valid email');
+                return redirect('delete-account')->with('error_message', 'Please enter valid data');
+                
             }
         }        
     }

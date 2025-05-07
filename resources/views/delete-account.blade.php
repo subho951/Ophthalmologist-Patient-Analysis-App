@@ -24,6 +24,11 @@
     @csrf
 
     <div class="form-group">
+        <label for="entity_name">User Type</label>
+        <input type="text" class="form-control" id="user_type" name="user_type" required>
+    </div>
+
+    <div class="form-group">
         <label for="entity_name">Entity Name</label>
         <input type="text" class="form-control" id="entity_name" name="entity_name" required>
     </div>
