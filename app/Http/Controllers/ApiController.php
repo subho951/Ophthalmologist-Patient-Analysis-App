@@ -1773,26 +1773,31 @@ class ApiController extends Controller
             $apiMessage         = 'All Data Are Not Present !!!';
         }
         if($headerData['key'][0] == env('PROJECT_KEY')){
-            $test_parameters = TestParameter::where('status', '=', 1)->orderBy('test_tab_id', 'ASC')->get();
-            if($test_parameters){
-                foreach ($test_parameters as $row) {
-                    $test_tab = TestTab::where('id', '=', $row->test_tab_id)->first();        
-                    $optionsArray = json_decode($row->options, true);                                
-                    if($test_tab){
-                        $test_tab_name = $test_tab->name;
-                    } else {
-                        $test_tab_name = '';
-                    }
-                    $apiResponse[] = [
-                        'id'            => $row->id,
-                        'test_tab_name' => $test_tab_name,
-                        'name'          => $row->name,
-                        'weight'        => $row->weight,
-                        'options'       => implode(',', $optionsArray),
-                        'rank'          => $row->rank                        
-                    ];                    
-                }
-            }
+            $test_tabs = TestTab::where('status', '=', 1)->orderBy('rank', 'ASC')->get();
+            foreach ($test_tabs as $tab) {
+                $parameters = TestParameter::where('status', '=', 1)
+                    ->where('test_tab_id', '=', $tab->id)
+                    ->orderBy('rank', 'ASC')
+                    ->get();
+    
+                $parameterArray = [];
+    
+                foreach ($parameters as $param) {
+                    $optionsArray = json_decode($param->options, true);
+                    $parameterArray[] = [
+                        'id'      => $param->id,
+                        'name'    => $param->name,
+                        'weight'  => $param->weight,
+                        'options' => implode(',', $optionsArray),
+                        'rank'    => $param->rank
+                    ];
+                }    
+                $apiResponse[] = [
+                    'tab_id'    => $tab->id,
+                    'tab_name'  => $tab->name,
+                    'parameters'=> $parameterArray
+                ];
+            }            
             http_response_code(200);
             $apiStatus          = TRUE;
             $apiMessage         = 'Data Available !!!';
