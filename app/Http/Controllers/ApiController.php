@@ -1228,14 +1228,13 @@ class ApiController extends Controller
                     $getUser    = Doctor::where('id', '=', $uId)->first();
                     if($getUser){
                         $profile_image  = $requestData['profile_image'];
-                        Helper::pr($requestData);
                         if(!empty($profile_image)){
                             $profile_image      = $profile_image;
-                            $upload_type        = $profile_image[0]['type'];
+                            $upload_type        = $profile_image['type'];
                             if($upload_type == 'image/jpeg' || $upload_type == 'image/jpg' || $upload_type == 'image/png' || $upload_type == 'image/gif'){
-                                $upload_base64      = $profile_image[0]['base64'];
+                                $upload_base64      = $profile_image['base64'];
                                 $img                = $upload_base64;
-                                $proof_type         = $profile_image[0]['type'];
+                                $proof_type         = $profile_image['type'];
                                 if($proof_type == 'image/png'){
                                     $extn = 'png';
                                 } elseif($proof_type == 'image/jpg'){
