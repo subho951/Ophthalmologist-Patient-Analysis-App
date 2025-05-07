@@ -66,7 +66,7 @@ class FrontController extends Controller
                         'is_email_verify' => 1,
                         'is_phone_verify' => 1,
                         'phone'           => $phone,
-                        'comment'         => $comment,
+                        'comments'         => $comment,
                         'created_at'      => date('Y-m-d H:i:s'), 
                         'updated_at'    => date('Y-m-d H:i:s'),             
                         'status'          => 1,                                  
