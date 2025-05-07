@@ -1857,5 +1857,86 @@ class ApiController extends Controller
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
+    public function getcountries(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $countries = Country::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
+            if($countries){
+                foreach ($countries as $row) {
+                    $apiResponse[] = [                        
+                        'id'            => $row->id,
+                        'name'          => $row->name
+                    ];
+                }
+            }
+            http_response_code(200);
+            $apiStatus          = TRUE;
+            $apiMessage         = 'Data Available !!!';
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        } else {
+            http_response_code(200);
+            $apiStatus          = FALSE;
+            $apiMessage         = $this->getResponseCode(http_response_code());
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
+    public function getstates(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $states = State::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
+            if($states){
+                foreach ($states as $row) {
+                    $countries = Country::where('id', '=', $row->country_id)->first();
+                        if($countries){
+                            $country_name = $countries->name;
+                        } else {
+                            $country_name = '';
+                        }   
+                    $apiResponse[] = [                        
+                        'id'            => $row->id,
+                        'name'          => $row->name,
+                        'country_name'  => $country_name
+                    ];
+                }
+            }
+            http_response_code(200);
+            $apiStatus          = TRUE;
+            $apiMessage         = 'Data Available !!!';
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        } else {
+            http_response_code(200);
+            $apiStatus          = FALSE;
+            $apiMessage         = $this->getResponseCode(http_response_code());
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
 
 }
