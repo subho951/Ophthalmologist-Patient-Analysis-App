@@ -27,6 +27,7 @@ Route::get('/db-test', function () {
         return 'Error: ' . $e->getMessage();
     }
 });
+Route::match(['get', 'post'], 'page/{id}', 'App\Http\Controllers\FrontController@page');
 Route::match(['get', 'post'], '/delete-account', 'App\Http\Controllers\FrontController@deleteaccountview');
 Route::match(['get', 'post'], '/delete-account-update', 'App\Http\Controllers\FrontController@deleteaccount')->name('delete-account.store');
 /* Admin Panel */
