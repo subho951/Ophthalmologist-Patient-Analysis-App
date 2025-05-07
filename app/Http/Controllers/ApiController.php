@@ -632,69 +632,156 @@ class ApiController extends Controller
                 $device_type                = $headerData['source'][0];
                 $device_token               = $requestData['device_token'];
                 $fcm_token                  = $requestData['fcm_token'];
-                $checkUser                  = Doctor::where('id', '=', $id)->where('status', '=', 1)->first();
+                $checkUser                  = Doctor::where('id', '=', $id)->first();
                 if($checkUser){
-                    if($checkUser->otp == $otp){
-                        $objOfJwt               = new CreatorJwt();
-                        $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
-                        $user_id                = $checkUser->id;
-                        Doctor::where('id', '=', $user_id)->update(['otp' => 0]);
-                        $fields     = [
-                            'user_id'               => $user_id,
-                            'device_type'           => $device_type,
-                            'device_token'          => $device_token,
-                            'fcm_token'             => $fcm_token,
-                            'app_access_token'      => $app_access_token,
-                        ];
-                        $checkUserTokenExist            = UserDevice::where('user_id', '=', $user_id)->where('published', '=', 1)->where('device_type', '=', $device_type)->where('device_token', '=', $device_token)->first();
-                        if(!$checkUserTokenExist){
-                            UserDevice::insert($fields);
+                    $user_status = $checkUser->status;
+                    if($user_status == 0){
+                        if($checkUser->otp == $otp){
+                            $objOfJwt               = new CreatorJwt();
+                            $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
+                            $user_id                = $checkUser->id;
+                            $randomPassword = bin2hex(random_bytes(8)); 
+                            $password = Hash::make($randomPassword); 
+                            Doctor::where('id', '=', $user_id)->update(['password' => $password, 'otp' => 0, 'status' => 1]);
+                            $fields     = [
+                                'user_id'               => $user_id,
+                                'device_type'           => $device_type,
+                                'device_token'          => $device_token,
+                                'fcm_token'             => $fcm_token,
+                                'app_access_token'      => $app_access_token,
+                            ];
+                            $checkUserTokenExist            = UserDevice::where('user_id', '=', $user_id)->where('published', '=', 1)->where('device_type', '=', $device_type)->where('device_token', '=', $device_token)->first();
+                            if(!$checkUserTokenExist){
+                                UserDevice::insert($fields);
+                            } else {
+                                UserDevice::where('id','=',$checkUserTokenExist->id)->update($fields);
+                            }
+                            // $getEmployeeType        = EmployeeType::select('name')->where('id', '=', $checkUser->employee_type_id)->first();
+                            $apiResponse            = [
+                                'user_id'               => $user_id,
+                                'name'                  => $checkUser->name,
+                                'email'                 => $checkUser->email,
+                                'phone'                 => $checkUser->phone,  
+                                'password'              => $randomPassword,          
+                                'device_type'           => $device_type,
+                                'device_token'          => $device_token,
+                                'fcm_token'             => $fcm_token,
+                                'app_access_token'      => $app_access_token,
+                            ];
+                            /* user activity */
+                                $activityData = [
+                                    'user_email'        => $checkUser->email,
+                                    'user_name'         => $checkUser->name,
+                                    'user_type'         => 'USER',
+                                    'ip_address'        => $request->ip(),
+                                    'activity_type'     => 1,
+                                    'activity_details'  => 'SignIn Successfully !!!',
+                                    'platform_type'     => 'ANDROID',
+                                ];
+                                UserActivity::insert($activityData);
+                            /* user activity */
+                            $mailData                   = [
+                                'id'    => $checkUser->id,
+                                'email' => $checkUser->email,                        
+                                'password'   => $randomPassword,
+                            ];
+                            $generalSetting             = GeneralSetting::find('1');
+                            $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';
+                            $message                    = view('email-templates.cretential',$mailData);
+                            $this->sendMail($checkUser->email, $subject, $message);
+                            /* email log save */
+                                $postData2 = [
+                                    'name'                  => $checkUser->name,
+                                    'email'                 => $checkUser->email,
+                                    'subject'               => $subject,
+                                    'message'               => $message
+                                ];
+                                EmailLog::insert($postData2);
+                            /* email log save */
+                            $apiStatus                          = TRUE;
+                            $apiMessage                         = 'SignIn Successfully !!!';
                         } else {
-                            UserDevice::where('id','=',$checkUserTokenExist->id)->update($fields);
+                            /* user activity */
+                                $activityData = [
+                                    'user_email'        => $checkUser->email,
+                                    'user_name'         => $checkUser->name,
+                                    'user_type'         => 'USER',
+                                    'ip_address'        => $request->ip(),
+                                    'activity_type'     => 0,
+                                    'activity_details'  => 'OTP Mismatched !!!',
+                                    'platform_type'     => 'ANDROID',
+                                ];
+                                UserActivity::insert($activityData);
+                            /* user activity */
+                            $apiStatus          = FALSE;
+                            http_response_code(200);
+                            $apiMessage         = 'OTP Mismatched !!!';
+                            $apiExtraField      = 'response_code';
                         }
-                        // $getEmployeeType        = EmployeeType::select('name')->where('id', '=', $checkUser->employee_type_id)->first();
-                        $apiResponse            = [
-                            'user_id'               => $user_id,
-                            'name'                  => $checkUser->name,
-                            'email'                 => $checkUser->email,
-                            'phone'                 => $checkUser->phone,                           
-                            'device_type'           => $device_type,
-                            'device_token'          => $device_token,
-                            'fcm_token'             => $fcm_token,
-                            'app_access_token'      => $app_access_token,
-                        ];
-                        /* user activity */
-                            $activityData = [
-                                'user_email'        => $checkUser->email,
-                                'user_name'         => $checkUser->name,
-                                'user_type'         => 'USER',
-                                'ip_address'        => $request->ip(),
-                                'activity_type'     => 1,
-                                'activity_details'  => 'SignIn Successfully !!!',
-                                'platform_type'     => 'ANDROID',
+                    } elseif($user_status == 1){
+                        if($checkUser->otp == $otp){
+                            $objOfJwt               = new CreatorJwt();
+                            $app_access_token       = $objOfJwt->GenerateToken($checkUser->id, $checkUser->email, $checkUser->phone);
+                            $user_id                = $checkUser->id;                            
+                            Doctor::where('id', '=', $user_id)->update(['otp' => 0]);
+                            $fields     = [
+                                'user_id'               => $user_id,
+                                'device_type'           => $device_type,
+                                'device_token'          => $device_token,
+                                'fcm_token'             => $fcm_token,
+                                'app_access_token'      => $app_access_token,
                             ];
-                            UserActivity::insert($activityData);
-                        /* user activity */
-                        $apiStatus                          = TRUE;
-                        $apiMessage                         = 'SignIn Successfully !!!';
-                    } else {
-                        /* user activity */
-                            $activityData = [
-                                'user_email'        => $checkUser->email,
-                                'user_name'         => $checkUser->name,
-                                'user_type'         => 'USER',
-                                'ip_address'        => $request->ip(),
-                                'activity_type'     => 0,
-                                'activity_details'  => 'OTP Mismatched !!!',
-                                'platform_type'     => 'ANDROID',
+                            $checkUserTokenExist            = UserDevice::where('user_id', '=', $user_id)->where('published', '=', 1)->where('device_type', '=', $device_type)->where('device_token', '=', $device_token)->first();
+                            if(!$checkUserTokenExist){
+                                UserDevice::insert($fields);
+                            } else {
+                                UserDevice::where('id','=',$checkUserTokenExist->id)->update($fields);
+                            }
+                            // $getEmployeeType        = EmployeeType::select('name')->where('id', '=', $checkUser->employee_type_id)->first();
+                            $apiResponse            = [
+                                'user_id'               => $user_id,
+                                'name'                  => $checkUser->name,
+                                'email'                 => $checkUser->email,
+                                'phone'                 => $checkUser->phone,                                            
+                                'device_type'           => $device_type,
+                                'device_token'          => $device_token,
+                                'fcm_token'             => $fcm_token,
+                                'app_access_token'      => $app_access_token,
                             ];
-                            UserActivity::insert($activityData);
-                        /* user activity */
-                        $apiStatus          = FALSE;
-                        http_response_code(200);
-                        $apiMessage         = 'OTP Mismatched !!!';
-                        $apiExtraField      = 'response_code';
-                    }
+                            /* user activity */
+                                $activityData = [
+                                    'user_email'        => $checkUser->email,
+                                    'user_name'         => $checkUser->name,
+                                    'user_type'         => 'USER',
+                                    'ip_address'        => $request->ip(),
+                                    'activity_type'     => 1,
+                                    'activity_details'  => 'SignIn Successfully !!!',
+                                    'platform_type'     => 'ANDROID',
+                                ];
+                                UserActivity::insert($activityData);
+                            /* user activity */                        
+                            $apiStatus                          = TRUE;
+                            $apiMessage                         = 'SignIn Successfully !!!';
+                        } else {
+                            /* user activity */
+                                $activityData = [
+                                    'user_email'        => $checkUser->email,
+                                    'user_name'         => $checkUser->name,
+                                    'user_type'         => 'USER',
+                                    'ip_address'        => $request->ip(),
+                                    'activity_type'     => 0,
+                                    'activity_details'  => 'OTP Mismatched !!!',
+                                    'platform_type'     => 'ANDROID',
+                                ];
+                                UserActivity::insert($activityData);
+                            /* user activity */
+                            $apiStatus          = FALSE;
+                            http_response_code(200);
+                            $apiMessage         = 'OTP Mismatched !!!';
+                            $apiExtraField      = 'response_code';
+                        }
+                    } 
+                    
                 } else {
                     /* user activity */
                         $activityData = [
