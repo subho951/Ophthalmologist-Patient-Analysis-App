@@ -1808,4 +1808,54 @@ class ApiController extends Controller
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
+    public function getcountryState(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $countries = Country::where('status', '=', 1)->orderBy('name', 'ASC')->get();
+            foreach ($countries as $country) {
+                $states = State::where('status', '=', 1)
+                    ->where('country_id', '=', $country->id)
+                    ->orderBy('name', 'ASC')
+                    ->get();
+    
+                $stateArray = [];
+    
+                foreach ($states as $state) {                    
+                    $stateArray[] = [
+                        'id'      => $state->id,
+                        'name'    => $state->name,                       
+                    ];
+                }    
+                $apiResponse[] = [
+                    'country_id'    => $country->id,
+                    'country_name'  => $country->name,
+                    'state'=> $stateArray
+                ];
+            }            
+            http_response_code(200);
+            $apiStatus          = TRUE;
+            $apiMessage         = 'Data Available !!!';
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        } else {
+            http_response_code(200);
+            $apiStatus          = FALSE;
+            $apiMessage         = $this->getResponseCode(http_response_code());
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
+
 }
