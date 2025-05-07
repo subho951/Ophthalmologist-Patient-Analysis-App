@@ -2013,5 +2013,56 @@ class ApiController extends Controller
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
+    public function patient_list(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $app_access_token           = $headerData['authorization'][0];
+            $getTokenValue              = $this->tokenAuth($app_access_token);
+            if($getTokenValue['status']){
+                $uId        = $getTokenValue['data'][1];  
+                $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('name', 'ASC')->get();
+                if($patients){
+                    foreach ($patients as $row) {                        
+                        $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();
+                        if($comorbidities){
+                            $comorbidity_name = $comorbidities->name;
+                        } else {
+                            $comorbidity_name = '';
+                        }                        
+                        $apiResponse[] = [
+                            'patient_name'         => $row->patient_name,                    
+                            'doctor_name'          => $row->doctor_name,
+                            'dob'                  => $row->dob,
+                            'age'                  => $row->age, 
+                            'eye'                  => $row->eye,
+                            'gender'               => $row->gender,
+                            'mobile'               => $row->mobile,                                                                                                      
+                            'comorbidities_id'     => $comorbidity_name,                            
+                        ];                    
+                    }
+                }                                
+                $apiStatus          = TRUE;
+                $apiMessage         = 'Patient listed Successfully !!!';                
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = $getTokenValue['data'];
+            }                        
+        } else {
+            $apiStatus          = FALSE;
+            $apiMessage         = 'Unauthenticate Request !!!';
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
 
 }
