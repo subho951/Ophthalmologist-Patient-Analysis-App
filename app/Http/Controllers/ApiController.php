@@ -1712,39 +1712,47 @@ class ApiController extends Controller
             $apiMessage         = 'All Data Are Not Present !!!';
         }
         if($headerData['key'][0] == env('PROJECT_KEY')){
-            $patients = Patient::where('status', '=', 1)->orderBy('name', 'ASC')->get();
-            if($patients){
-                foreach ($patients as $row) {
-                    $doctrs = Doctor::where('id', '=', $row->doctor_id)->first();
-                    $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();
-                    if($comorbidities){
-                        $comorbidity_name = $comorbidities->name;
-                    } else {
-                        $comorbidity_name = '';
-                    }
-                    if($doctrs){
-                        $doctor_name = $doctrs->name;
-                    } else {
-                        $doctor_name = '';
-                    }
-                    $apiResponse[] = [
-                        'id'            => $row->id,
-                        'name'          => $row->name,
-                        'email'         => $row->email,
-                        'phone'         => $row->phone,
-                        'dob'          => $row->dob,
-                        'age'           => $row->age,
-                        'country'       => $row->country,
-                        'state'         => $row->state,
-                        'city'          => $row->city,
-                        'pincode'       => $row->pincode,
-                        'gender'        => $row->gender,
-                        'eye'           => $row->eye,
-                        'comorbidity'   => $comorbidity_name,
-                        'doctor_name'   => $doctor_name
-                    ];                    
+            $app_access_token           = $headerData['authorization'][0];
+            $getTokenValue              = $this->tokenAuth($app_access_token);
+            if($getTokenValue['status']){
+                $uId        = $getTokenValue['data'][1];
+                $getUser    = Doctor::where('id', '=', $uId)->first();
+                if($getUser){
+                    $doctor_name = $getUser->name;
+                } else {
+                    $doctor_name = '';
                 }
-            }
+                $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('name', 'ASC')->get();
+                if($patients){
+                    foreach ($patients as $row) {                        
+                        $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();
+                        if($comorbidities){
+                            $comorbidity_name = $comorbidities->name;
+                        } else {
+                            $comorbidity_name = '';
+                        }                        
+                        $apiResponse[] = [
+                            'id'            => $row->id,
+                            'name'          => $row->name,
+                            'email'         => $row->email,
+                            'phone'         => $row->phone,
+                            'dob'          => $row->dob,
+                            'age'           => $row->age,
+                            'country'       => $row->country,
+                            'state'         => $row->state,
+                            'city'          => $row->city,
+                            'pincode'       => $row->pincode,
+                            'gender'        => $row->gender,
+                            'eye'           => $row->eye,
+                            'comorbidity'   => $comorbidity_name,
+                            'doctor_name'   => $doctor_name
+                        ];                    
+                    }
+                }
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = $getTokenValue['data'];
+            }            
             http_response_code(200);
             $apiStatus          = TRUE;
             $apiMessage         = 'Data Available !!!';
