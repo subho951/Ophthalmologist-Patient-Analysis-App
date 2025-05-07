@@ -352,7 +352,7 @@ class ApiController extends Controller
                             'id'    => $checkUser->id,
                             'name'  => $checkUser->name,
                             'email' => $checkUser->email,                        
-                            'password'   => $randomPassword,
+                            'randomPassword'   => $randomPassword,
                         ];
                         $generalSetting             = GeneralSetting::find('1');
                         $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';                                                                      
@@ -685,7 +685,7 @@ class ApiController extends Controller
                                 'id'    => $checkUser->id,
                                 'name'  => $checkUser->name,
                                 'email' => $checkUser->email,                        
-                                'password'   => $randomPassword,
+                                'randomPassword'   => $randomPassword,
                             ];
                             $generalSetting             = GeneralSetting::find('1');
                             $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';
