@@ -1908,10 +1908,10 @@ class ApiController extends Controller
             $apiMessage         = 'All Data Are Not Present !!!';
         }
         if($headerData['key'][0] == env('PROJECT_KEY')){
-            $states = State::select('id', 'name')->where('status', '=', 1)->orderBy('name', 'ASC')->get();
+            $states = State::where('status', '=', 1)->orderBy('name', 'ASC')->get();
             if($states){
                 foreach ($states as $row) {
-                    $countries = Country::where('id', '=', $row->country_id)->first();
+                    $countries = Country::where('id', '=', $row->country_id)->first();                    
                         if($countries){
                             $country_name = $countries->name;
                         } else {
