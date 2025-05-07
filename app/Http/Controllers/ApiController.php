@@ -1780,11 +1780,20 @@ class ApiController extends Controller
     
                 foreach ($parameters as $param) {
                     $optionsArray = json_decode($param->options, true);
+                    $formattedOptions = [];
+                    if (is_array($optionsArray)) {
+                        foreach ($optionsArray as $optionValue) {
+                            $formattedOptions[] = [
+                                'id' => $optionValue,
+                                'name' => $optionValue == 1 ? 'Yes' : 'No'
+                            ];
+                        }
+                    }
                     $parameterArray[] = [
                         'id'      => $param->id,
                         'name'    => $param->name,
                         'weight'  => $param->weight,
-                        'options' => implode(',', $optionsArray),
+                        'options' => $formattedOptions,
                         'hints'    => $param->hints
                     ];
                 }    
