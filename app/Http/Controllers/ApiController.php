@@ -1733,23 +1733,11 @@ class ApiController extends Controller
                         }                        
                         $apiResponse[] = [
                             'id'            => $row->id,
-                            'name'          => $row->name,
-                            'email'         => $row->email,
-                            'phone'         => $row->phone,
-                            'dob'          => $row->dob,
-                            'age'           => $row->age,
-                            'country'       => $row->country,
-                            'state'         => $row->state,
-                            'city'          => $row->city,
-                            'pincode'       => $row->pincode,
-                            'gender'        => $row->gender,
-                            'eye'           => $row->eye,
-                            'comorbidity'   => $comorbidity_name,
-                            'doctor_name'   => $doctor_name
+                            'name'          => $row->name,                           
                         ];                    
                     }
                 }
-                http_response_code(200);
+                http_response_code(200);                
                 $apiStatus          = TRUE;
                 $apiMessage         = 'Data Available !!!';
                 $apiExtraField      = 'response_code';
