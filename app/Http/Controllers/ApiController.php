@@ -1947,5 +1947,75 @@ class ApiController extends Controller
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
+    public function addpatients(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source', 'patient_name', 'email', 'dob', 'mobile', 'age', 'country_id', 'state_id', 'city', 'pincode', 'gender', 'eye', 'comorbidities_id', 'comorbidities_note', 'doctor_name', 'diagnosis_date'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $app_access_token           = $headerData['authorization'][0];
+            $getTokenValue              = $this->tokenAuth($app_access_token);
+            if($getTokenValue['status']){
+                $uId        = $getTokenValue['data'][1];  
+                $apiResponse = [
+                    'patient_name'         => $requestData['patient_name'],
+                    'email'                => $requestData['email'],
+                    'dob'                  => $requestData['dob'],
+                    'age'                  => $requestData['age'],
+                    'mobile'               => $requestData['mobile'],
+                    'country_id'           => $requestData['country_id'],
+                    'state_id'             => $requestData['state_id'],
+                    'city'                 => $requestData['city'],
+                    'pincode'              => $requestData['pincode'],
+                    'gender'               => $requestData['gender'],
+                    'eye'                  => $requestData['eye'],
+                    'comorbidities_id'     => $requestData['comorbidities_id'],
+                    'comorbidities_note'   => $requestData['comorbidities_note'],
+                    'doctor_name'          => $requestData['doctor_name'],
+                    'diagnosis_date'       => $requestData['diagnosis_date'],
+                    'created_by'            => $uId,
+                    'created_at'           => date('Y-m-d H:i:s'),
+                ];  
+                $fields = [
+                    'doctor_id'            => $uId,
+                    'name'                 => $requestData['patient_name'],
+                    'email'                => $requestData['email'],
+                    'dob'                  => $requestData['dob'],
+                    'age'                  => $requestData['age'],
+                    'phone'               => $requestData['mobile'],
+                    'country'           => $requestData['country_id'],
+                    'state'             => $requestData['state_id'],
+                    'city'                 => $requestData['city'],
+                    'pincode'              => $requestData['pincode'],
+                    'gender'               => $requestData['gender'],
+                    'eye'                  => $requestData['eye'],
+                    'comorbidities_id'     => $requestData['comorbidities_id'],
+                    'comorbidities_note'   => !empty($requestData['comorbidities_note']) ? $requestData['comorbidities_note'] : null,
+                    'doctor_name'          => $requestData['doctor_name'],
+                    'diagnosis_date'       => $requestData['diagnosis_date'],                   
+                    'created_at'           => date('Y-m-d H:i:s'),
+                ];         
+                $patient = Patient::insert($fields);          
+                               
+                $apiStatus          = TRUE;
+                $apiMessage         = 'Patient added Successfully !!!';                
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = $getTokenValue['data'];
+            }                        
+        } else {
+            $apiStatus          = FALSE;
+            $apiMessage         = 'Unauthenticate Request !!!';
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
 
 }
