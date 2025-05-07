@@ -487,41 +487,7 @@ class ApiController extends Controller
                         $apiStatus                          = FALSE;
                         $apiMessage                         = 'Invalid Email Or Password !!!';
                     }                   
-                } else {
-                    $user_status = $checkUser->status;
-                    if($user_status == 0){
-                        $remember_token  = rand(10000,99999);
-                        $updatefields = [                            
-                            'email'            => $email,                                                         
-                            'otp'        => $remember_token
-                        ];
-                        $apiResponse            = [  
-                            'id'                => $checkUser->id,                                 
-                            'email'            => $email,                             
-                            'otp'               => $remember_token,                                                                     
-                        ]; 
-                        Doctor::where('id', '=', $checkUser->id)->update($updatefields);
-                        $mailData                   = [
-                            'id'    => $checkUser->id,
-                            'email' => $email,                        
-                            'otp'   => $remember_token,
-                        ];
-                        $generalSetting             = GeneralSetting::find('1');
-                        $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
-                        $message                    = view('email-templates.otp',$mailData);
-                        $this->sendMail($email, $subject, $message);             
-                        /* email log save */
-                            $postData2 = [
-                                'name'                  => $checkUser->name,
-                                'email'                 => $email,
-                                'subject'               => $subject,
-                                'message'               => $message
-                            ];
-                            EmailLog::insert($postData2);
-                        /* email log save */ 
-                        $apiStatus                              = TRUE;
-                        $apiMessage                             = 'Again Email send for Sign up otp validation through sign in with email !!!';                                                                   
-                    }
+                } else {                    
                     /* user activity */
                         $activityData = [
                             'user_email'        => $requestData['email'],
@@ -586,7 +552,41 @@ class ApiController extends Controller
                     $apiStatus                          = TRUE;
                     $apiMessage                         = 'OTP Sent To Email For Validation !!!';
                 } else {
-                    /* user activity */
+                    $user_status = $checkUser->status;
+                    if($user_status == 0){
+                        $remember_token  = rand(10000,99999);
+                        $updatefields = [                            
+                            'email'            => $email,                                                         
+                            'otp'        => $remember_token
+                        ];
+                        $apiResponse            = [  
+                            'id'                => $checkUser->id,                                 
+                            'email'            => $email,                             
+                            'otp'               => $remember_token,                                                                     
+                        ]; 
+                        Doctor::where('id', '=', $checkUser->id)->update($updatefields);
+                        $mailData                   = [
+                            'id'    => $checkUser->id,
+                            'email' => $email,                        
+                            'otp'   => $remember_token,
+                        ];
+                        $generalSetting             = GeneralSetting::find('1');
+                        $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
+                        $message                    = view('email-templates.otp',$mailData);
+                        $this->sendMail($email, $subject, $message);             
+                        /* email log save */
+                            $postData2 = [
+                                'name'                  => $checkUser->name,
+                                'email'                 => $email,
+                                'subject'               => $subject,
+                                'message'               => $message
+                            ];
+                            EmailLog::insert($postData2);
+                        /* email log save */ 
+                        $apiStatus                              = TRUE;
+                        $apiMessage                             = 'Again Email send for Sign up otp validation through sign in with email !!!';                                                                   
+                    } else{
+                        /* user activity */
                         $activityData = [
                             'user_email'        => $requestData['email'],
                             'user_name'         => '',
@@ -597,9 +597,10 @@ class ApiController extends Controller
                             'platform_type'     => 'ANDROID',
                         ];
                         UserActivity::insert($activityData);
-                    /* user activity */
-                    $apiStatus                              = FALSE;
-                    $apiMessage                             = 'We Don\'t Recognize You !!!';
+                        /* user activity */
+                        $apiStatus                              = FALSE;
+                        $apiMessage                             = 'We Don\'t Recognize You !!!';   
+                    }                    
                 }
             } else {
                 $apiStatus          = FALSE;
