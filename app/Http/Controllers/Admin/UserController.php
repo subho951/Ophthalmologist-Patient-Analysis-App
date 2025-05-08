@@ -363,7 +363,10 @@ class UserController extends Controller
                         $site_favicon = $row->site_favicon;
                     }
                 /* site favicon */
-                                
+                $total = 155;
+                $test_result_cut_off_marks = $postData['test_result_cut_off_marks'];
+                
+                $result = ($test_result_cut_off_marks / 100) * $total;             
                 $fields = [
                     'site_name'                         => $postData['site_name'],
                     'site_phone'                        => $postData['site_phone'],
@@ -386,7 +389,7 @@ class UserController extends Controller
                     'youtube_profile'                   => $postData['youtube_profile'],
                     'tax_percent'                       => $postData['tax_percent'],
                     'test_result_cut_off_marks'         => $postData['test_result_cut_off_marks'],
-                    'test_result_cut_off_marks_p'       => $postData['test_result_cut_off_marks_p'],
+                    'test_result_cut_off_marks_p'       => $result,
                     'site_logo'                         => $site_logo,
                     'site_footer_logo'                  => $site_footer_logo,
                     'site_favicon'                      => $site_favicon,
