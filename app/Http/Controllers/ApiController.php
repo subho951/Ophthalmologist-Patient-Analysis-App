@@ -2025,7 +2025,7 @@ class ApiController extends Controller
         $apiExtraField      = '';
         $apiExtraData       = '';
         $requestData        = $request->all();
-        $requiredFields     = ['key', 'source'];
+        $requiredFields     = ['key', 'source', 'page_no', 'search_keyword'];
         $headerData         = $request->header();
         if (!$this->validateArray($requiredFields, $requestData)){
             $apiStatus          = FALSE;
@@ -2034,9 +2034,31 @@ class ApiController extends Controller
         if($headerData['key'][0] == env('PROJECT_KEY')){
             $app_access_token           = $headerData['authorization'][0];
             $getTokenValue              = $this->tokenAuth($app_access_token);
+            $page_no                    = $requestData['page_no'];
             if($getTokenValue['status']){
                 $uId        = $getTokenValue['data'][1];  
-                $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('name', 'ASC')->get();
+                $limit          = 15; // per page elements
+                if($page_no == 1){
+                    $offset = 0;
+                } else {
+                    $offset = (($limit * $page_no) - $limit); // ((15 * 3) - 15)
+                }
+                $query = Patient::where('status', 1)
+                    ->where('doctor_id', $uId);
+
+                if (!empty($requestData['search_keyword'])) {
+                    $search = $requestData['search_keyword'];
+                    $query->where(function ($q) use ($search) {
+                        $q->where('patient_name', 'like', '%' . $search . '%')
+                        ->orWhere('mobile', 'like', '%' . $search . '%');
+                    });
+                }
+
+                $patients = $query->orderBy('id', 'DESC')
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->get();
+                // $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('id', 'DESC')->offset($offset)->limit($limit)->get();
                 if($patients){
                     foreach ($patients as $row) {                        
                         $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
@@ -2101,6 +2123,6 @@ class ApiController extends Controller
             $apiMessage         = 'Unauthenticate Request !!!';
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
-    }
+    }    
 
 }
