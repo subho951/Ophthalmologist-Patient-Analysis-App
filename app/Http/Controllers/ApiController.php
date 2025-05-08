@@ -2098,13 +2098,13 @@ class ApiController extends Controller
                         }
                       
                         $apiResponse[] = [
-                            'patient_name'         => $row->patient_name,                    
+                            'patient_name'         => $row->name,                    
                             'doctor_name'          => $row->doctor_name,
                             'dob'                  => $row->dob,
                             'age'                  => $row->age, 
                             'eye'                  => $row->eye,
                             'gender'               => $row->gender,
-                            'mobile'               => $row->mobile,                                                                                                      
+                            'mobile'               => $row->phone,                                                                                                      
                             'comorbidities_id'     => $comorbiditiesArray,  
                             'country'              => $countryArray, 
                             'state'                => $stateArray,
