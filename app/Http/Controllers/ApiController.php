@@ -48,6 +48,7 @@ use App\Models\Patient;
 use App\Models\Test;
 use App\Models\TestParameter;
 use App\Models\TestTab;
+use DateTime;
 
 date_default_timezone_set("Asia/Calcutta");
 class ApiController extends Controller
@@ -1964,10 +1965,14 @@ class ApiController extends Controller
             $app_access_token           = $headerData['authorization'][0];
             $getTokenValue              = $this->tokenAuth($app_access_token);
             if($getTokenValue['status']){
-                $uId        = $getTokenValue['data'][1];  
+                $uId        = $getTokenValue['data'][1]; 
+                $dob = new DateTime($requestData['dob']);
+                $today = new DateTime();
+                $age = $today->diff($dob);
                 $apiResponse = [
                     'patient_name'         => $requestData['patient_name'],                    
-                    'dob'                  => $requestData['dob'],                    
+                    'dob'                  => $requestData['dob'], 
+                    'age'                  => $age->y,
                     'mobile'               => $requestData['mobile'],
                     'country_id'           => $requestData['country_id'],
                     'state_id'             => $requestData['state_id'],
@@ -1985,7 +1990,7 @@ class ApiController extends Controller
                     'name'                 => $requestData['patient_name'],
                     'email'                => !empty($requestData['email']) ? $requestData['email'] : null,
                     'dob'                  => $requestData['dob'],
-                    'age'                  => !empty($requestData['age']) ? $requestData['age'] : 0,
+                    'age'                  => !empty($requestData['age']) ? $age->y : 0,
                     'phone'               => $requestData['mobile'],
                     'country'           => $requestData['country_id'],
                     'state'             => $requestData['state_id'],
