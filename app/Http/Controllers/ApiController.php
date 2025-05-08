@@ -2123,6 +2123,41 @@ class ApiController extends Controller
             $apiMessage         = 'Unauthenticate Request !!!';
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
-    }    
+    }
+    public function addTest(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source', 'patient_id', 'diagnosis_date', 'test_parameter'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $app_access_token           = $headerData['authorization'][0];
+            $getTokenValue              = $this->tokenAuth($app_access_token);
+            $patient_id                 = $requestData['patient_id'];
+            $diagnosis_date             = $requestData['diagnosis_date'];
+            $test_parameter             = $requestData['test_parameter'];
 
+            if($getTokenValue['status']){
+                $uId                = $getTokenValue['data'][1];
+                Helper::pr($requestData);
+                                               
+                $apiStatus          = TRUE;
+                $apiMessage         = 'Patient listed Successfully !!!';                
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = $getTokenValue['data'];
+            }                        
+        } else {
+            $apiStatus          = FALSE;
+            $apiMessage         = 'Unauthenticate Request !!!';
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
 }
