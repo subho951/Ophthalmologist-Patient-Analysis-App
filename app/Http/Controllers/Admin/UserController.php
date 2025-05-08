@@ -366,7 +366,7 @@ class UserController extends Controller
                 $total = 155;
                 $test_result_cut_off_marks = $postData['test_result_cut_off_marks'];
                 
-                $result = ($test_result_cut_off_marks / 100) * $total;             
+                $result = ($test_result_cut_off_marks / $total) * 100;             
                 $fields = [
                     'site_name'                         => $postData['site_name'],
                     'site_phone'                        => $postData['site_phone'],
