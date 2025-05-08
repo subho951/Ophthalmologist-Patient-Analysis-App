@@ -2042,40 +2042,37 @@ class ApiController extends Controller
                         $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
                         // Build comorbidity array
                         if ($comorbidities) {
-                            $comorbiditiesArray = [
+                            $comorbiditiesArray = 
                                 [
                                     'id' => $comorbidities->id,
                                     'name' => $comorbidities->name
-                                ]
-                            ];
+                                ];
                         } else {
-                            $comorbiditiesArray = [];
+                            $comorbiditiesArray = null;
                         }
 
                         $country = Country::where('id', '=', $row->country)->first();                        
                         // Build comorbidity array
                         if ($country) {
-                            $countryArray = [
+                            $countryArray =
                                 [
                                     'id' => $country->id,
                                     'name' => $country->name
-                                ]
-                            ];
+                                ];
                         } else {
-                            $countryArray = [];
+                            $countryArray = null;
                         }
 
                         $state = State::where('id', '=', $row->state)->first();                        
                         // Build comorbidity array
                         if ($state) {
-                            $stateArray = [
+                            $stateArray = 
                                 [
                                     'id' => $state->id,
                                     'name' => $state->name
-                                ]
-                            ];
+                                ];
                         } else {
-                            $stateArray = [];
+                            $stateArray = null;
                         }
                       
                         $apiResponse[] = [
