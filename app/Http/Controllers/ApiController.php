@@ -2049,7 +2049,7 @@ class ApiController extends Controller
                 if (!empty($requestData['search_keyword'])) {
                     $search = $requestData['search_keyword'];
                     $query->where(function ($q) use ($search) {
-                        $q->where('patient_name', 'like', '%' . $search . '%')
+                        $q->where('name', 'like', '%' . $search . '%')
                         ->orWhere('mobile', 'like', '%' . $search . '%');
                     });
                 }
