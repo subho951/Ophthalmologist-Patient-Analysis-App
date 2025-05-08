@@ -1990,7 +1990,7 @@ class ApiController extends Controller
                     'name'                 => $requestData['patient_name'],
                     'email'                => !empty($requestData['email']) ? $requestData['email'] : null,
                     'dob'                  => $requestData['dob'],
-                    'age'                  => !empty($requestData['age']) ? $age->y : 0,
+                    'age'                  => $age->y,
                     'phone'               => $requestData['mobile'],
                     'country'           => $requestData['country_id'],
                     'state'             => $requestData['state_id'],
