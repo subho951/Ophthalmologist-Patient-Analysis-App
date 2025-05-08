@@ -2039,12 +2039,45 @@ class ApiController extends Controller
                 $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('name', 'ASC')->get();
                 if($patients){
                     foreach ($patients as $row) {                        
-                        $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();
-                        if($comorbidities){
-                            $comorbidity_name = $comorbidities->name;
+                        $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
+                        // Build comorbidity array
+                        if ($comorbidities) {
+                            $comorbiditiesArray = [
+                                [
+                                    'id' => $comorbidities->id,
+                                    'name' => $comorbidities->name
+                                ]
+                            ];
                         } else {
-                            $comorbidity_name = '';
-                        }                        
+                            $comorbiditiesArray = [];
+                        }
+
+                        $country = Country::where('id', '=', $row->country)->first();                        
+                        // Build comorbidity array
+                        if ($country) {
+                            $countryArray = [
+                                [
+                                    'id' => $country->id,
+                                    'name' => $country->name
+                                ]
+                            ];
+                        } else {
+                            $countryArray = [];
+                        }
+
+                        $state = State::where('id', '=', $row->state)->first();                        
+                        // Build comorbidity array
+                        if ($state) {
+                            $stateArray = [
+                                [
+                                    'id' => $state->id,
+                                    'name' => $state->name
+                                ]
+                            ];
+                        } else {
+                            $stateArray = [];
+                        }
+                      
                         $apiResponse[] = [
                             'patient_name'         => $row->patient_name,                    
                             'doctor_name'          => $row->doctor_name,
@@ -2053,7 +2086,10 @@ class ApiController extends Controller
                             'eye'                  => $row->eye,
                             'gender'               => $row->gender,
                             'mobile'               => $row->mobile,                                                                                                      
-                            'comorbidities_id'     => $comorbidity_name,                            
+                            'comorbidities_id'     => $comorbiditiesArray,  
+                            'country'              => $countryArray, 
+                            'state'                => $stateArray,
+                            'city'                 => $row->city,          
                         ];                    
                     }
                 }                                
