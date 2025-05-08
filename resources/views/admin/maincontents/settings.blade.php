@@ -177,6 +177,10 @@ $current_url = url()->current();
                            <label for="test_result_cut_off_marks" class="form-label">Test Result Cut-off Score</label>
                            <input class="form-control" type="text" id="test_result_cut_off_marks" name="test_result_cut_off_marks" value="<?=$setting->test_result_cut_off_marks?>" />
                         </div>
+                        <div class="mb-3 col-md-3">
+                           <label for="test_result_cut_off_marks" class="form-label">Test Result Cut-off Score(%)</label>
+                           <input class="form-control" type="text" id="test_result_cut_off_marks_p" name="test_result_cut_off_marks_p" value="<?=$setting->test_result_cut_off_marks_p?>" />
+                        </div>
                         <div class="mb-3 col-md-6">
                            <label for="twitter_profile" class="form-label">Twitter Profile</label>
                            <input class="form-control" type="text" id="twitter_profile" name="twitter_profile" value="<?=$setting->twitter_profile?>" />
