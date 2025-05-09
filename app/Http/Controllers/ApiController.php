@@ -2264,6 +2264,8 @@ class ApiController extends Controller
                         $test_report_pdf                = env('UPLOADS_URL').'test-report/' . $filename;
                         Test::where('id', '=', $test_id)->update(['test_report_pdf' => $test_report_pdf]);
                     /* report pdf generate */
+
+                    $currentDateTime = new DateTime(); // Gets current date and time
                     $apiResponse[] = [
                         'test_id'                       => $test_id,
                         'sl_no'                         => $next_sl_no,
@@ -2272,8 +2274,8 @@ class ApiController extends Controller
                         'patient_id'                    => $patient_id,
                         'doctor_name'                   => (($getDoctor)?$getDoctor->name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),
-                        'test_date'                     => new DateTime(date('Y-m-d'))->format('F d, Y'),
-                        'test_time'                     => new DateTime(date('H:i:s'))->format('h:i A'),
+                        'test_date'                     => $currentDateTime(date('Y-m-d'))->format('F d, Y'),
+                        'test_time'                     => $currentDateTime(date('H:i:s'))->format('h:i A'),
                         'test_total_weight'             => $test_total_weight,
                         'test_fullscore'                => $test_fullscore,
                         'test_score'                    => $test_score,
