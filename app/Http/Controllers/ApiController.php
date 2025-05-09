@@ -2188,7 +2188,7 @@ class ApiController extends Controller
                                     'test_parameter_value'              => $patient_id,
                                     'test_parameter_weight'             => (($getDoctor)?$getDoctor->name:''),
                                 ];
-                                Helper::pr($test_parameter,0);
+                                Helper::pr($fields2,0);
                             }
                         }
                     /* test_result_parameters table */
