@@ -2105,6 +2105,7 @@ class ApiController extends Controller
                         }
 
                         $apiResponse[] = [
+                            'patient_id'           => $row->id,
                             'patient_name'         => $row->name,                    
                             'doctor_name'          => $row->doctor_name,
                             'dob'                  => $row->dob,
