@@ -73,9 +73,8 @@ use App\Helpers\Helper;
     <?php if($test_report){?>
         <?php
         $getPatient            = Patient::where('id', '=', $test_report->patient_id)->first();
-        echo $getPatient->comorbidities_id;
-        Helper::pr($getPatient);
-        // $getcomorbidity        = Comorbidity::select('name')->where('id', '=', (($getPatient)?$getPatient->comorbidities_id:'')->first();
+        $getcomorbidity        = Comorbidity::select('name')->where('id', '=', $getPatient->comorbidities_id)->first();
+        Helper::pr($getcomorbidity);
         ?>
         <div class="container">
             <!-- <div class="gauge-label">
