@@ -2174,12 +2174,25 @@ class ApiController extends Controller
                             // 'test_score'            => '',
                             // 'test_result'           => '',
                         ];
-                        // Helper::pr($fields1);
-                        // $test_id = Test::insertGetId($fields1);
+                        $test_id = Test::insertGetId($fields1);
                     /* tests table */
                     /* test_result_parameters table */
-                        Helper::pr($test_parameter);
+                        Helper::pr($test_parameter,0);
+                        if($test_parameter){
+                            foreach($test_parameter as $tm){
+                                $test_tab_id = $tm['tab_id'];
+                                $fields2 = [
+                                    'test_id'                           => $test_id,
+                                    'test_tab_id'                       => $test_no,
+                                    'test_parameter_id'                 => $uId,
+                                    'test_parameter_value'              => $patient_id,
+                                    'test_parameter_weight'             => (($getDoctor)?$getDoctor->name:''),
+                                ];
+                                Helper::pr($test_parameter,0);
+                            }
+                        }
                     /* test_result_parameters table */
+                    die;
                     
                     $apiStatus          = TRUE;
                     $apiMessage         = 'Patient listed Successfully !!!';  
