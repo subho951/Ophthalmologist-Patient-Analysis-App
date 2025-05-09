@@ -2452,21 +2452,21 @@ class ApiController extends Controller
                         //     $stateArray = null;
                         // }
 
-                        $testReports = Test::where('status', 1)->where('patient_id', $row->id)->get();
-                        $tests = [];
-                        if($testReports){
-                            foreach($testReports as $testReport){
-                                $tests[] = [
-                                    'test_id'          => $testReport->id,
-                                    'test_no'           => $testReport->test_no,
-                                    'test_score'        => $testReport->test_score,
-                                    'test_result'       => $testReport->test_result,
-                                    'test_report_pdf'   => $testReport->test_report_pdf,
-                                ];
-                            }
-                        }
+                        // $testReports = Test::where('status', 1)->where('patient_id', $row->id)->get();
+                        // $tests = [];
+                        // if($testReports){
+                        //     foreach($testReports as $testReport){
+                        //         $tests[] = [
+                        //             'test_id'          => $testReport->id,
+                        //             'test_no'           => $testReport->test_no,
+                        //             'test_score'        => $testReport->test_score,
+                        //             'test_result'       => $testReport->test_result,
+                        //             'test_report_pdf'   => $testReport->test_report_pdf,
+                        //         ];
+                        //     }
+                        // }
 
-                        $apiResponse[] = [
+                        $apiResponse = [
                             'test_id'               => $row->id,
                             'test_name'             => $row->test_no,
                             'sl_no'                 => $row->sl_no,                            
