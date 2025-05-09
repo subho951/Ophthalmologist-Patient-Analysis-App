@@ -2087,7 +2087,20 @@ class ApiController extends Controller
                         } else {
                             $stateArray = null;
                         }
-                      
+
+                        $testReports = Test::where('status', 1)->where('patient_id', $row->id)->get();
+                        $tests = [];
+                        if($testReports){
+                            foreach($testReports as $testReport){
+                                $tests[] = [
+                                    'test_no'           => $testReport->test_no,
+                                    'test_score'        => $testReport->test_score,
+                                    'test_result'       => $testReport->test_result,
+                                    'test_report_pdf'   => $testReport->test_report_pdf,
+                                ];
+                            }
+                        }
+
                         $apiResponse[] = [
                             'patient_name'         => $row->name,                    
                             'doctor_name'          => $row->doctor_name,
@@ -2095,11 +2108,12 @@ class ApiController extends Controller
                             'age'                  => $row->age, 
                             'eye'                  => $row->eye,
                             'gender'               => $row->gender,
-                            'mobile'               => $row->phone,                                                                                                      
+                            'mobile'               => $row->phone,
                             'comorbidities_id'     => $comorbiditiesArray,  
                             'country'              => $countryArray, 
                             'state'                => $stateArray,
-                            'city'                 => $row->city,          
+                            'city'                 => $row->city,
+                            'tests'                => $tests,
                         ];                    
                     }
                 }                                
