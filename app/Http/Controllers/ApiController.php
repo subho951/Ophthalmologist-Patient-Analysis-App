@@ -2287,7 +2287,7 @@ class ApiController extends Controller
                     // ];
                     $patientdetails = Patient::where('id', '=', $patient_id)->first();
                     $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
-                    $apiResponse[] = [
+                    $apiResponse = [
                         'test_id'                       => $test_id,                        
                         'patient_name'                  => $patientdetails->name,
                         'patient_age'                   => $patientdetails->age,
