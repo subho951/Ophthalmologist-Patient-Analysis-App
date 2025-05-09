@@ -2290,7 +2290,9 @@ class ApiController extends Controller
                     // ];
                     
                     $apiResponse = [
-                        'test_id'                       => $test_id,                        
+                        'test_id'                       => $test_id,
+                        'sl_no'                         => $next_sl_no,
+                        'test_no'                       => $test_no,                         
                         'patient_name'                  => $patientdetails->name,
                         'patient_age'                   => $patientdetails->age,
                         'patient_gender'                => $patientdetails->gender,
@@ -2337,7 +2339,10 @@ class ApiController extends Controller
             $test_report = Test::where('id', '=', $requestData['test_id'])->first();
             $patientdetails = Patient::where('id', '=', $test_report->patient_id)->first();
             $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
-            $apiResponse = [                                               
+            $apiResponse = [ 
+                        'test_id'                       => $test_report->id, 
+                        'sl_no'                         => $test_report->sl_no,
+                        'test_no'                       => $test_report->test_no,                                             
                         'patient_name'                  => $patientdetails->name,
                         'patient_age'                   => $patientdetails->age,
                         'patient_gender'                => $patientdetails->gender,
@@ -2358,6 +2363,126 @@ class ApiController extends Controller
             $apiMessage         = $this->getResponseCode(http_response_code());
             $apiExtraField      = 'response_code';
             $apiExtraData       = http_response_code();
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
+
+    public function TestReports_list(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source', 'page_no', 'search_keyword'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $app_access_token           = $headerData['authorization'][0];
+            $getTokenValue              = $this->tokenAuth($app_access_token);
+            $page_no                    = $requestData['page_no'];
+            if($getTokenValue['status']){
+                $uId        = $getTokenValue['data'][1];  
+                $limit          = 2; // per page elements
+                if($page_no == 1){
+                    $offset = 0;
+                } else {
+                    $offset = (($limit * $page_no) - $limit); // ((15 * 3) - 15)
+                }
+                $query = Test::where('tests.status', 1)
+                    ->where('tests.doctor_id', $uId)
+                    ->join('patients', 'patients.id', '=', 'tests.patient_id')
+                    ->select('tests.*', 'patients.name as patient_name'); // Optional: include patient name in results
+
+                if (!empty($requestData['search_keyword'])) {
+                    $search = $requestData['search_keyword'];
+                    $query->where(function ($q) use ($search) {
+                        $q->where('tests.test_no', 'like', '%' . $search . '%')
+                        ->orWhere('patients.name', 'like', '%' . $search . '%');
+                    });
+                }
+
+                $tests = $query->orderBy('id', 'DESC')
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->get();
+                // $tests = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('id', 'DESC')->offset($offset)->limit($limit)->get();
+                if($tests){
+                    foreach ($tests as $row) {                        
+                        // $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
+                        // // Build comorbidity array
+                        // if ($comorbidities) {
+                        //     $comorbiditiesArray = 
+                        //         [
+                        //             'id' => $comorbidities->id,
+                        //             'name' => $comorbidities->name
+                        //         ];
+                        // } else {
+                        //     $comorbiditiesArray = null;
+                        // }
+
+                        // $country = Country::where('id', '=', $row->country)->first();                        
+                        // // Build comorbidity array
+                        // if ($country) {
+                        //     $countryArray =
+                        //         [
+                        //             'id' => $country->id,
+                        //             'name' => $country->name
+                        //         ];
+                        // } else {
+                        //     $countryArray = null;
+                        // }
+
+                        // $state = State::where('id', '=', $row->state)->first();                        
+                        // // Build comorbidity array
+                        // if ($state) {
+                        //     $stateArray = 
+                        //         [
+                        //             'id' => $state->id,
+                        //             'name' => $state->name
+                        //         ];
+                        // } else {
+                        //     $stateArray = null;
+                        // }
+
+                        $testReports = Test::where('status', 1)->where('patient_id', $row->id)->get();
+                        $tests = [];
+                        if($testReports){
+                            foreach($testReports as $testReport){
+                                $tests[] = [
+                                    'test_id'          => $testReport->id,
+                                    'test_no'           => $testReport->test_no,
+                                    'test_score'        => $testReport->test_score,
+                                    'test_result'       => $testReport->test_result,
+                                    'test_report_pdf'   => $testReport->test_report_pdf,
+                                ];
+                            }
+                        }
+
+                        $apiResponse[] = [
+                            'test_id'               => $row->id,
+                            'test_name'             => $row->test_no,
+                            'sl_no'                 => $row->sl_no,                            
+                            'patient_name'          => $row->patient_name,                    
+                            'doctor_name'           => $row->doctor_name,
+                           'daignosis_date'         => ($row->diagnosis_date)->format('Y-m-d'),
+                           'test_result'            => $row->test_result,
+                            // 'tests'                => $tests,
+                        ];                    
+                    }
+                }                                
+                $apiStatus          = TRUE;
+                $apiMessage         = 'Test listed Successfully !!!';                
+            } else {
+                $apiStatus          = FALSE;
+                $apiMessage         = $getTokenValue['data'];
+            }                        
+        } else {
+            $apiStatus          = FALSE;
+            $apiMessage         = 'Unauthenticate Request !!!';
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
