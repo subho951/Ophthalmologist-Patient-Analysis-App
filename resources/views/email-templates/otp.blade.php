@@ -25,11 +25,16 @@ $generalSetting             = GeneralSetting::find('1');
                 font-weight: 600;
                 letter-spacing: 25px;
                 color: #ba3d4f;
+                text-align: center;
               "
             >
-              123456
+              <span><?=substr($otp, 0, 1)?></span>
+              <span><?=substr($otp, 1, 1)?></span>
+              <span><?=substr($otp, 2, 1)?></span>
+              <span><?=substr($otp, 3, 1)?></span>
+              <span><?=substr($otp, 4, 1)?></span>
             </p>
-            <div style="width: 100%; margin: 0 auto; display: block; text-align: center;">
+            <!-- <div style="width: 100%; margin: 0 auto; display: block; text-align: center;">
                 <div style="padding: 12px; margin: 5px; border: 2px solid #f9233f;width: 17px; height: 17px; border-radius: 5px; display: block; text-align: center; font-size: 15px; float: left;
                 font-family: sans-serif;"><?=substr($otp, 0, 1)?></div>
                 <div style="padding: 12px; margin: 5px; border: 2px solid #f9233f;width: 17px; height: 17px; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 15px; float: left;
@@ -40,9 +45,9 @@ $generalSetting             = GeneralSetting::find('1');
                 font-family: sans-serif;"><?=substr($otp, 3, 1)?></div>
                 <div style="padding: 12px; margin: 5px; border: 2px solid #f9233f;width: 17px; height: 17px; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 15px;
                 font-family: sans-serif;"><?=substr($otp, 4, 1)?></div>
-                <!-- <div style="padding: 12px; margin: 5px; border: 2px solid #f9233f;width: 17px; height: 17px; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 15px;
-                font-family: sans-serif;"><?=substr($otp, 5, 1)?></div> -->
-            </div>            
+                <div style="padding: 12px; margin: 5px; border: 2px solid #f9233f;width: 17px; height: 17px; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 15px;
+                font-family: sans-serif;"><?=substr($otp, 5, 1)?></div>
+            </div>             -->
           </div>
         </div>
         <div style="border-top: 2px solid #ccc; margin-top: 50px; text-align: center; font-family: sans-serif;">
