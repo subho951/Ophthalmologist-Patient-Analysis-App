@@ -2180,12 +2180,15 @@ class ApiController extends Controller
                     /* test no generate */
 
                     /* tests table */
+                    $patientdetails = Patient::where('id', '=', $patient_id)->first();
+                    $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
                         $fields1 = [
                             'sl_no'                 => $next_sl_no,
                             'test_no'               => $test_no,
                             'doctor_id'             => $uId,
                             'patient_id'            => $patient_id,
-                            'doctor_name'           => (($getDoctor)?$getDoctor->name:''),
+                            // 'doctor_name'           => (($getDoctor)?$getDoctor->name:''),
+                            'doctor_name'           => (($patientdetails)?$patientdetails->doctor_name:''),
                             'diagnosis_date'        => date_format(date_create($diagnosis_date), "Y-m-d"),
                             'test_date'             => date('Y-m-d'),
                             'test_time'             => date('H:i:s'),
@@ -2285,8 +2288,7 @@ class ApiController extends Controller
                     //     'test_result'                   => $test_result,                                                
                     //     'test_report_pdf'               => $test_report_pdf,
                     // ];
-                    $patientdetails = Patient::where('id', '=', $patient_id)->first();
-                    $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
+                    
                     $apiResponse = [
                         'test_id'                       => $test_id,                        
                         'patient_name'                  => $patientdetails->name,
