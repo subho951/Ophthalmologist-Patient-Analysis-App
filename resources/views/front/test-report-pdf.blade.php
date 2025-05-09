@@ -24,7 +24,7 @@ use App\Helpers\Helper;
     }
 
     .container {
-      width: 350px;
+      width: 100%;
       margin: 0 auto;
       text-align: center;
     }
@@ -73,8 +73,8 @@ use App\Helpers\Helper;
     <?php if($test_report){?>
         <?php
         $getPatient            = Patient::where('id', '=', $test_report->patient_id)->first();
-        // echo $getPatient->comorbidities_id;
-        // Helper::pr($getPatient);
+        echo $getPatient->comorbidities_id;
+        Helper::pr($getPatient);
         // $getcomorbidity        = Comorbidity::select('name')->where('id', '=', (($getPatient)?$getPatient->comorbidities_id:'')->first();
         ?>
         <div class="container">
