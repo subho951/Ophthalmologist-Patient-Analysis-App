@@ -2174,11 +2174,11 @@ class ApiController extends Controller
                             // 'test_score'            => '',
                             // 'test_result'           => '',
                         ];
-                        Helper::pr($fields1);
+                        // Helper::pr($fields1);
                         // $test_id = Test::insertGetId($fields1);
                     /* tests table */
                     /* test_result_parameters table */
-
+                        Helper::pr($test_parameter);
                     /* test_result_parameters table */
                     
                     $apiStatus          = TRUE;
