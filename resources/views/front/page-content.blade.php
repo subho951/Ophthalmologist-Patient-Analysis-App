@@ -24,7 +24,7 @@
   <script src="<?=env('ADMIN_ASSETS_URL')?>assets/js/hs.theme-appearance.js"></script>
   <main id="content" role="main" class="main">
    <div class="container py-5 py-sm-7">
-  <section id="about" style="margin-top: 30px;">
+  <section id="about" <?php if($page->page_slug == 'privacy-policy') { echo 'class="privacy_policy"'; } ?>>
       <div class="container" data-tm-padding-bottom="220px">
          <a class="d-flex justify-content-center mb-5" href="javascript:void(0);">
            <img class="zi-2" src="<?=env('UPLOADS_URL').$generalSetting->site_logo?>" alt="Image Description" style="width: 8rem;">
