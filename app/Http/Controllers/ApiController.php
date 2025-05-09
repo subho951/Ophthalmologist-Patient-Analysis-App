@@ -1959,23 +1959,7 @@ class ApiController extends Controller
                 $uId        = $getTokenValue['data'][1]; 
                 $dob = new DateTime($requestData['dob']);
                 $today = new DateTime();
-                $age = $today->diff($dob);
-                $apiResponse = [
-                    'patient_name'         => $requestData['patient_name'],                    
-                    'dob'                  => $requestData['dob'], 
-                    'age'                  => $age->y,
-                    'mobile'               => $requestData['mobile'],
-                    'country_id'           => $requestData['country_id'],
-                    'state_id'             => $requestData['state_id'],
-                    'city'                 => $requestData['city'],                    
-                    'gender'               => $requestData['gender'],
-                    'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $requestData['comorbidities_id'],
-                    'comorbidities_note'   => $requestData['comorbidities_note'],
-                    'doctor_name'          => $requestData['doctor_name'],
-                    'diagnosis_date'       => $requestData['diagnosis_date'],
-                    'created_by'            => $uId                    
-                ];  
+                $age = $today->diff($dob);                
                 $fields = [
                     'doctor_id'            => $uId,
                     'name'                 => $requestData['patient_name'],
@@ -1995,7 +1979,25 @@ class ApiController extends Controller
                     'diagnosis_date'       => $requestData['diagnosis_date'],                   
                     'created_at'           => date('Y-m-d H:i:s'),
                 ];         
-                $patient = Patient::insert($fields);          
+                $patient = Patient::insertGetId($fields);   
+                
+                $apiResponse = [
+                    'patient_id'           => $patient,
+                    'patient_name'         => $requestData['patient_name'],                    
+                    'dob'                  => $requestData['dob'], 
+                    'age'                  => $age->y,
+                    'mobile'               => $requestData['mobile'],
+                    'country_id'           => $requestData['country_id'],
+                    'state_id'             => $requestData['state_id'],
+                    'city'                 => $requestData['city'],                    
+                    'gender'               => $requestData['gender'],
+                    'eye'                  => $requestData['eye'],
+                    'comorbidities_id'     => $requestData['comorbidities_id'],
+                    'comorbidities_note'   => $requestData['comorbidities_note'],
+                    'doctor_name'          => $requestData['doctor_name'],
+                    'diagnosis_date'       => $requestData['diagnosis_date'],
+                    'created_by'            => $uId                    
+                ];  
                                
                 $apiStatus          = TRUE;
                 $apiMessage         = 'Patient added Successfully !!!';                
