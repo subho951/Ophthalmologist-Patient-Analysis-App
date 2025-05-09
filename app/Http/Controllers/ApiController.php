@@ -2317,4 +2317,46 @@ class ApiController extends Controller
         }
         $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
     }
+
+    public function TestReportDetails(Request $request){
+        $apiStatus          = TRUE;
+        $apiMessage         = '';
+        $apiResponse        = [];
+        $apiExtraField      = '';
+        $apiExtraData       = '';
+        $requestData        = $request->all();
+        $requiredFields     = ['key', 'source', 'test_id'];
+        $headerData         = $request->header();
+        if (!$this->validateArray($requiredFields, $requestData)){
+            $apiStatus          = FALSE;
+            $apiMessage         = 'All Data Are Not Present !!!';
+        }
+        if($headerData['key'][0] == env('PROJECT_KEY')){
+            $test_report = Test::where('id', '=', $requestData['test_id'])->first();
+            $patientdetails = Patient::where('id', '=', $test_report->patient_id)->first();
+            $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
+            $apiResponse = [                                               
+                        'patient_name'                  => $patientdetails->name,
+                        'patient_age'                   => $patientdetails->age,
+                        'patient_gender'                => $patientdetails->gender,
+                        'patient_mobile'                => $patientdetails->phone,
+                        'affected_eye'                  => $patientdetails->eye,
+                        'co-morbidities_id'             => $comorbidities->name,
+                        'doctor_name'                   => (($test_report)?$test_report->doctor_name:''),
+                        'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "Y-m-d"),                        
+                        'test_result'                   => $test_report->test_result,                                                
+                        'test_report_pdf'               => $test_report->test_report_pdf,
+            ];
+            
+            $apiStatus          = TRUE;
+            $apiMessage         = 'Data Available !!!';            
+        } else {
+            http_response_code(200);
+            $apiStatus          = FALSE;
+            $apiMessage         = $this->getResponseCode(http_response_code());
+            $apiExtraField      = 'response_code';
+            $apiExtraData       = http_response_code();
+        }
+        $this->response_to_json($apiStatus, $apiMessage, $apiResponse, $apiExtraField, $apiExtraData);
+    }
 }

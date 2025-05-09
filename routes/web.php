@@ -181,5 +181,6 @@ Route::match(['get', 'post'], '/delete-account-update', 'App\Http\Controllers\Fr
         Route::match(['post'], 'add-patient', 'ApiController@addpatients');
         Route::match(['post'], 'patient-list', 'ApiController@patient_list');
         Route::match(['post'], 'add-test', 'ApiController@addTest');
+        Route::match(['post'], 'test-report-details', 'ApiController@TestReportDetails');
     });
 /* API */
