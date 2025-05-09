@@ -2242,7 +2242,7 @@ class ApiController extends Controller
                         $dompdf->setPaper('A4', 'portrait');
                         $dompdf->render();
                         $output                         = $dompdf->output();
-                        $dompdf->stream("document.pdf", array("Attachment" => true));die;
+                        // $dompdf->stream("document.pdf", array("Attachment" => true));die;
                         $filename                       = $test_no.'.pdf';
                         $pdfFilePath                    = 'public/uploads/test-report/' . $filename;
                         file_put_contents($pdfFilePath, $output);
