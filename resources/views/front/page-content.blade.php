@@ -15,6 +15,7 @@
   <!-- CSS Implementing Plugins -->
   <link rel="stylesheet" href="<?=env('ADMIN_ASSETS_URL')?>assets/css/vendor.min.css">
   <!-- CSS Front Template -->
+  <link rel="stylesheet" href="<?=env('FRONT_THEME_ASSETS_URL')?>assets/css/style.css">
   <link rel="stylesheet" href="<?=env('ADMIN_ASSETS_URL')?>assets/css/theme.minc619.css?v=1.0">
   <link rel="preload" href="<?=env('ADMIN_ASSETS_URL')?>assets/css/theme.min.css" data-hs-appearance="default" as="style">
   <link rel="preload" href="<?=env('ADMIN_ASSETS_URL')?>assets/css/theme-dark.min.css" data-hs-appearance="dark" as="style">
@@ -26,9 +27,9 @@
    <div class="container py-5 py-sm-7">
   <section id="about" <?php if($page->page_slug == 'privacy-policy') { echo 'class="privacy_policy"'; } ?>>
       <div class="container" data-tm-padding-bottom="220px">
-         <a class="d-flex justify-content-center mb-5" href="javascript:void(0);">
+         <!-- <a class="d-flex justify-content-center mb-5" href="javascript:void(0);">
            <img class="zi-2" src="<?=env('UPLOADS_URL').$generalSetting->site_logo?>" alt="Image Description" style="width: 8rem;">
-         </a>         
+         </a>          -->
          <h4><?=(($page)?$page->page_name:'')?></h4>
          <div class="section-content">
             <div class="row">
