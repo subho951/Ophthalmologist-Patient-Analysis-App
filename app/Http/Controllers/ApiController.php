@@ -2266,20 +2266,35 @@ class ApiController extends Controller
                     /* report pdf generate */
 
                     $currentDateTime = new DateTime(); // Gets current date and time
+                    // $apiResponse[] = [
+                    //     'test_id'                       => $test_id,
+                    //     'sl_no'                         => $next_sl_no,
+                    //     'test_no'                       => $test_no,
+                    //     'doctor_id'                     => $uId,
+                    //     'patient_id'                    => $patient_id,
+                    //     'doctor_name'                   => (($getDoctor)?$getDoctor->name:''),
+                    //     'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),
+                    //     'test_date'                     => $currentDateTime->format('F d, Y'),
+                    //     'test_time'                     => $currentDateTime->format('h:i A'),
+                    //     'test_total_weight'             => $test_total_weight,
+                    //     'test_fullscore'                => $test_fullscore,
+                    //     'test_score'                    => $test_score,
+                    //     'test_score_percentage'         => $test_score_percentage,
+                    //     'test_result'                   => $test_result,                                                
+                    //     'test_report_pdf'               => $test_report_pdf,
+                    // ];
+                    $patientdetails = Patient::where('id', '=', $patient_id)->first();
+                    $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
                     $apiResponse[] = [
-                        'test_id'                       => $test_id,
-                        'sl_no'                         => $next_sl_no,
-                        'test_no'                       => $test_no,
-                        'doctor_id'                     => $uId,
-                        'patient_id'                    => $patient_id,
+                        'test_id'                       => $test_id,                        
+                        'patient_name'                  => $patientdetails->name,
+                        'patient_age'                   => $patientdetails->age,
+                        'patient_gender'                => $patientdetails->gender,
+                        'patient_mobile'                => $patientdetails->phone,
+                        'affected_eye'                  => $patientdetails->eye,
+                        'co-morbidities_id'             => $comorbidities->name,
                         'doctor_name'                   => (($getDoctor)?$getDoctor->name:''),
-                        'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),
-                        'test_date'                     => $currentDateTime->format('F d, Y'),
-                        'test_time'                     => $currentDateTime->format('h:i A'),
-                        'test_total_weight'             => $test_total_weight,
-                        'test_fullscore'                => $test_fullscore,
-                        'test_score'                    => $test_score,
-                        'test_score_percentage'         => $test_score_percentage,
+                        'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),                        
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
                     ];
