@@ -2028,7 +2028,7 @@ class ApiController extends Controller
             $page_no                    = $requestData['page_no'];
             if($getTokenValue['status']){
                 $uId        = $getTokenValue['data'][1];  
-                $limit          = 2; // per page elements
+                $limit          = 15; // per page elements
                 if($page_no == 1){
                     $offset = 0;
                 } else {
