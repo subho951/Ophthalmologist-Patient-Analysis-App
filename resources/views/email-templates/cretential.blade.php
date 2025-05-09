@@ -17,8 +17,8 @@ $generalSetting             = GeneralSetting::find('1');
           <div>
             <h3 style="text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;">Hi, Welcome to <?=$generalSetting->site_name?>!</h3>
             <h4 style="text-align: center; font-family: sans-serif; color: #5c5b5b ;">Dear <?=htmlspecialchars($name)?>, <br> Thank you for registering with us. Below are your credentials to access the portal:</h4>
-            <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Email:</b><?=htmlspecialchars($email)?></h5>
-            <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Password:</b><?=htmlspecialchars($randomPassword)?></h5>                    
+            <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Email: </b><?=htmlspecialchars($email)?></h5>
+            <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Password: </b><?=htmlspecialchars($randomPassword)?></h5>                    
           </div>
         </div>
         <div style="border-top: 2px solid #ccc; margin-top: 50px; text-align: center; font-family: sans-serif;">
