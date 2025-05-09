@@ -2230,7 +2230,7 @@ class ApiController extends Controller
                         $test_no                = (($data['test_report'])?$data['test_report']->test_no:'');
                         $generalSetting                 = GeneralSetting::find('1');
                         $subject                        = $generalSetting->site_name . ' PCV Report' . $test_no;
-                        $message                        = view('front.pages.test-report-pdf',$data);
+                        $message                        = view('front.test-report-pdf',$data);
                         $options                        = new Options();
                         $options->set('defaultFont', 'Courier');
                         $dompdf                         = new Dompdf($options);
