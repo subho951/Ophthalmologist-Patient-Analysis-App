@@ -85,7 +85,7 @@ use App\Helpers\Helper;
                 <p><?=$test_report->test_no?></p>
             </div>
             <div class="metter_box">
-                <img src="speedo-metter.jpg" alt="" style="width: 100%; max-width: 100%; height: auto;">
+                <img src="speedo-metter.jpg" alt="" style="width: 100%; max-width: 200px; height: auto;">
             </div>
             <div class="status"><?=$test_report->test_result?></div>
 
