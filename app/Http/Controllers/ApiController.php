@@ -2418,6 +2418,7 @@ class ApiController extends Controller
                     foreach ($tests as $row) {     
                         $diagnosis_date = new DateTime($row->diagnosis_date);                                           
                         $apiResponse = [
+                            'doctor_id'             => $uId,
                             'test_id'               => $row->id,
                             'test_name'             => $row->test_no,
                             'sl_no'                 => $row->sl_no,                            
