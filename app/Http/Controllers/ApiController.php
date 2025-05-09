@@ -9,31 +9,25 @@ use Illuminate\Validation\Rule;
 use App\Models\Attendance;
 use App\Models\Banner;
 use App\Models\Country;
-use App\Models\Client;
-use App\Models\ClientType;
-use App\Models\ClientCheckIn;
-use App\Models\ClientOrder;
-use App\Models\ClientOrderDetail;
 use App\Models\District;
 use App\Models\DeleteAccountRequest;
 use App\Models\EmailLog;
-use App\Models\Employees;
-use App\Models\EmployeeType;
-use App\Models\Enquiry;
 use App\Models\GeneralSetting;
 use App\Models\Notification;
 use App\Models\NotificationTemplate;
 use App\Models\Odometer;
 use App\Models\Page;
-use App\Models\Product;
-use App\Models\ProductCategories;
-use App\Models\Quote;
-use App\Models\Size;
 use App\Models\State;
-use App\Models\Unit;
 use App\Models\UserActivity;
 use App\Models\User;
 use App\Models\UserDevice;
+use App\Models\Comorbidity;
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Test;
+use App\Models\TestResultParameter;
+use App\Models\TestParameter;
+use App\Models\TestTab;
 
 use Auth;
 use Session;
@@ -42,12 +36,6 @@ use Hash;
 use DB;
 use App\Libraries\CreatorJwt;
 use App\Libraries\JWT;
-use App\Models\Comorbidity;
-use App\Models\Doctor;
-use App\Models\Patient;
-use App\Models\Test;
-use App\Models\TestParameter;
-use App\Models\TestTab;
 use DateTime;
 
 date_default_timezone_set("Asia/Calcutta");
@@ -2146,10 +2134,59 @@ class ApiController extends Controller
 
             if($getTokenValue['status']){
                 $uId                = $getTokenValue['data'][1];
-                Helper::pr($requestData);
-                                               
-                $apiStatus          = TRUE;
-                $apiMessage         = 'Patient listed Successfully !!!';                
+                $getDoctor          = Doctor::where('id', $uId)->first();
+                if($getDoctor){
+                    foreach ($test_parameter as $tab) {
+                        foreach ($tab['parameters'] as $parameter) {
+                            if (!isset($parameter['selected_option']) || $parameter['selected_option'] === null || $parameter['selected_option'] === '') {
+                                $apiStatus          = FALSE;
+                                $apiMessage         = 'Please input all parameteres';
+                            }
+                        }
+                    }
+
+                    /* test no generate */
+                        $getLastOrder = Test::orderBy('id', 'DESC')->first();
+                        if($getLastOrder){
+                            $sl_no              = $getLastOrder->sl_no;
+                            $next_sl_no         = $sl_no + 1;
+                            $next_sl_no_string  = str_pad($next_sl_no, 6, 0, STR_PAD_LEFT);
+                            $test_no            = 'PCV-'.date('Y').'-'.$next_sl_no_string;
+                        } else {
+                            $next_sl_no         = 1;
+                            $next_sl_no_string  = str_pad($next_sl_no, 6, 0, STR_PAD_LEFT);
+                            $test_no            = 'PCV-'.date('Y').'-'.$next_sl_no_string;
+                        }
+                    /* test no generate */
+
+                    /* tests table */
+                        $fields1 = [
+                            'sl_no'                 => $next_sl_no,
+                            'test_no'               => $test_no,
+                            'doctor_id'             => $uId,
+                            'patient_id'            => $patient_id,
+                            'doctor_name'           => (($getDoctor)?$getDoctor->name:''),
+                            'diagnosis_date'        => date_format(date_create($diagnosis_date), "Y-m-d"),
+                            'test_date'             => date('Y-m-d'),
+                            'test_time'             => date('H:i:s'),
+                            // 'test_total_weight'     => '',
+                            // 'test_fullscore'        => '',
+                            // 'test_score'            => '',
+                            // 'test_result'           => '',
+                        ];
+                        Helper::pr($fields1);
+                        // $test_id = Test::insertGetId($fields1);
+                    /* tests table */
+                    /* test_result_parameters table */
+
+                    /* test_result_parameters table */
+                    
+                    $apiStatus          = TRUE;
+                    $apiMessage         = 'Patient listed Successfully !!!';  
+                } else {
+                    $apiStatus          = FALSE;
+                    $apiMessage         = 'Doctor not found';
+                }            
             } else {
                 $apiStatus          = FALSE;
                 $apiMessage         = $getTokenValue['data'];
