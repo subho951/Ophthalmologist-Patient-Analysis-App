@@ -2399,7 +2399,7 @@ class ApiController extends Controller
                 $query = Test::where('tests.status', 1)
                     ->where('tests.doctor_id', $uId)
                     ->join('patients', 'patients.id', '=', 'tests.patient_id')
-                    ->select('tests.*', 'patients.name as patient_name'); // Optional: include patient name in results
+                    ->select('tests.*', 'patients.name as patient_name', 'patients.phone as patient_mobile'); // Optional: include patient name in results
 
                 if (!empty($requestData['search_keyword'])) {
                     $search = $requestData['search_keyword'];
@@ -2423,6 +2423,7 @@ class ApiController extends Controller
                             'test_name'             => $row->test_no,
                             'sl_no'                 => $row->sl_no,                            
                             'patient_name'          => $row->patient_name,                    
+                            'patient_mobile'        => $row->patient_mobile,                    
                             'doctor_name'           => $row->doctor_name,
                            'daignosis_date'         => $diagnosis_date->format('Y-m-d'),
                            'test_score'          => $row->test_score,
