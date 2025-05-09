@@ -2131,7 +2131,7 @@ class ApiController extends Controller
             $patient_id                 = $requestData['patient_id'];
             $diagnosis_date             = $requestData['diagnosis_date'];
             $test_parameter             = $requestData['test_parameter'];
-
+            $generalSetting             = GeneralSetting::find(1);
             if($getTokenValue['status']){
                 $uId                = $getTokenValue['data'][1];
                 $getDoctor          = Doctor::where('id', $uId)->first();
@@ -2169,30 +2169,62 @@ class ApiController extends Controller
                             'diagnosis_date'        => date_format(date_create($diagnosis_date), "Y-m-d"),
                             'test_date'             => date('Y-m-d'),
                             'test_time'             => date('H:i:s'),
-                            // 'test_total_weight'     => '',
-                            // 'test_fullscore'        => '',
-                            // 'test_score'            => '',
-                            // 'test_result'           => '',
                         ];
                         $test_id = Test::insertGetId($fields1);
                     /* tests table */
                     /* test_result_parameters table */
-                        Helper::pr($test_parameter,0);
+                        // Helper::pr($test_parameter,0);
+                        $getParameterWeightSum          = TestParameter::where('status', 1)->sum('weight');
+                        $test_total_weight              = $getParameterWeightSum;
+                        $test_fullscore                 = 100;
+                        $test_score                     = 0;
+                        $test_score_percentage          = 0;
                         if($test_parameter){
                             foreach($test_parameter as $tm){
                                 $test_tab_id    = $tm['tab_id'];
                                 $parameters     = $tm['parameters'];
-                                $fields2        = [
-                                    'test_id'                           => $test_id,
-                                    'test_tab_id'                       => $test_tab_id,
-                                    'test_parameter_id'                 => $uId,
-                                    'test_parameter_value'              => $patient_id,
-                                    'test_parameter_weight'             => (($getDoctor)?$getDoctor->name:''),
-                                ];
-                                Helper::pr($fields2,0);
+                                if($parameters){
+                                    foreach($parameters as $parameter){
+                                        $param_id           = $parameter['id'];
+                                        $selected_option    = $parameter['selected_option'];
+                                        $getParameter       = TestParameter::where('id', $param_id)->first();
+                                        if($selected_option){
+                                            $test_parameter_weight = (($getParameter)?$getParameter->weight:0);
+                                            $test_score += $test_parameter_weight;
+                                        } else {
+                                            $test_parameter_weight = 0;
+                                        }
+                                        $fields2            = [
+                                            'test_id'                           => $test_id,
+                                            'test_tab_id'                       => $test_tab_id,
+                                            'test_parameter_id'                 => $param_id,
+                                            'test_parameter_value'              => $selected_option,
+                                            'test_parameter_weight'             => $test_parameter_weight,
+                                        ];
+                                        Helper::pr($fields2,0);
+                                        // TestResultParameter::insert($fields2);
+                                    }
+                                }
                             }
                         }
                     /* test_result_parameters table */
+                    /* update test scores in tests table */
+                        $test_score_percentage = (($test_score / $test_total_weight) * 100);
+                        if($test_score >= $generalSetting->test_result_cut_off_marks){
+                            $test_result = 'Positive';
+                        } else {
+                            $test_result = 'Negative';
+                        }
+                        $fields3            = [
+                            'test_total_weight'             => $test_total_weight,
+                            'test_fullscore'                => $test_fullscore,
+                            'test_score'                    => $test_score,
+                            'test_score_percentage'         => $test_score_percentage,
+                            'test_result'                   => $test_result,
+                        ];
+                        Helper::pr($fields3,0);
+                        // Test::where('id', $test_id)->update($fields3);
+                    /* update test scores in tests table */
                     die;
                     
                     $apiStatus          = TRUE;
