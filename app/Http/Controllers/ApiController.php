@@ -2415,14 +2415,15 @@ class ApiController extends Controller
                     ->get();
                 // $tests = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('id', 'DESC')->offset($offset)->limit($limit)->get();
                 if($tests){
-                    foreach ($tests as $row) {                                                
+                    foreach ($tests as $row) {     
+                        $diagnosis_date = new DateTime($row->diagnosis_date);                                           
                         $apiResponse = [
                             'test_id'               => $row->id,
                             'test_name'             => $row->test_no,
                             'sl_no'                 => $row->sl_no,                            
                             'patient_name'          => $row->patient_name,                    
                             'doctor_name'           => $row->doctor_name,
-                           'daignosis_date'         => ($row->diagnosis_date)->format('Y-m-d'),
+                           'daignosis_date'         => $diagnosis_date->format('Y-m-d'),
                            'test_score'          => $row->test_score,
                             'test_score_percentage' => $row->test_score_percentage,                            
                             'test_report_pdf'       => $row->test_report_pdf,                           
