@@ -2093,6 +2093,7 @@ class ApiController extends Controller
                         if($testReports){
                             foreach($testReports as $testReport){
                                 $tests[] = [
+                                    'test_id'          => $testReport->id,
                                     'test_no'           => $testReport->test_no,
                                     'test_score'        => $testReport->test_score,
                                     'test_result'       => $testReport->test_result,
