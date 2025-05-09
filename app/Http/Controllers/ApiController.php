@@ -2415,57 +2415,7 @@ class ApiController extends Controller
                     ->get();
                 // $tests = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('id', 'DESC')->offset($offset)->limit($limit)->get();
                 if($tests){
-                    foreach ($tests as $row) {                        
-                        // $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
-                        // // Build comorbidity array
-                        // if ($comorbidities) {
-                        //     $comorbiditiesArray = 
-                        //         [
-                        //             'id' => $comorbidities->id,
-                        //             'name' => $comorbidities->name
-                        //         ];
-                        // } else {
-                        //     $comorbiditiesArray = null;
-                        // }
-
-                        // $country = Country::where('id', '=', $row->country)->first();                        
-                        // // Build comorbidity array
-                        // if ($country) {
-                        //     $countryArray =
-                        //         [
-                        //             'id' => $country->id,
-                        //             'name' => $country->name
-                        //         ];
-                        // } else {
-                        //     $countryArray = null;
-                        // }
-
-                        // $state = State::where('id', '=', $row->state)->first();                        
-                        // // Build comorbidity array
-                        // if ($state) {
-                        //     $stateArray = 
-                        //         [
-                        //             'id' => $state->id,
-                        //             'name' => $state->name
-                        //         ];
-                        // } else {
-                        //     $stateArray = null;
-                        // }
-
-                        // $testReports = Test::where('status', 1)->where('patient_id', $row->id)->get();
-                        // $tests = [];
-                        // if($testReports){
-                        //     foreach($testReports as $testReport){
-                        //         $tests[] = [
-                        //             'test_id'          => $testReport->id,
-                        //             'test_no'           => $testReport->test_no,
-                        //             'test_score'        => $testReport->test_score,
-                        //             'test_result'       => $testReport->test_result,
-                        //             'test_report_pdf'   => $testReport->test_report_pdf,
-                        //         ];
-                        //     }
-                        // }
-
+                    foreach ($tests as $row) {                                                
                         $apiResponse = [
                             'test_id'               => $row->id,
                             'test_name'             => $row->test_no,
