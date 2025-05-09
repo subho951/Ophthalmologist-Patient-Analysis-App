@@ -2226,7 +2226,25 @@ class ApiController extends Controller
                         Test::where('id', $test_id)->update($fields3);
                     /* update test scores in tests table */
                     /* report pdf generate */
-
+                        $data['test_report']            = Test::where('id', '=', $test_id)->first();
+                        $test_no                = (($data['test_report'])?$data['test_report']->test_no:'');
+                        $generalSetting                 = GeneralSetting::find('1');
+                        $subject                        = $generalSetting->site_name . ' PCV Report' . $test_no;
+                        $message                        = view('front.pages.test-report-pdf',$data);
+                        $options                        = new Options();
+                        $options->set('defaultFont', 'Courier');
+                        $dompdf                         = new Dompdf($options);
+                        $html                           = $message;
+                        $dompdf->loadHtml($html);
+                        $dompdf->setPaper('A4', 'portrait');
+                        $dompdf->render();
+                        $output                         = $dompdf->output();
+                        $dompdf->stream("document.pdf", array("Attachment" => true));die;
+                        $filename                       = $test_no.'.pdf';
+                        $pdfFilePath                    = 'public/uploads/test-report/' . $filename;
+                        file_put_contents($pdfFilePath, $output);
+                        $test_report_pdf                = env('UPLOADS_URL').'test-report/' . $filename;
+                        Test::where('id', '=', $test_id)->update(['test_report_pdf' => $test_report_pdf]);
                     /* report pdf generate */
                     
                     $apiStatus          = TRUE;
