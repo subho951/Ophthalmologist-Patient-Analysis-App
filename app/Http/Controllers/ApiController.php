@@ -2180,10 +2180,11 @@ class ApiController extends Controller
                         Helper::pr($test_parameter,0);
                         if($test_parameter){
                             foreach($test_parameter as $tm){
-                                $test_tab_id = $tm['tab_id'];
-                                $fields2 = [
+                                $test_tab_id    = $tm['tab_id'];
+                                $parameters     = $tm['parameters'];
+                                $fields2        = [
                                     'test_id'                           => $test_id,
-                                    'test_tab_id'                       => $test_no,
+                                    'test_tab_id'                       => $test_tab_id,
                                     'test_parameter_id'                 => $uId,
                                     'test_parameter_value'              => $patient_id,
                                     'test_parameter_weight'             => (($getDoctor)?$getDoctor->name:''),
