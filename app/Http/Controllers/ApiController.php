@@ -2264,6 +2264,23 @@ class ApiController extends Controller
                         $test_report_pdf                = env('UPLOADS_URL').'test-report/' . $filename;
                         Test::where('id', '=', $test_id)->update(['test_report_pdf' => $test_report_pdf]);
                     /* report pdf generate */
+                    $apiResponse[] = [
+                        'test_id'                       => $test_id,
+                        'sl_no'                         => $next_sl_no,
+                        'test_no'                       => $test_no,
+                        'doctor_id'                     => $uId,
+                        'patient_id'                    => $patient_id,
+                        'doctor_name'                   => (($getDoctor)?$getDoctor->name:''),
+                        'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),
+                        'test_date'                     => new DateTime(date('Y-m-d'))->format('F d, Y'),
+                        'test_time'                     => new DateTime(date('H:i:s'))->format('h:i A'),
+                        'test_total_weight'             => $test_total_weight,
+                        'test_fullscore'                => $test_fullscore,
+                        'test_score'                    => $test_score,
+                        'test_score_percentage'         => $test_score_percentage,
+                        'test_result'                   => $test_result,                                                
+                        'test_report_pdf'               => $test_report_pdf,
+                    ];
                     
                     $apiStatus          = TRUE;
                     $apiMessage         = 'Test added successfully !!!';  
