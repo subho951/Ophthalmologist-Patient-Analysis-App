@@ -36,6 +36,9 @@ use Hash;
 use DB;
 use App\Libraries\CreatorJwt;
 use App\Libraries\JWT;
+use PDF;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use DateTime;
 
 date_default_timezone_set("Asia/Calcutta");
