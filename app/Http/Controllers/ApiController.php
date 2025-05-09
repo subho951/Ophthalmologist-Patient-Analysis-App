@@ -2201,8 +2201,8 @@ class ApiController extends Controller
                                             'test_parameter_value'              => $selected_option,
                                             'test_parameter_weight'             => $test_parameter_weight,
                                         ];
-                                        Helper::pr($fields2,0);
-                                        // TestResultParameter::insert($fields2);
+                                        // Helper::pr($fields2,0);
+                                        TestResultParameter::insert($fields2);
                                     }
                                 }
                             }
@@ -2222,13 +2222,15 @@ class ApiController extends Controller
                             'test_score_percentage'         => $test_score_percentage,
                             'test_result'                   => $test_result,
                         ];
-                        Helper::pr($fields3,0);
-                        // Test::where('id', $test_id)->update($fields3);
+                        // Helper::pr($fields3,0);
+                        Test::where('id', $test_id)->update($fields3);
                     /* update test scores in tests table */
-                    die;
+                    /* report pdf generate */
+
+                    /* report pdf generate */
                     
                     $apiStatus          = TRUE;
-                    $apiMessage         = 'Patient listed Successfully !!!';  
+                    $apiMessage         = 'Test added successfully !!!';  
                 } else {
                     $apiStatus          = FALSE;
                     $apiMessage         = 'Doctor not found';
