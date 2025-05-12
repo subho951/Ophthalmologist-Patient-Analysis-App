@@ -7,6 +7,23 @@ $generalSetting             = GeneralSetting::find('1');
   <head>
     <title><?=$generalSetting->site_name?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+      .otp_text{
+        margin: 0;
+        margin-top: 60px;
+        font-size: 40px;
+        font-weight: 600;
+        letter-spacing: 25px;
+        color: #ba3d4f;
+        text-align: center;
+      }
+      @media (max-width: 768px) {
+        .otp_text{
+          font-size: 30px;
+          letter-spacing: 15px;
+        }
+      }
+    </style>
   </head>
   <body style="padding: 0; margin: 0; box-sizing: border-box;">
     <section style="padding: 80px 0; height: 80vh; margin: 0 15px;">
@@ -17,17 +34,7 @@ $generalSetting             = GeneralSetting::find('1');
           <div>
             <h3 style="text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;">Hi, Welcome to PCV predictor app!</h3>
             <h4 style="text-align: center; font-family: sans-serif; color: #5c5b5b ;">Your OTP For Email Validation</h4>
-            <p
-              style="
-                margin: 0;
-                margin-top: 60px;
-                font-size: 40px;
-                font-weight: 600;
-                letter-spacing: 25px;
-                color: #ba3d4f;
-                text-align: center;
-              "
-            >
+            <p class="otp_text">
               <span><?=substr($otp, 0, 1)?></span>
               <span><?=substr($otp, 1, 1)?></span>
               <span><?=substr($otp, 2, 1)?></span>
