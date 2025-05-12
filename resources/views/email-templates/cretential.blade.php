@@ -15,14 +15,14 @@ $generalSetting             = GeneralSetting::find('1');
               <img src="<?=env('UPLOADS_URL').$generalSetting->site_logo?>" alt="" style=" width: 100%; max-width: 250px;">
           </div>
           <div>
-            <h3 style="text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;">Hi, Welcome to PCV predictor app!</h3>
+            <h3 style="text-align: center; font-size: 25px; color: #5c5b5b; font-family: sans-serif;">Hi, Welcome to PCV Predictor App!</h3>
             <h4 style="text-align: center; font-family: sans-serif; color: #5c5b5b ;">Dear <?=htmlspecialchars($name)?>, <br> Thank you for registering with us. Below are your credentials to access the portal:</h4>
             <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Email: </b><?=htmlspecialchars($email)?></h5>
             <h5 style='text-align: center; font-family: sans-serif; color: #5c5b5b ;'><b>Password: </b><?=htmlspecialchars($randomPassword)?></h5>                    
           </div>
         </div>
         <div style="border-top: 2px solid #ccc; margin-top: 50px; text-align: center; font-family: sans-serif;">
-          <div style="text-align: center; margin: 15px 0 10px;">PCV predictor app</div>
+          <div style="text-align: center; margin: 15px 0 10px;">PCV Predictor App</div>
           <!-- <div style="text-align: center; margin: 15px 0 10px;">Phone: <?=$generalSetting->site_phone?></div> -->
           <div style="text-align: center; margin: 15px 0 10px;">Email: <?=$generalSetting->site_mail?></div>
         </div>

@@ -2352,6 +2352,7 @@ class ApiController extends Controller
                         'patient_mobile'                => $patientdetails->phone,
                         'affected_eye'                  => $patientdetails->eye,
                         'co-morbidities_id'             => $comorbidities->name,
+                        'co-morbidities_note'           => $patientdetails->comorbidities_note,
                         'doctor_name'                   => (($test_report)?$test_report->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "Y-m-d"),  
                         'test_score'                  => $test_report->test_score,
