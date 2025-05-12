@@ -27,7 +27,7 @@ $user_type = session('type');
       <!-- <span class="app-brand-logo demo">
          <img src="<?=env('UPLOADS_URL')?><?=$generalSetting->site_logo?>">
       </span> -->
-      <span class="app-brand-text demo menu-text fw-bold ms-2" style="text-transform: uppercase;font-size: 23px;"><?=$generalSetting->site_name?></span>
+      <span class="app-brand-text demo menu-text fw-bold ms-2" style="text-transform: uppercase;font-size: 20px;"><?=$generalSetting->site_name?></span>
    </a>
    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
    <i class="bx bx-chevron-left bx-sm align-middle"></i>

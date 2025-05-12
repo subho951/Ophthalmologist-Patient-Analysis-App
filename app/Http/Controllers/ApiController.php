@@ -194,7 +194,8 @@ class ApiController extends Controller
                             'otp'   => $remember_token,
                         ];
                         $generalSetting             = GeneralSetting::find('1');
-                        $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
+                        $subject                    = 'PCV predictor app :: SignUp Validate OTP';
+                        // $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
                         $message                    = view('email-templates.otp',$mailData);
                         $this->sendMail($email, $subject, $message);             
                         /* email log save */
@@ -240,7 +241,8 @@ class ApiController extends Controller
                         'otp'   => $remember_token,
                     ];
                     $generalSetting             = GeneralSetting::find('1');
-                    $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
+                    $subject                    = 'PCV predictor app :: SignUp Validate OTP';
+                    // $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
                     $message                    = view('email-templates.otp',$mailData);
                     $this->sendMail($email, $subject, $message);             
                     /* email log save */
@@ -347,7 +349,8 @@ class ApiController extends Controller
                             'randomPassword'   => $randomPassword,
                         ];
                         $generalSetting             = GeneralSetting::find('1');
-                        $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';                                                                      
+                        $subject                    = 'PCV predictor app :: Your Login Credentials for Portal Access';                                                                      
+                        // $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';                                                                      
                         $message                    = view('email-templates.cretential',$mailData);
                         $this->sendMail($checkUser->email, $subject, $message);
                         /* email log save */
@@ -539,7 +542,8 @@ class ApiController extends Controller
                             'otp'   => $remember_token,
                         ];
                         $generalSetting             = GeneralSetting::find('1');
-                        $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
+                        $subject                    = 'PCV predictor app :: SignUp Validate OTP';
+                        // $subject                    = $generalSetting->site_name.' :: SignUp Validate OTP';
                         $message                    = view('email-templates.otp',$mailData);
                         $this->sendMail($email, $subject, $message);             
                         /* email log save */
@@ -562,7 +566,8 @@ class ApiController extends Controller
                             'otp'   => $remember_token,
                         ];
                         $generalSetting             = GeneralSetting::find('1');
-                        $subject                    = $generalSetting->site_name.' :: SignIn Validate OTP';
+                        $subject                    = 'PCV predictor app :: SignIn Validate OTP';
+                        // $subject                    = $generalSetting->site_name.' :: SignIn Validate OTP';
                         $message                    = view('email-templates.otp',$mailData);
                         $this->sendMail($checkUser->email, $subject, $message);
 
@@ -680,7 +685,8 @@ class ApiController extends Controller
                                 'randomPassword'   => $randomPassword,
                             ];
                             $generalSetting             = GeneralSetting::find('1');
-                            $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';
+                            $subject                    = 'PCV predictor app :: Your Login Credentials for Portal Access';
+                            // $subject                    = $generalSetting->site_name.' :: Your Login Credentials for Portal Access';
                             $message                    = view('email-templates.cretential',$mailData);
                             $this->sendMail($checkUser->email, $subject, $message);
                             /* email log save */
@@ -822,7 +828,8 @@ class ApiController extends Controller
                         'otp'   => $remember_token,
                     ];
                     $generalSetting             = GeneralSetting::find('1');
-                    $subject                    = $generalSetting->site_name.' :: Forgot Password OTP';
+                    $subject                    = 'PCV predictor app :: Forgot Password OTP';
+                    // $subject                    = $generalSetting->site_name.' :: Forgot Password OTP';
                     $message                    = view('email-templates.otp',$mailData);
                     $this->sendMail($requestData['email'], $subject, $message);
 
@@ -938,7 +945,8 @@ class ApiController extends Controller
                         'otp'   => $remember_token,
                     ];
                     $generalSetting             = GeneralSetting::find('1');
-                    $subject                    = $generalSetting->site_name.' :: Resend OTP';
+                    $subject                    = 'PCV predictor app :: Resend OTP';
+                    // $subject                    = $generalSetting->site_name.' :: Resend OTP';
                     $message                    = view('email-templates.otp',$mailData);
                     $this->sendMail($getUser->email, $subject, $message);
 
@@ -1001,7 +1009,8 @@ class ApiController extends Controller
                             ];
 
                             $generalSetting             = GeneralSetting::find('1');
-                            $subject                    = $generalSetting->site_name.' :: Reset Password';
+                            $subject                    = 'PCV predictor app :: Reset Password';
+                            // $subject                    = $generalSetting->site_name.' :: Reset Password';
                             $message                    = view('email-templates.change-password',$mailData);
                             $this->sendMail($getUser->email, $subject, $message);
 
@@ -1183,7 +1192,8 @@ class ApiController extends Controller
                                     Doctor::where('id', '=', $uId)->update($fields);
                                     // new password send mail
                                         $generalSetting                 = GeneralSetting::find('1');
-                                        $subject                        = $generalSetting->site_name.' Change Password';
+                                        $subject                        = 'PCV predictor app Change Password';
+                                        // $subject                        = $generalSetting->site_name.' Change Password';
                                         $mailData['name']               = $getUser->name;
                                         $mailData['email']              = $getUser->email;
                                         $message                        = view('email-templates/change-password', $mailData);
