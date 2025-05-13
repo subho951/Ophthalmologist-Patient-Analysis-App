@@ -1946,7 +1946,7 @@ class ApiController extends Controller
         $apiExtraField      = '';
         $apiExtraData       = '';
         $requestData        = $request->all();
-        $requiredFields     = ['key', 'source', 'patient_name', 'dob', 'mobile', 'country_id', 'state_id', 'city', 'gender', 'eye', 'comorbidities_id', 'comorbidities_note', 'doctor_name', 'diagnosis_date'];
+        $requiredFields     = ['key', 'source', 'patient_name', 'dob', 'mobile', 'country_id', 'state_id', 'city', 'gender', 'eye', 'comorbidities_id', 'comorbidities_note', 'doctor_name'];
         $headerData         = $request->header();
         if (!$this->validateArray($requiredFields, $requestData)){
             $apiStatus          = FALSE;
@@ -1977,8 +1977,7 @@ class ApiController extends Controller
                     'eye'                  => $requestData['eye'],
                     'comorbidities_id'     => $formattedComorbidities,
                     'comorbidities_note'   => !empty($requestData['comorbidities_note']) ? $requestData['comorbidities_note'] : null,
-                    'doctor_name'          => $requestData['doctor_name'],
-                    'diagnosis_date'       => $requestData['diagnosis_date'],                   
+                    'doctor_name'          => $requestData['doctor_name'],                                      
                     'created_at'           => date('Y-m-d H:i:s'),
                 ];         
                 $patient = Patient::insertGetId($fields);   
@@ -2005,8 +2004,7 @@ class ApiController extends Controller
                     'eye'                  => $requestData['eye'],
                     'comorbidities_id'     => $comorbiditiesArray,
                     'comorbidities_note'   => $requestData['comorbidities_note'],
-                    'doctor_name'          => $requestData['doctor_name'],
-                    'diagnosis_date'       => $requestData['diagnosis_date'],
+                    'doctor_name'          => $requestData['doctor_name'],                    
                     'created_by'            => $uId                    
                 ];  
                                
