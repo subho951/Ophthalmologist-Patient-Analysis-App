@@ -1959,7 +1959,17 @@ class ApiController extends Controller
                 $uId        = $getTokenValue['data'][1]; 
                 $dob = new DateTime($requestData['dob']);
                 $today = new DateTime();
-                $age = $today->diff($dob);                
+                $age = $today->diff($dob);    
+
+                $comorbiditiesArray = json_decode($requestData['comorbidities_id'], true);
+                    $formattedComorbidities = [];
+                    if (is_array($comorbiditiesArray)) {
+                        foreach ($comorbiditiesArray as $comorbiditiesValue) {
+                            $formattedComorbidities[] = [
+                                'id' => $comorbiditiesValue,                                
+                            ];
+                        }
+                    }          
                 $fields = [
                     'doctor_id'            => $uId,
                     'name'                 => $requestData['patient_name'],
@@ -1992,7 +2002,7 @@ class ApiController extends Controller
                     'city'                 => $requestData['city'],                    
                     'gender'               => $requestData['gender'],
                     'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $requestData['comorbidities_id'],
+                    'comorbidities_id'     => $formattedComorbidities,
                     'comorbidities_note'   => $requestData['comorbidities_note'],
                     'doctor_name'          => $requestData['doctor_name'],
                     'diagnosis_date'       => $requestData['diagnosis_date'],
