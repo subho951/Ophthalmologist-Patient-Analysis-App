@@ -1961,7 +1961,7 @@ class ApiController extends Controller
                 $today = new DateTime();
                 $age = $today->diff($dob);    
 
-                $comorbiditiesArray = json_decode($requestData['comorbidities_id'], true);
+                $comorbiditiesArray = json_encode($requestData['comorbidities_id'], true);
                     $formattedComorbidities = [];
                     if (is_array($comorbiditiesArray)) {
                         foreach ($comorbiditiesArray as $comorbiditiesValue) {
