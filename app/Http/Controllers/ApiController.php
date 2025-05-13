@@ -1991,8 +1991,8 @@ class ApiController extends Controller
                     'created_at'           => date('Y-m-d H:i:s'),
                 ];         
                 $patient = Patient::insertGetId($fields);   
-                $comorbidities = json_decode($formattedComorbidities);
-                foreach($comorbidities as $comorbidity){
+                $comorbidities_id = json_decode($formattedComorbidities);
+                foreach($comorbidities_id as $comorbidity){
                     $comorbidities = Comorbidity::where('id', '=', $comorbidity)->first();
                     if($comorbidities){
                         $comorbiditiesArray[]=[
@@ -2073,18 +2073,28 @@ class ApiController extends Controller
                     ->get();
                 // $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('id', 'DESC')->offset($offset)->limit($limit)->get();
                 if($patients){
-                    foreach ($patients as $row) {                        
-                        $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
-                        // Build comorbidity array
-                        if ($comorbidities) {
-                            $comorbiditiesArray = 
-                                [
+                    foreach ($patients as $row) {     
+                        $comorbidities_id = json_decode($row->comorbidities_id);
+                        foreach($comorbidities_id as $comorbidity){
+                            $comorbidities = Comorbidity::where('id', '=', $comorbidity)->first();
+                            if($comorbidities){
+                                $comorbiditiesArray[]=[
                                     'id' => $comorbidities->id,
                                     'name' => $comorbidities->name
-                                ];
-                        } else {
-                            $comorbiditiesArray = null;
-                        }
+                                ];                        
+                            }   else {
+                                $comorbiditiesArray = null;
+                            }                   
+                        }                 
+                        // $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
+                        // // Build comorbidity array
+                        // if ($comorbidities) {
+                        //     $comorbiditiesArray = 
+                        //         [
+                        //             'id' => $comorbidities->id,
+                        //             'name' => $comorbidities->name
+                        //         ];
+                        // } 
 
                         $country = Country::where('id', '=', $row->country)->first();                        
                         // Build comorbidity array
