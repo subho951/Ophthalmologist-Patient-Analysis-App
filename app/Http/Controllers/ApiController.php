@@ -1983,7 +1983,7 @@ class ApiController extends Controller
                     'pincode'              => !empty($requestData['pincode']) ? $requestData['pincode'] : null,
                     'gender'               => $requestData['gender'],
                     'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $requestData['comorbidities_id'],
+                    'comorbidities_id'     => json_encode($requestData['comorbidities_id'], true),
                     'comorbidities_note'   => !empty($requestData['comorbidities_note']) ? $requestData['comorbidities_note'] : null,
                     'doctor_name'          => $requestData['doctor_name'],
                     'diagnosis_date'       => $requestData['diagnosis_date'],                   
