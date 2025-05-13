@@ -1960,16 +1960,7 @@ class ApiController extends Controller
                 $dob = new DateTime($requestData['dob']);
                 $today = new DateTime();
                 $age = $today->diff($dob);    
-
-                // $comorbiditiesArray = json_encode($requestData['comorbidities_id'], true);
-                //     $formattedComorbidities = [];
-                //     if (is_array($comorbiditiesArray)) {
-                //         foreach ($comorbiditiesArray as $comorbiditiesValue) {
-                //             $formattedComorbidities[] = [
-                //                 'id' => $comorbiditiesValue,                                
-                //             ];
-                //         }
-                //     }   
+                
                 $formattedComorbidities = json_encode($requestData['comorbidities_id']);       
                 $fields = [
                     'doctor_id'            => $uId,
@@ -2071,7 +2062,7 @@ class ApiController extends Controller
                     ->offset($offset)
                     ->limit($limit)
                     ->get();
-                // $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('id', 'DESC')->offset($offset)->limit($limit)->get();
+                
                 if($patients){
                     foreach ($patients as $row) {     
                         $comorbiditiesArray = [];
@@ -2088,16 +2079,7 @@ class ApiController extends Controller
                             }
                         } else {
                             $comorbiditiesArray = null;
-                        }                
-                        // $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
-                        // // Build comorbidity array
-                        // if ($comorbidities) {
-                        //     $comorbiditiesArray = 
-                        //         [
-                        //             'id' => $comorbidities->id,
-                        //             'name' => $comorbidities->name
-                        //         ];
-                        // } 
+                        }                                        
 
                         $country = Country::where('id', '=', $row->country)->first();                        
                         // Build comorbidity array
@@ -2215,7 +2197,24 @@ class ApiController extends Controller
 
                     /* tests table */
                     $patientdetails = Patient::where('id', '=', $patient_id)->first();
-                    $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
+                    // $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
+
+                    $comorbiditiesArray = [];
+                        $comorbidities_id = json_decode($patientdetails->comorbidities_id);
+                        if (is_array($comorbidities_id)) {
+                            foreach ($comorbidities_id as $comorbidity) {
+                                $comorbidityData = Comorbidity::where('id', $comorbidity)->first();
+                                if ($comorbidityData) {
+                                    $comorbiditiesArray[] = [
+                                        'id' => $comorbidityData->id,
+                                        'name' => $comorbidityData->name
+                                    ];
+                                }
+                            }
+                        } else {
+                            $comorbiditiesArray = null;
+                        }                                        
+
                         $fields1 = [
                             'sl_no'                 => $next_sl_no,
                             'test_no'               => $test_no,
@@ -2304,24 +2303,7 @@ class ApiController extends Controller
                         Test::where('id', '=', $test_id)->update(['test_report_pdf' => $test_report_pdf]);
                     /* report pdf generate */
 
-                    $currentDateTime = new DateTime(); // Gets current date and time
-                    // $apiResponse[] = [
-                    //     'test_id'                       => $test_id,
-                    //     'sl_no'                         => $next_sl_no,
-                    //     'test_no'                       => $test_no,
-                    //     'doctor_id'                     => $uId,
-                    //     'patient_id'                    => $patient_id,
-                    //     'doctor_name'                   => (($getDoctor)?$getDoctor->name:''),
-                    //     'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),
-                    //     'test_date'                     => $currentDateTime->format('F d, Y'),
-                    //     'test_time'                     => $currentDateTime->format('h:i A'),
-                    //     'test_total_weight'             => $test_total_weight,
-                    //     'test_fullscore'                => $test_fullscore,
-                    //     'test_score'                    => $test_score,
-                    //     'test_score_percentage'         => $test_score_percentage,
-                    //     'test_result'                   => $test_result,                                                
-                    //     'test_report_pdf'               => $test_report_pdf,
-                    // ];
+                    $currentDateTime = new DateTime(); // Gets current date and time                    
                     
                     $apiResponse = [
                         'test_id'                       => $test_id,
@@ -2332,7 +2314,7 @@ class ApiController extends Controller
                         'patient_gender'                => $patientdetails->gender,
                         'patient_mobile'                => $patientdetails->phone,
                         'affected_eye'                  => $patientdetails->eye,
-                        'co-morbidities_id'             => $comorbidities->name,
+                        'co-morbidities_id'             => $comorbiditiesArray,
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
                         'test_score'                  => $test_score,
