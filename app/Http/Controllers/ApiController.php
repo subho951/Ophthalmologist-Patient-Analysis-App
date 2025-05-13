@@ -2127,6 +2127,7 @@ class ApiController extends Controller
                             'gender'               => $row->gender,
                             'mobile'               => $row->phone,
                             'comorbidities_id'     => $comorbiditiesArray,  
+                            'comorbidities_note'   => $row->comorbidities_note,
                             'country'              => $countryArray, 
                             'state'                => $stateArray,
                             'city'                 => $row->city,
