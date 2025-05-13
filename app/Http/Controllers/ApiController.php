@@ -2356,7 +2356,22 @@ class ApiController extends Controller
         if($headerData['key'][0] == env('PROJECT_KEY')){
             $test_report = Test::where('id', '=', $requestData['test_id'])->first();
             $patientdetails = Patient::where('id', '=', $test_report->patient_id)->first();
-            $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
+            // $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
+            $comorbiditiesArray = [];
+            $comorbidities_id = json_decode($patientdetails->comorbidities_id);
+            if (is_array($comorbidities_id)) {
+                foreach ($comorbidities_id as $comorbidity) {
+                    $comorbidityData = Comorbidity::where('id', $comorbidity)->first();
+                    if ($comorbidityData) {
+                        $comorbiditiesArray[] = [
+                            'id' => $comorbidityData->id,
+                            'name' => $comorbidityData->name
+                        ];
+                    }
+                }
+            } else {
+                $comorbiditiesArray = null;
+            }                                        
             $apiResponse = [ 
                         'test_id'                       => $test_report->id, 
                         'sl_no'                         => $test_report->sl_no,
@@ -2366,7 +2381,7 @@ class ApiController extends Controller
                         'patient_gender'                => $patientdetails->gender,
                         'patient_mobile'                => $patientdetails->phone,
                         'affected_eye'                  => $patientdetails->eye,
-                        'co-morbidities_id'             => $comorbidities->name,
+                        'co-morbidities_id'             => $comorbiditiesArray,
                         'co-morbidities_note'           => $patientdetails->comorbidities_note,
                         'doctor_name'                   => (($test_report)?$test_report->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "Y-m-d"),  
@@ -2374,6 +2389,7 @@ class ApiController extends Controller
                         'test_score_percentage'         => $test_report->test_score_percentage,   
                         'test_result'                   => $test_report->test_result,                                                
                         'test_report_pdf'               => $test_report->test_report_pdf,
+                        'test_report_date'             => date_format(date_create($test_report->created_at), "Y-m-d"),
             ];
             
             $apiStatus          = TRUE;
