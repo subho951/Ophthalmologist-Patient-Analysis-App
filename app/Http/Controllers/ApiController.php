@@ -2215,6 +2215,14 @@ class ApiController extends Controller
 
                     /* tests table */
                     $patientdetails = Patient::where('id', '=', $patient_id)->first();
+                    $comorbidities_id = (($patientdetails)?json_decode($patientdetails->comorbidities_id):[]);
+
+                    $comorbidity = [];
+                    if(!empty($comorbidities_id)){
+                        for($k=0;$k<count($comorbidities_id);$k++){
+                            $comorbidity[] = $comorbidities_id[$k];
+                        }
+                    }
                     $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
                         $fields1 = [
                             'sl_no'                 => $next_sl_no,
@@ -2284,7 +2292,68 @@ class ApiController extends Controller
                     /* update test scores in tests table */
                     /* report pdf generate */
                         $data['test_report']            = Test::where('id', '=', $test_id)->first();
-                        $test_no                = (($data['test_report'])?$data['test_report']->test_no:'');
+                        $test_no                        = (($data['test_report'])?$data['test_report']->test_no:'');
+
+                        // gauge meter image generate
+                            header("Content-Type: image/png");
+
+                            // Image dimensions
+                            $width = 400;
+                            $height = 300;
+                            $image = imagecreate($width, $height);
+
+                            // Colors
+                            $background = imagecolorallocate($image, 255, 255, 255);
+                            $red = imagecolorallocate($image, 230, 57, 50);
+                            $green = imagecolorallocate($image, 0, 128, 0);
+                            $black = imagecolorallocate($image, 0, 0, 0);
+                            $gray = imagecolorallocate($image, 200, 200, 200);
+
+                            // Center and radius
+                            $cx = $width / 2;
+                            $cy = $height * 0.8;
+                            $radius = 120;
+
+                            // Draw red (negative) arc
+                            imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 180, 270, $red, IMG_ARC_PIE);
+
+                            // Draw green (positive) arc
+                            imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 270, 360, $green, IMG_ARC_PIE);
+
+                            // Draw outline semicircle
+                            imagearc($image, $cx, $cy, $radius * 2, $radius * 2, 180, 360, $black);
+
+                            // Draw tick at 270 degrees (neutral line)
+                            $tick_x1 = $cx + $radius * cos(deg2rad(270));
+                            $tick_y1 = $cy + $radius * sin(deg2rad(270));
+                            $tick_x2 = $cx + ($radius - 10) * cos(deg2rad(270));
+                            $tick_y2 = $cy + ($radius - 10) * sin(deg2rad(270));
+                            imageline($image, $tick_x1, $tick_y1, $tick_x2, $tick_y2, $black);
+
+                            // Needle (set angle here: 180 = far left, 270 = top, 360 = far right)
+                            $needle_angle = 250; // Adjust this to change the needle position
+                            $needle_length = $radius - 20;
+                            $nx = $cx + $needle_length * cos(deg2rad($needle_angle));
+                            $ny = $cy + $needle_length * sin(deg2rad($needle_angle));
+                            imageline($image, $cx, $cy, $nx, $ny, $black);
+                            imagefilledellipse($image, $cx, $cy, 8, 8, $black); // Needle base
+
+                            // Labels
+                            $font = 3;
+                            imagestring($image, $font, 30, $cy, "Negative", $black);
+                            imagestring($image, $font, $width - 90, $cy, "Positive", $black);
+                            imagestring($image, 5, $cx - 40, $cy + 20, "Negative", $black); // center label
+
+                            // Save to directory
+                            $directory = 'public/uploads/test-report/';
+                            $filename = $test_no . '.png';
+                            if (!file_exists($directory)) {
+                                mkdir($directory, 0755, true);
+                            }
+
+                            imagepng($image, $directory . '/' . $filename);
+                            imagedestroy($image);
+                        // gauge meter image generate
                         $generalSetting                 = GeneralSetting::find('1');
                         $subject                        = $generalSetting->site_name . ' PCV Report' . $test_no;
                         $message                        = view('front.test-report-pdf',$data);
@@ -2305,24 +2374,7 @@ class ApiController extends Controller
                     /* report pdf generate */
 
                     $currentDateTime = new DateTime(); // Gets current date and time
-                    // $apiResponse[] = [
-                    //     'test_id'                       => $test_id,
-                    //     'sl_no'                         => $next_sl_no,
-                    //     'test_no'                       => $test_no,
-                    //     'doctor_id'                     => $uId,
-                    //     'patient_id'                    => $patient_id,
-                    //     'doctor_name'                   => (($getDoctor)?$getDoctor->name:''),
-                    //     'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),
-                    //     'test_date'                     => $currentDateTime->format('F d, Y'),
-                    //     'test_time'                     => $currentDateTime->format('h:i A'),
-                    //     'test_total_weight'             => $test_total_weight,
-                    //     'test_fullscore'                => $test_fullscore,
-                    //     'test_score'                    => $test_score,
-                    //     'test_score_percentage'         => $test_score_percentage,
-                    //     'test_result'                   => $test_result,                                                
-                    //     'test_report_pdf'               => $test_report_pdf,
-                    // ];
-                    
+                                        
                     $apiResponse = [
                         'test_id'                       => $test_id,
                         'sl_no'                         => $next_sl_no,
@@ -2332,10 +2384,10 @@ class ApiController extends Controller
                         'patient_gender'                => $patientdetails->gender,
                         'patient_mobile'                => $patientdetails->phone,
                         'affected_eye'                  => $patientdetails->eye,
-                        'co-morbidities_id'             => $comorbidities->name,
+                        'co-morbidities_id'             => implode(", ", $comorbidity),
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
-                        'test_score'                  => $test_score,
+                        'test_score'                    => $test_score,
                         'test_score_percentage'         => $test_score_percentage,
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
