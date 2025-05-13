@@ -2074,18 +2074,21 @@ class ApiController extends Controller
                 // $patients = Patient::where('status', '=', 1)->where('doctor_id', '=', $uId)->orderBy('id', 'DESC')->offset($offset)->limit($limit)->get();
                 if($patients){
                     foreach ($patients as $row) {     
+                        $comorbiditiesArray = [];
                         $comorbidities_id = json_decode($row->comorbidities_id);
-                        foreach($comorbidities_id as $comorbidity){
-                            $comorbidities = Comorbidity::where('id', '=', $comorbidity)->first();
-                            if($comorbidities){
-                                $comorbiditiesArray[]=[
-                                    'id' => $comorbidities->id,
-                                    'name' => $comorbidities->name
-                                ];                        
-                            }   else {
-                                $comorbiditiesArray = null;
-                            }                   
-                        }                 
+                        if (is_array($comorbidities_id)) {
+                            foreach ($comorbidities_id as $comorbidity) {
+                                $comorbidityData = Comorbidity::where('id', $comorbidity)->first();
+                                if ($comorbidityData) {
+                                    $comorbiditiesArray[] = [
+                                        'id' => $comorbidityData->id,
+                                        'name' => $comorbidityData->name
+                                    ];
+                                }
+                            }
+                        } else {
+                            $comorbiditiesArray = null;
+                        }                
                         // $comorbidities = Comorbidity::where('id', '=', $row->comorbidities_id)->first();                        
                         // // Build comorbidity array
                         // if ($comorbidities) {
