@@ -1969,7 +1969,8 @@ class ApiController extends Controller
                 //                 'id' => $comorbiditiesValue,                                
                 //             ];
                 //         }
-                //     }          
+                //     }   
+                $formattedComorbidities = json_encode($requestData['comorbidities_id']);       
                 $fields = [
                     'doctor_id'            => $uId,
                     'name'                 => $requestData['patient_name'],
@@ -1983,14 +1984,14 @@ class ApiController extends Controller
                     'pincode'              => !empty($requestData['pincode']) ? $requestData['pincode'] : null,
                     'gender'               => $requestData['gender'],
                     'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $requestData['comorbidities_id'],
+                    'comorbidities_id'     => $formattedComorbidities,
                     'comorbidities_note'   => !empty($requestData['comorbidities_note']) ? $requestData['comorbidities_note'] : null,
                     'doctor_name'          => $requestData['doctor_name'],
                     'diagnosis_date'       => $requestData['diagnosis_date'],                   
                     'created_at'           => date('Y-m-d H:i:s'),
                 ];         
                 $patient = Patient::insertGetId($fields);   
-                
+                $comorbidities = json_decode($formattedComorbidities);
                 $apiResponse = [
                     'patient_id'           => $patient,
                     'patient_name'         => $requestData['patient_name'],                    
@@ -2002,7 +2003,7 @@ class ApiController extends Controller
                     'city'                 => $requestData['city'],                    
                     'gender'               => $requestData['gender'],
                     'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $requestData['comorbidities_id'],
+                    'comorbidities_id'     => $comorbidities,
                     'comorbidities_note'   => $requestData['comorbidities_note'],
                     'doctor_name'          => $requestData['doctor_name'],
                     'diagnosis_date'       => $requestData['diagnosis_date'],
