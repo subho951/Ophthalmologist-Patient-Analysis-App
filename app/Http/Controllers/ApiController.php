@@ -1992,6 +1992,15 @@ class ApiController extends Controller
                 ];         
                 $patient = Patient::insertGetId($fields);   
                 $comorbidities = json_decode($formattedComorbidities);
+                foreach($comorbidities as $comorbidity){
+                    $comorbidities = Comorbidity::where('id', '=', $comorbidity)->first();
+                    if($comorbidities){
+                        $comorbiditiesArray[]=[
+                            'id' => $comorbidities->id,
+                            'name' => $comorbidities->name
+                        ];                        
+                    }                    
+                }
                 $apiResponse = [
                     'patient_id'           => $patient,
                     'patient_name'         => $requestData['patient_name'],                    
@@ -2003,7 +2012,7 @@ class ApiController extends Controller
                     'city'                 => $requestData['city'],                    
                     'gender'               => $requestData['gender'],
                     'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $comorbidities,
+                    'comorbidities_id'     => $comorbiditiesArray,
                     'comorbidities_note'   => $requestData['comorbidities_note'],
                     'doctor_name'          => $requestData['doctor_name'],
                     'diagnosis_date'       => $requestData['diagnosis_date'],
