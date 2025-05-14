@@ -1,94 +1,94 @@
 <?php
-use App\Models\Patient;
-use App\Models\Comorbidity;
-use App\Helpers\Helper;
-?>
+    use App\Models\Patient;
+    use App\Models\Comorbidity;
+    use App\Helpers\Helper;
+    ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Patient Report</title>
-  <style>
-    *{
-        margin: 0;
-        padding: 0;
-    }
-    h1,h2,h3,h4,h5,h6,p,ul,li,ol,span,a{
-        margin: 0;
-        padding: 0;
-    }
-    body {
-      font-family: sans-serif;
-      background: #fff;
-      color: #333;
-    }
-
-    .container {
-      width: 100%;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .report_number{
-        background: #e8d2df;
-        color: #531635;
-        font-size: 18px;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-    .report_number p{
-        margin: 0;
-    }
-   
-    .info-box {
-      background: #f2ecf0;
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 15px;
-      text-align: left;
-    }
-
-    .info-box p {
-      margin: 5px 0;
-      font-size: 13px;
-    }
-
-    .label {
-      display: inline-block;
-      width: 160px;
-    }
-
-    .value {
-      display: inline-block;
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .info-box table td {
-      padding: 6px 0;
-      width: 50%;
-    }
-  </style>
-</head>
-<body>
-    <?php if($test_report){?>
+    <head>
+        <meta charset="UTF-8">
+        <title>Patient Report</title>
+        <style>
+            *{
+            margin: 0;
+            padding: 0;
+            }
+            h1,h2,h3,h4,h5,h6,p,ul,li,ol,span,a{
+            margin: 0;
+            padding: 0;
+            }
+            body {
+            font-family: sans-serif;
+            background: #fff;
+            color: #333;
+            }
+            .container {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            }
+            .report_number{
+            background: #e8d2df;
+            color: #531635;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            }
+            .report_number p{
+            margin: 0;
+            }
+            .info-box {
+            background: #f2ecf0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: left;
+            }
+            .info-box p {
+            margin: 5px 0;
+            font-size: 13px;
+            }
+            .label {
+            display: inline-block;
+            width: 160px;
+            }
+            .value {
+            display: inline-block;
+            font-weight: 600;
+            font-size: 14px;
+            }
+            .info-box table td {
+            padding: 6px 0;
+            width: 50%;
+            }
+            canvas {
+              display: block;
+              margin: 40px auto;
+              background: #fff;
+            }
+        </style>
+    </head>
+    <body>
+        <?php if($test_report){?>
         <?php
-        $getPatient            = Patient::where('id', '=', $test_report->patient_id)->first();
-        $getcomorbidity        = Comorbidity::select('name')->where('id', '=', $getPatient->comorbidities_id)->first();
-        // Helper::pr($getcomorbidity);
-        ?>
+            $getPatient            = Patient::where('id', '=', $test_report->patient_id)->first();
+            $getcomorbidity        = Comorbidity::select('name')->where('id', '=', $getPatient->comorbidities_id)->first();
+            // Helper::pr($getcomorbidity);
+            ?>
         <div class="container">
             <!-- <div class="gauge-label">
-              <span style="color:red;">Negative</span>
-              <span style="color:green;">Positive</span>
-            </div> -->
+                <span style="color:red;">Negative</span>
+                <span style="color:green;">Positive</span>
+                </div> -->
             <div class="report_number">
                 <p><?=$test_report->test_no?></p>
             </div>
             <div class="metter_box">
-                <img src="speedo-metter.jpg" alt="" style="width: 100%; max-width: 200px; height: auto;">
+                <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/uploads/test-report/'.$test_report->test_no.'.png'))); ?>" alt="" style="width: 100%; max-width: 200px; height: auto;">
+                <!-- <canvas id="gaugeCanvas" width="400" height="250"></canvas> -->
             </div>
-            <div class="status"><?=$test_report->test_result?></div>
-
+            <!-- <div class="status"><?=$test_report->test_result?></div> -->
             <div class="info-box">
                 <table valign="top" style="width: 100%; border-collapse: collapse;">
                     <tr>
@@ -113,7 +113,6 @@ use App\Helpers\Helper;
                     </tr>
                 </table>
             </div>
-
             <div class="info-box">
                 <table>
                     <tr>
@@ -122,7 +121,6 @@ use App\Helpers\Helper;
                     </tr>
                 </table>
             </div>
-
             <div class="info-box">
                 <table>
                     <tr>
@@ -135,7 +133,6 @@ use App\Helpers\Helper;
                     </tr>
                 </table>
             </div>
-
             <div class="info-box">
                 <table>
                     <tr>
@@ -145,6 +142,76 @@ use App\Helpers\Helper;
                 </table>
             </div>
         </div>
-    <?php }?>
-</body>
+        <?php }?>
+    </body>
 </html>
+<script>
+    function drawGauge(value) {
+      const canvas = document.getElementById('gaugeCanvas');
+      const ctx = canvas.getContext('2d');
+      const centerX = 200;
+      const centerY = 200;
+      const radius = 150;
+      const cutOff = 47.74;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw negative (left) arc in red
+      const cutOffAngle = Math.PI * (cutOff / 100);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + cutOffAngle);
+      ctx.strokeStyle = '#f44236';
+      ctx.lineWidth = 45;
+      ctx.stroke();
+      ctx.fillText('Negative', centerX-170, centerY+10);
+
+      // Draw positive (right) arc in green
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, Math.PI + cutOffAngle, 2 * Math.PI);
+      ctx.strokeStyle = 'green';
+      ctx.lineWidth = 45;
+      ctx.stroke();
+      ctx.fillText('Positive', centerX+130, centerY+10);
+
+      // Draw cut-off marker
+      const markerAngle = Math.PI + Math.PI * (cutOff / 100);
+      const mx1 = centerX + Math.cos(markerAngle) * (radius - 10);
+      const my1 = centerY + Math.sin(markerAngle) * (radius - 10);
+      const mx2 = centerX + Math.cos(markerAngle) * (radius + 10);
+      const my2 = centerY + Math.sin(markerAngle) * (radius + 10);
+      ctx.beginPath();
+      ctx.moveTo(mx1, my1);
+      ctx.lineTo(mx2, my2);
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Draw needle
+      const needleAngle = Math.PI + Math.PI * (value / 100);
+      const needleLength = radius - 30;
+      const nx = centerX + Math.cos(needleAngle) * needleLength;
+      const ny = centerY + Math.sin(needleAngle) * needleLength;
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(nx, ny);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+      ctx.fillStyle = '#000';
+      ctx.fill();
+
+      // Value Text
+      ctx.font = '20px Arial';
+      ctx.fillStyle = '#333';
+      ctx.textAlign = 'center';
+      // ctx.fillText(`${value.toFixed(2)}%`, centerX, centerY + 40);
+      ctx.fillText('Negative', centerX, centerY + 40);
+    }
+
+    // Example usage
+    drawGauge(60);  // Change this to test different values
+</script>
