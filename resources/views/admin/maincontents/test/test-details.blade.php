@@ -31,6 +31,16 @@ $current_url          = url()->current();
     $getcountry    = Country::where('id', $getPatient->country)->first();
     $getstate      = State::where('id', $getPatient->state)->first();
     $getComorbodity = Comorbidity::select('name')->where('id', (($getPatient)?$getPatient->comorbidities_id:''))->first();
+    $comorbiditiesArray = [];
+    $comorbidities_id = json_decode($getPatient->comorbidities_id);
+    if (is_array($comorbidities_id)) {
+        foreach ($comorbidities_id as $comorbidity) {
+            $comorbidityData = Comorbidity::where('id', $comorbidity)->first();
+            if ($comorbidityData) {
+                $comorbiditiesArray[] = $comorbidityData->name;
+            }
+        }
+    }
     ?>
     <div class="row">
       <div class="col-md-12">
@@ -58,9 +68,9 @@ $current_url          = url()->current();
                 <h6>State : <span class="fw-light"><?=(($getstate)?$getstate->name:'')?></span></h6>
                 <h6>City : <span class="fw-light"><?=(($getPatient)?$getPatient->city:'')?></span></h6>
                 <h6>Pincode : <span class="fw-light"><?=(($getPatient)?$getPatient->pincode:'')?></span></h6>
-                <h6>Gender : <span class="fw-light"><?=(($getPatient)?$getPatient->gender:'')?></span></h6>
+                <h6>Gender : <span class="fw-light"><?=(($getPatient)?($getPatient->gender== 'F'?'Female':'Male'):'')?></span></h6>
                 <h6>Affected Eye : <span class="fw-light"><?=(($getPatient)?$getPatient->eye:'')?></span></h6>
-                <h6>Co-morbodities : <span class="fw-light"><?=(($getComorbodity)?$getComorbodity->name:'')?></span></h6>
+                <h6>Co-morbodities : <span class="fw-light"><?= implode(", ", $comorbiditiesArray);?></span></h6>
               </div>
               <div class="col-md-4">
                 <img src="<?=url('public/uploads/test-report/'.$row->test_no.'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;border: 2px solid">
