@@ -58,7 +58,7 @@ $current_url          = url()->current();
                 <h6>Co-morbodities : <span class="fw-light"><?=(($getComorbodity)?$getComorbodity->name:'')?></span></h6>
               </div>
               <div class="col-md-3">
-                <img src="<?=url('public/uploads/test-report/'.$row->test_no.'png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;">
+                <img src="<?=url('public/uploads/test-report/'.$row->test_no.'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;">
               </div>                
             </div>
             <div class="row mt-3">
