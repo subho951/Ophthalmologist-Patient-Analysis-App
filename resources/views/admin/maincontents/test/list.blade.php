@@ -54,7 +54,7 @@ $generalSetting             = GeneralSetting::find('1');
                     <td><?=$row->test_score?>/<?=$row->test_fullscore?></td>
                     <td><span class="badge <?=(($row->test_score >= $generalSetting->test_result_cut_off_marks)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span> <a target="_blank" href="<?=url('admin/' . $controllerRoute . '/test-details/'.Helper::encoded($row->id))?>" class="btn btn-outline-primary btn-sm" title="View <?=$module['title']?> Details"><i class="fa fa-info-circle"></i></a></td>
                     <td>
-                      <a href="<?= $row->test_report_pdf ?>" alt="View Report"><i class="fa fa-eye"></i></a>
+                      <a href="<?= $row->test_report_pdf ?>" alt="View Report" target="_blank"><i class="fa fa-eye"></i></a>
                     </td>
                   </tr>
                 <?php } }?>
