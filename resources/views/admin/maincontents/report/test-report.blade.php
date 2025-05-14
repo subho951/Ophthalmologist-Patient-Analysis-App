@@ -148,7 +148,7 @@ $controllerRoute                = $module['controller_route'];
                   </a>
                 </td>
                 <td>
-                  <img src="<?=url('public/uploads/test-report/'.$row->test_no.'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;border: 2px solid">
+                  <img src="<?=url('public/uploads/test-report/'.$row['test_no'].'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;border: 2px solid">
                 </td>
               </tr>
               <?php }} else { ?>
