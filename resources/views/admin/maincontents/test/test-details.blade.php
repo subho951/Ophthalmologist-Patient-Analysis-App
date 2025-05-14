@@ -32,7 +32,7 @@ $current_url          = url()->current();
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <h5>Test Date : <span class="fw-light"><?=date_format(date_create($row->test_date), "M d, Y")?></span></h5>
                 <h5>Doctor Info :</h5>
                 <h6>Initials : <span class="fw-light"><?=(($getDoctor)?$getDoctor->initials:'')?></span></h6>
@@ -42,7 +42,7 @@ $current_url          = url()->current();
                 <h6>Registration No. : <span class="fw-light"><?=(($getDoctor)?$getDoctor->regn_no:'')?></span></h6>
                 <h6>Diagnosis Date : <span class="fw-light"><?=date_format(date_create($row->diagnosis_date), "M d, Y")?></span></h6>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <h5>Test Time : <span class="fw-light"><?=date_format(date_create($row->test_time), "h:i A")?></span></h5>
                 <h5>Patient Info :</h5>
                 <h6>Name : <span class="fw-light"><?=(($getPatient)?$getPatient->name:'')?></span></h6>
@@ -57,7 +57,7 @@ $current_url          = url()->current();
                 <h6>Affected Eye : <span class="fw-light"><?=(($getPatient)?$getPatient->eye:'')?></span></h6>
                 <h6>Co-morbodities : <span class="fw-light"><?=(($getComorbodity)?$getComorbodity->name:'')?></span></h6>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <img src="<?=url('public/uploads/test-report/'.$row->test_no.'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;">
               </div>                
             </div>
