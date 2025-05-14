@@ -117,10 +117,40 @@
                 <table>
                     <tr>
                         <td valign="top"><span class="label">Co-Morbidities <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
-                        <td valign="top"><span class="value"><?=(($getcomorbidity)?$getcomorbidity->name:'')?></span></td>
+                        <td valign="top">
+                            <span class="value">
+                                <?php
+                                $comorbiditiesArray = [];
+                                $comorbidities_id = json_decode($getPatient->comorbidities_id);
+                                if (is_array($comorbidities_id)) {
+                                    foreach ($comorbidities_id as $comorbidity) {
+                                        $comorbidityData = Comorbidity::where('id', $comorbidity)->first();
+                                        if ($comorbidityData) {
+                                            $comorbiditiesArray[] = $comorbidityData->name;
+                                        }
+                                    }
+                                }
+                                echo implode(", ", $comorbiditiesArray);
+                                ?>
+                            </span>
+                        </td>
                     </tr>
                 </table>
             </div>
+            <?php if($getPatient){ if($getPatient->comorbidities_note != ''){?>
+                <div class="info-box">
+                    <table>
+                        <tr>
+                            <td valign="top"><span class="label">Co-Morbidities note <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                            <td valign="top">
+                                <span class="value">
+                                    <?=(($getPatient)?$getPatient->comorbidities_note:'')?>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            <?php } }?>
             <div class="info-box">
                 <table>
                     <tr>

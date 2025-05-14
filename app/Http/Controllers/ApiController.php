@@ -2195,10 +2195,9 @@ class ApiController extends Controller
                     /* test no generate */
 
                     /* tests table */
-                    $patientdetails = Patient::where('id', '=', $patient_id)->first();
-                    // $comorbidities = Comorbidity::where('id', '=', $patientdetails->comorbidities_id)->first();
+                        $patientdetails = Patient::where('id', '=', $patient_id)->first();
 
-                    $comorbiditiesArray = [];
+                        $comorbiditiesArray = [];
                         $comorbidities_id = json_decode($patientdetails->comorbidities_id);
                         if (is_array($comorbidities_id)) {
                             foreach ($comorbidities_id as $comorbidity) {
@@ -2212,7 +2211,7 @@ class ApiController extends Controller
                             }
                         } else {
                             $comorbiditiesArray = null;
-                        }                                        
+                        }
 
                         $fields1 = [
                             'sl_no'                 => $next_sl_no,
@@ -2379,7 +2378,7 @@ class ApiController extends Controller
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
                         'test_score'                    => $test_score,
-                        'test_score_percentage'         => $test_score_percentage,
+                        'test_score_percentage'         => number_format($test_score_percentage,2),
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
                     ];
