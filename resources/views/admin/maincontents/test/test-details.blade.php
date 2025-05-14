@@ -8,6 +8,9 @@ use App\Models\Test;
 use App\Models\TestResultParameter;
 use App\Models\GeneralSetting;
 use App\Helpers\Helper;
+use App\Models\Country;
+use App\Models\State;
+
 $generalSetting             = GeneralSetting::find('1');
 $controllerRoute      = $module['controller_route'];
 $current_url          = url()->current();
@@ -25,6 +28,8 @@ $current_url          = url()->current();
     <?php
     $getDoctor      = Doctor::where('id', $row->doctor_id)->first();
     $getPatient     = Patient::where('id', $row->patient_id)->first();
+    $getcountry    = Country::where('id', $getPatient->country)->first();
+    $getstate      = State::where('id', $getPatient->state)->first();
     $getComorbodity = Comorbidity::select('name')->where('id', (($getPatient)?$getPatient->comorbidities_id:''))->first();
     ?>
     <div class="row">
@@ -49,8 +54,8 @@ $current_url          = url()->current();
                 <h6>Email : <span class="fw-light"><?=(($getPatient)?$getPatient->email:'')?></span></h6>
                 <h6>Phone : <span class="fw-light"><?=(($getPatient)?$getPatient->phone:'')?></span></h6>
                 <h6>DOB : <span class="fw-light"><?=(($getPatient)?date_format(date_create($getPatient->dob), "M d, Y"):'')?></span> (<span class="fw-light">Age : <?=(($getPatient)?$getPatient->age:'')?></span>)</h6>
-                <h6>Country : <span class="fw-light"><?=(($getPatient)?$getPatient->country:'')?></span></h6>
-                <h6>State : <span class="fw-light"><?=(($getPatient)?$getPatient->state:'')?></span></h6>
+                <h6>Country : <span class="fw-light"><?=(($getcountry)?$getcountry->name:'')?></span></h6>
+                <h6>State : <span class="fw-light"><?=(($getstate)?$getstate->name:'')?></span></h6>
                 <h6>City : <span class="fw-light"><?=(($getPatient)?$getPatient->city:'')?></span></h6>
                 <h6>Pincode : <span class="fw-light"><?=(($getPatient)?$getPatient->pincode:'')?></span></h6>
                 <h6>Gender : <span class="fw-light"><?=(($getPatient)?$getPatient->gender:'')?></span></h6>
@@ -58,7 +63,7 @@ $current_url          = url()->current();
                 <h6>Co-morbodities : <span class="fw-light"><?=(($getComorbodity)?$getComorbodity->name:'')?></span></h6>
               </div>
               <div class="col-md-4">
-                <img src="<?=url('public/uploads/test-report/'.$row->test_no.'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;">
+                <img src="<?=url('public/uploads/test-report/'.$row->test_no.'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;border: 2px solid">
               </div>                
             </div>
             <div class="row mt-3">
