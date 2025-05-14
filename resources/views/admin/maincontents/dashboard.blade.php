@@ -144,7 +144,7 @@ $generalSetting             = GeneralSetting::find('1');
                            <td><?=date_format(date_create($row->diagnosis_date), "M d, Y")?></td>
                            <td><?=date_format(date_create($row->test_date), "M d, Y")?> <?=date_format(date_create($row->test_time), "h:i A")?></td>
                            <td><?=$row->test_score?>/<?=$row->test_fullscore?></td>
-                           <td><span class="badge <?=(($row->test_score >= $generalSetting->test_result_cut_off_marks)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span> <a target="_blank" href="<?=url('admin/tests/test-details/'.Helper::encoded($row->id))?>" class="btn btn-outline-primary btn-sm" title="Edit Test"><i class="fa fa-info-circle"></i></a></td>                           
+                           <td><span class="badge <?=(($row->test_score >= $generalSetting->test_result_cut_off_marks)?'bg-success':'bg-danger')?>"><?=$row->test_result?></span> <a target="_blank" href="<?=url('admin/tests/test-details/'.Helper::encoded($row->id))?>" class="btn btn-outline-primary btn-sm" title="View Test Details"><i class="fa fa-info-circle"></i></a></td>                           
                            </tr>
                         <?php } }?>
                      </tbody>
