@@ -126,7 +126,7 @@ $controllerRoute                = $module['controller_route'];
                 <th>Test Date/Time</th>
                 <th>Test Score</th>
                 <th>Test Result</th>
-                <th>Action</th>
+                <th>Report</th>
               </tr>
             </thead>
             <tbody>
@@ -143,11 +143,12 @@ $controllerRoute                = $module['controller_route'];
                   <span class="badge <?=($row['test_score'] >= $generalSetting['test_result_cut_off_marks']) ? 'bg-success' : 'bg-danger'?>">
                     <?=$row['test_result']?>
                   </span>
-                </td>
-                <td>
-                  <a target="_blank" href="<?=url('admin/tests/test-details/'.Helper::encoded($row['test_id']))?>" class="btn btn-outline-primary btn-sm" title="Edit Test">
+                  <a target="_blank" href="<?=url('admin/tests/test-details/'.Helper::encoded($row['test_id']))?>" class="btn btn-outline-primary btn-sm" title="View Test Details">
                     <i class="fa fa-info-circle"></i>
                   </a>
+                </td>
+                <td>
+                  <img src="<?=url('public/uploads/test-report/'.$row->test_no.'.png')?>" alt="Test Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 5px;border: 2px solid">
                 </td>
               </tr>
               <?php }} else { ?>
