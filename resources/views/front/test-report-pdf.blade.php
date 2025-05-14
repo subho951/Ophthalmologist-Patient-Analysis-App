@@ -92,23 +92,23 @@
             <div class="info-box">
                 <table valign="top" style="width: 100%; border-collapse: collapse;">
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value highlight"><?=(($getPatient)?$getPatient->name:'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Age <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Patient’s Age <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->age:'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Gender <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
-                        <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->gender:'')?></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Patient’s Gender <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="value"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Contact No <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Patient’s Contact No <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->phone:'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Affected Eye <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Affected Eye <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->eye:'')?></span></td>
                     </tr>
                 </table>
@@ -116,7 +116,7 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="top"><span class="label">Co-Morbidities <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Co-Morbidities <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top">
                             <span class="value">
                                 <?php
@@ -141,7 +141,7 @@
                 <div class="info-box">
                     <table>
                         <tr>
-                            <td valign="top"><span class="label">Co-Morbidities note <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                            <td valign="top"><span class="label" style="width: 230px;">Co-Morbidities note <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                             <td valign="top">
                                 <span class="value">
                                     <?=(($getPatient)?$getPatient->comorbidities_note:'')?>
@@ -154,11 +154,11 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="top"><span class="label">Doctor’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Doctor’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=$test_report->doctor_name?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Diagnosis Date <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Diagnosis Date <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=date_format(date_create($test_report->diagnosis_date), "M d, Y")?></span></td>
                     </tr>
                 </table>
