@@ -99,7 +99,8 @@ class ReportController extends Controller
                             'test_total_weight' => $row->test_total_weight,
                             'test_result'       => $row->test_result,
                             'test_fullscore'    => $row->test_fullscore,
-                            'test_score'        => $row->test_score,                                        
+                            'test_score'        => $row->test_score,   
+                            'test_report'      => $row->test_report_pdf,                              
                         ];
                     }
                 }

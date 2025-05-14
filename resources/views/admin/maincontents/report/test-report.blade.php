@@ -148,7 +148,7 @@ $controllerRoute                = $module['controller_route'];
                   </a>
                 </td>
                 <td>
-                  <a href="<?= $row['test_report_pdf'] ?>" alt="View Report" target="_blank"><i class="fa fa-eye"></i></a>
+                  <a href="<?= $row['test_report'] ?>" alt="View Report" target="_blank"><i class="fa fa-eye"></i></a>
                 </td>
               </tr>
               <?php }} else { ?>
