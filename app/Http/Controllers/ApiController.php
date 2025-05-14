@@ -2287,8 +2287,8 @@ class ApiController extends Controller
                             header("Content-Type: image/png");
 
                             // Image dimensions
-                            $width = 800;
-                            $height = 650;
+                            $width = 300;
+                            $height = 200;
                             $image = imagecreate($width, $height);
 
                             // Colors
