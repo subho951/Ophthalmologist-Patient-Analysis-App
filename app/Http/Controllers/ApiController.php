@@ -2362,8 +2362,9 @@ class ApiController extends Controller
                         Test::where('id', '=', $test_id)->update(['test_report_pdf' => $test_report_pdf]);
                     /* report pdf generate */
 
-                    $currentDateTime = new DateTime(); // Gets current date and time                    
-                    $test_percentage = number_format($test_score_percentage,2);
+                    $currentDateTime = new DateTime(); // Gets current date and time                                        
+                    $formatted_test = (float)number_format((float)$test_score_percentage, 2, '.', '');
+
                     $apiResponse = [
                         'test_id'                       => $test_id,
                         'sl_no'                         => $next_sl_no,
@@ -2378,7 +2379,8 @@ class ApiController extends Controller
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
                         'test_score'                    => $test_score,
-                        'test_score_percentage'         => bcdiv($test_score_percentage, 1, 2),
+                        'test_score_percentage'         => $formatted_test,
+                        'test_score_percentage_formate' => gettype($formatted_test),
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
                     ];
