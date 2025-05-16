@@ -2364,6 +2364,7 @@ class ApiController extends Controller
 
                     $currentDateTime = new DateTime(); // Gets current date and time                                        
                     $formatted_test = (float)number_format((float)$test_score_percentage, 2, '.', '');
+                    Helper::pr($formatted_test);
 
                     $apiResponse = [
                         'test_id'                       => $test_id,
