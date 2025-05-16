@@ -2362,10 +2362,8 @@ class ApiController extends Controller
                         Test::where('id', '=', $test_id)->update(['test_report_pdf' => $test_report_pdf]);
                     /* report pdf generate */
 
-                    $currentDateTime = new DateTime(); // Gets current date and time                                        
-                    $formatted_test = (float)number_format((float)$test_score_percentage, 2, '.', '');
-                    Helper::pr($formatted_test);
-
+                    $currentDateTime = new DateTime(); // Gets current date and time                    
+                    
                     $apiResponse = [
                         'test_id'                       => $test_id,
                         'sl_no'                         => $next_sl_no,
@@ -2380,8 +2378,7 @@ class ApiController extends Controller
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
                         'test_score'                    => $test_score,
-                        'test_score_percentage'         => $formatted_test,
-                        'test_score_percentage_formate' => gettype($formatted_test),
+                        'test_score_percentage'         => $test_score_percentage,
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
                     ];
@@ -2449,7 +2446,7 @@ class ApiController extends Controller
                         'doctor_name'                   => (($test_report)?$test_report->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "Y-m-d"),  
                         'test_score'                  => $test_report->test_score,
-                        'test_score_percentage'         => number_format(round($test_report->test_score_percentage,2),2),   
+                        'test_score_percentage'         => $test_report->test_score_percentage,   
                         'test_result'                   => $test_report->test_result,                                                
                         'test_report_pdf'               => $test_report->test_report_pdf,
                         'test_report_date'             => date_format(date_create($test_report->created_at), "Y-m-d"),
