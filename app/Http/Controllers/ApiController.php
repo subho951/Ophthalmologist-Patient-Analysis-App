@@ -2378,7 +2378,7 @@ class ApiController extends Controller
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
                         'test_score'                    => $test_score,
-                        'test_score_percentage'         => floatval($test_percentage),
+                        'test_score_percentage'         => floor($test_score_percentage * 100) / 100,
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
                     ];
