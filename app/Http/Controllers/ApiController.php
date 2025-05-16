@@ -2378,7 +2378,7 @@ class ApiController extends Controller
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
                         'test_score'                    => $test_score,
-                        'test_score_percentage'         => round($test_score_percentage,2),
+                        'test_score_percentage'         => number_format(round($test_score_percentage,2),2),
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
                     ];
@@ -2446,7 +2446,7 @@ class ApiController extends Controller
                         'doctor_name'                   => (($test_report)?$test_report->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "Y-m-d"),  
                         'test_score'                  => $test_report->test_score,
-                        'test_score_percentage'         => round($test_report->test_score_percentage,2),   
+                        'test_score_percentage'         => number_format(round($test_report->test_score_percentage,2),2),   
                         'test_result'                   => $test_report->test_result,                                                
                         'test_report_pdf'               => $test_report->test_report_pdf,
                         'test_report_date'             => date_format(date_create($test_report->created_at), "Y-m-d"),
