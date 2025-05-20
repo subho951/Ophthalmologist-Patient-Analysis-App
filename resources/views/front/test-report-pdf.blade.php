@@ -143,13 +143,15 @@
                 </table>
             </div>
             <div class="info-box">
-                <table>
+                <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td valign="top" style="width: 160px;">
-                            <span class="label" style="width: 160px;">Co-Morbidities <span style="float: right; margin-right: 2px;">:</span></span>
+                            <span class="label" style="width: 160px;">Co-Morbidities 
+                                <span style="float: right; margin-right: 2px;">:</span>
+                            </span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
-                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block; margin-top:-2px;">
                                 <?php
                                 $comorbiditiesArray = [];
                                 $comorbidities_id = json_decode($getPatient->comorbidities_id);
@@ -170,15 +172,17 @@
             </div>
             <?php if($getPatient){ if($getPatient->comorbidities_note != ''){?>
                 <div class="info-box">
-                    <table>
+                    <table style="width: 100%; border-collapse: collapse;">
                         <tr>
                             <td valign="top" style="width: 160px;">
-                                <span class="label" style="width: 160px;">Co-Morbidities note <span style="float: right; margin-right: 2px;">:</span></span>
+                                <span class="label" style="width: 160px;">Co-Morbidities note
+                                    <span style="float: right; margin-right: 2px;">:</span>
+                                </span>
                             </td>
                             <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
-                                <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
+                                <span class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                     <?=(($getPatient)?$getPatient->comorbidities_note:'')?>
-                                </p>
+                                </span>
                             </td>
                         </tr>
                     </table>
