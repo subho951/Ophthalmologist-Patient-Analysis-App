@@ -104,7 +104,7 @@
                         <td valign="top">
                             <span class="label" style="width: 160px;">Patient’s Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top">
+                        <td valign="top"  style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value highlight" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->name:'')?></p>
                         </td>
                     </tr>
