@@ -63,7 +63,7 @@
             }
             .info-box table td {
             padding: 6px 0;
-            /* width: 50%; */
+            width: 50%;
             }
             canvas {
               display: block;
