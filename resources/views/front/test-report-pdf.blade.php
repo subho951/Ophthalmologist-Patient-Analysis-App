@@ -101,7 +101,7 @@
             <div class="info-box">
                 <table valign="top" style="width: 100%; border-collapse: collapse;">
                     <tr>
-                        <td valign="top">
+                        <td valign="top" style="width: 160px;">
                             <span class="label" style="width: 160px;">Patient’s Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top"  style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
