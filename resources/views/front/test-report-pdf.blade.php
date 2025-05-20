@@ -112,7 +112,7 @@
                         <td valign="top" style="width: 160px;">
                             <span class="label" style="width: 160px;">Patient’s Age <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top">
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->age:'')?></p>
                         </td>
                     </tr>
@@ -208,7 +208,7 @@
                 <table>
                     <tr>
                         <td valign="middle" style="width: 200px;">
-                            <span class="label" style="width: 160px;">Polypoidal Choroidal Vasculopathy Status</span>
+                            <span class="label" style="width: 200px;">Polypoidal Choroidal Vasculopathy Status</span>
                         </td>
                         <td valign="middle" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">: <?=$test_report->test_result?></p>
