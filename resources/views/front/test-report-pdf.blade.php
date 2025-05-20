@@ -105,30 +105,38 @@
                             <span class="label" style="width: 160px;">Patient’s Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top">
-                            <span class="value highlight" style="width: 100%; text-align: left; font-family: sans-serif;"><?=(($getPatient)?$getPatient->name:'')?></span>
+                            <p class="value highlight" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->name:'')?></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
                             <span class="label" style="width: 160px;">Patient’s Age <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top"><span class="value" style="width: 100%; text-align: left; font-family: sans-serif;"><?=(($getPatient)?$getPatient->age:'')?></span></td>
+                        <td valign="top">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->age:'')?></p>
+                        </td>
                     </tr>
                     <tr>
                         <td valign="top">
                         <span class="label" style="width: 160px;">Patient’s Gender <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top">
-                            <span class="value" style="width: 100%; text-align: left; font-family: sans-serif;"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></span>
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></p>
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label" style="width: 160px;">Patient’s Contact No <span style="float: right; margin-right: 2px;">:</span></span></td>
-                        <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->phone:'')?></span></td>
+                        <td valign="top">
+                            <span class="label" style="width: 160px;">Patient’s Contact No <span style="float: right; margin-right: 2px;">:</span></span>
+                        </td>
+                        <td valign="top">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->phone:'')?></p>
+                        </td>
                     </tr>
                     <tr>
                         <td valign="top"><span class="label" style="width: 160px;">Affected Eye <span style="float: right; margin-right: 2px;">:</span></span></td>
-                        <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->eye:'')?></span></td>
+                        <td valign="top">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->eye:'')?></p>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -139,7 +147,7 @@
                             <span class="label" style="width: 160px;">Co-Morbidities <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
                         </td>
                         <td valign="top">
-                            <span class="value">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                 <?php
                                 $comorbiditiesArray = [];
                                 $comorbidities_id = json_decode($getPatient->comorbidities_id);
@@ -153,7 +161,7 @@
                                 }
                                 echo implode(", ", $comorbiditiesArray);
                                 ?>
-                            </span>
+                            </p>
                         </td>
                     </tr>
                 </table>
@@ -166,9 +174,9 @@
                                 <span class="label" style="width: 160px;">Co-Morbidities note <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
                             </td>
                             <td valign="top">
-                                <span class="value" style="display: inline">
+                                <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                     <?=(($getPatient)?$getPatient->comorbidities_note:'')?>
-                                </span>
+                                </p>
                             </td>
                         </tr>
                     </table>
@@ -180,11 +188,15 @@
                         <td valign="top">
                             <span class="label" style="width: 160px;">Doctor’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
                         </td>
-                        <td valign="top"><span class="value"><?=$test_report->doctor_name?></span></td>
+                        <td valign="top">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=$test_report->doctor_name?></p>
+                        </td>
                     </tr>
                     <tr>
                         <td valign="top"><span class="label" style="width: 160px;">Diagnosis Date <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
-                        <td valign="top"><span class="value"><?=date_format(date_create($test_report->diagnosis_date), "M d, Y")?></span></td>
+                        <td valign="top">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=date_format(date_create($test_report->diagnosis_date), "M d, Y")?></p>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -194,7 +206,9 @@
                         <td valign="middle">
                             <span class="label" style="width: 160px;">Polypoidal Choroidal Vasculopathy Status</span>
                         </td>
-                        <td valign="middle"><span class="value"><span style="float: left; display: inline;">:</span><?=$test_report->test_result?></span></td>
+                        <td valign="middle">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">: <?=$test_report->test_result?></p>
+                        </td>
                     </tr>
                 </table>
             </div>
