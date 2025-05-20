@@ -58,8 +58,6 @@
             display: inline-block;
             font-weight: 600;
             font-size: 14px;
-            width: max-content;
-            font-family: sans-serif;
             }
             .info-box table td {
             padding: 6px 0;
@@ -101,23 +99,23 @@
             <div class="info-box">
                 <table valign="top" style="border-collapse: collapse;">
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
-                        <td valign="top"><span class="value highlight"><?=(($getPatient)?$getPatient->name:'')?></span></td>
+                        <td valign="top"><span class="label" style="width: 100px;">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="value highlight" style="width: 300px;><?=(($getPatient)?$getPatient->name:'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Age <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Patient’s Age <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->age:'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Gender <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Patient’s Gender <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Patient’s Contact No <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Patient’s Contact No <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->phone:'')?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Affected Eye <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Affected Eye <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=(($getPatient)?$getPatient->eye:'')?></span></td>
                     </tr>
                 </table>
@@ -125,7 +123,7 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="top"><span class="label">Co-Morbidities <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Co-Morbidities <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top">
                             <span class="value">
                                 <?php
@@ -150,7 +148,7 @@
                 <div class="info-box">
                     <table>
                         <tr>
-                            <td valign="top"><span class="label">Co-Morbidities note <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                            <td valign="top"><span class="label" style="width: 230px;">Co-Morbidities note <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                             <td valign="top">
                                 <span class="value">
                                     <?=(($getPatient)?$getPatient->comorbidities_note:'')?>
@@ -163,11 +161,11 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="top"><span class="label">Doctor’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Doctor’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=$test_report->doctor_name?></span></td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label">Diagnosis Date <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
+                        <td valign="top"><span class="label" style="width: 230px;">Diagnosis Date <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value"><?=date_format(date_create($test_report->diagnosis_date), "M d, Y")?></span></td>
                     </tr>
                 </table>
@@ -175,7 +173,7 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="middle"><span class="label">Polypoidal Choroidal Vasculopathy Status</span></td>
+                        <td valign="middle"><span class="label" style="width: 230px;">Polypoidal Choroidal Vasculopathy Status</span></td>
                         <td valign="middle"><span class="value"><span style="float: left; margin-right: 2px;">:</span><?=$test_report->test_result?></span></td>
                     </tr>
                 </table>
@@ -244,7 +242,7 @@
       ctx.fill();
 
       // Value Text
-      ctx.font = '20px sans-serif';
+      ctx.font = '20px Arial';
       ctx.fillStyle = '#333';
       ctx.textAlign = 'center';
       // ctx.fillText(`${value.toFixed(2)}%`, centerX, centerY + 40);
