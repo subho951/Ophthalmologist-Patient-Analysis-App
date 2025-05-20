@@ -56,6 +56,7 @@
             }
             .value {
             display: inline-block;
+            text-align: left;
             font-weight: 600;
             font-size: 14px;
             }
@@ -100,7 +101,7 @@
                 <table valign="top" style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td valign="top">
-                            <span class="label" style="width: 200px;">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
+                            <span class="label" style="width: 150px;">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
                         </td>
                         <td valign="top">
                             <span class="value highlight"><?=(($getPatient)?$getPatient->name:'')?></span>
