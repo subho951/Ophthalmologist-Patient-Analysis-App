@@ -104,12 +104,12 @@
                         <td valign="top" style="width: 160px;">
                             <span class="label" style="width: 160px;">Patient’s Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top"  style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value highlight" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->name:'')?></p>
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top">
+                        <td valign="top" style="width: 160px;">
                             <span class="label" style="width: 160px;">Patient’s Age <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top">
@@ -117,24 +117,26 @@
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top">
+                        <td valign="top" style="width: 160px;">
                         <span class="label" style="width: 160px;">Patient’s Gender <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top">
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></p>
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top">
+                        <td valign="top" style="width: 160px;">
                             <span class="label" style="width: 160px;">Patient’s Contact No <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top">
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->phone:'')?></p>
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label" style="width: 160px;">Affected Eye <span style="float: right; margin-right: 2px;">:</span></span></td>
-                        <td valign="top">
+                        <td valign="top" style="width: 160px;">
+                            <span class="label" style="width: 160px;">Affected Eye <span style="float: right; margin-right: 2px;">:</span></span>
+                        </td>
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->eye:'')?></p>
                         </td>
                     </tr>
@@ -143,10 +145,10 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="top">
-                            <span class="label" style="width: 160px;">Co-Morbidities <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
+                        <td valign="top" style="width: 160px;">
+                            <span class="label" style="width: 160px;">Co-Morbidities <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top">
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                 <?php
                                 $comorbiditiesArray = [];
@@ -170,10 +172,10 @@
                 <div class="info-box">
                     <table>
                         <tr>
-                            <td valign="top">
-                                <span class="label" style="width: 160px;">Co-Morbidities note <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
+                            <td valign="top" style="width: 160px;">
+                                <span class="label" style="width: 160px;">Co-Morbidities note <span style="float: right; margin-right: 2px;">:</span></span>
                             </td>
-                            <td valign="top">
+                            <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                 <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                     <?=(($getPatient)?$getPatient->comorbidities_note:'')?>
                                 </p>
@@ -185,16 +187,18 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="top">
-                            <span class="label" style="width: 160px;">Doctor’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
+                        <td valign="top" style="width: 160px;">
+                            <span class="label" style="width: 160px;">Doctor’s Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top">
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=$test_report->doctor_name?></p>
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top"><span class="label" style="width: 160px;">Diagnosis Date <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
-                        <td valign="top">
+                        <td valign="top" style="width: 160px;">
+                            <span class="label" style="width: 160px;">Diagnosis Date <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
+                        </td>
+                        <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=date_format(date_create($test_report->diagnosis_date), "M d, Y")?></p>
                         </td>
                     </tr>
@@ -203,10 +207,10 @@
             <div class="info-box">
                 <table>
                     <tr>
-                        <td valign="middle">
+                        <td valign="middle" style="width: 200px;">
                             <span class="label" style="width: 160px;">Polypoidal Choroidal Vasculopathy Status</span>
                         </td>
-                        <td valign="middle">
+                        <td valign="middle" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">: <?=$test_report->test_result?></p>
                         </td>
                     </tr>
