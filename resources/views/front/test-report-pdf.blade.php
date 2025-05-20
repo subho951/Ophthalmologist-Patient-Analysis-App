@@ -97,10 +97,14 @@
             </div>
             <!-- <div class="status"><?=$test_report->test_result?></div> -->
             <div class="info-box">
-                <table valign="top" style="border-collapse: collapse;">
+                <table valign="top" style="width: 100%; border-collapse: collapse;">
                     <tr>
-                        <td valign="top"><span class="label" style="width: 100px;">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
-                        <td valign="top"><span class="value highlight" style="width: 300px;><?=(($getPatient)?$getPatient->name:'')?></span></td>
+                        <td valign="top">
+                            <span class="label" style="width: 200px;">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span>
+                        </td>
+                        <td valign="top">
+                            <span class="value highlight"><?=(($getPatient)?$getPatient->name:'')?></span>
+                        </td>
                     </tr>
                     <tr>
                         <td valign="top"><span class="label" style="width: 230px;">Patient’s Age <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
