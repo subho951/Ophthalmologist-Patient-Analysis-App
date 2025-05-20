@@ -13,14 +13,15 @@
             margin: 0;
             padding: 0;
             }
-            h1,h2,h3,h4,h5,h6,p,ul,li,ol,span,a{
-            margin: 0;
-            padding: 0;
-            }
             body {
             font-family: sans-serif;
             background: #fff;
             color: #333;
+            }
+            h1,h2,h3,h4,h5,h6,p,ul,li,ol,span,a{
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
             }
             .container {
             width: 100%;
@@ -42,7 +43,7 @@
             background: #f2ecf0;
             padding: 10px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin: 15px 15px 0;
             text-align: left;
             }
             .info-box p {
@@ -51,7 +52,7 @@
             }
             .label {
             display: inline-block;
-            width: 160px;
+            width: max-content;
             }
             .value {
             display: inline-block;
@@ -67,9 +68,15 @@
               margin: 40px auto;
               background: #fff;
             }
+            @media print {
+                .no-page-break {
+                    page-break-inside: avoid; /* Legacy */
+                    break-inside: avoid;      /* Modern browsers */
+                }
+            }
         </style>
     </head>
-    <body>
+    <body class="no-page-break">
         <?php if($test_report){?>
         <?php
             $getPatient            = Patient::where('id', '=', $test_report->patient_id)->first();
@@ -90,7 +97,7 @@
             </div>
             <!-- <div class="status"><?=$test_report->test_result?></div> -->
             <div class="info-box">
-                <table valign="top" style="width: 100%; border-collapse: collapse;">
+                <table valign="top" style="border-collapse: collapse;">
                     <tr>
                         <td valign="top"><span class="label" style="width: 230px;">Patient’s Name <span style="float: right; margin-right: 2px; margin-top: -2px;">:</span></span></td>
                         <td valign="top"><span class="value highlight"><?=(($getPatient)?$getPatient->name:'')?></span></td>
