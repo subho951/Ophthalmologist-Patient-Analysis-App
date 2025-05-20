@@ -14,13 +14,13 @@
             padding: 0;
             }
             body {
-            font-family:  monospace, Arial, Helvetica, sans-serif;
+            font-family: sans-serif !important;
             background: #fff;
             }
             h1,h2,h3,h4,h5,h6,p,ul,li,ol,span,a{
             margin: 0;
             padding: 0;
-            font-family: monospace, Arial, Helvetica, sans-serif;
+            font-family: sans-serif !important;
             }
             .container {
             width: 100%;
