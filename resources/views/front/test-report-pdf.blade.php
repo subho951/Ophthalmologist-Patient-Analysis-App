@@ -151,7 +151,7 @@
                             </span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
-                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block; margin-top:-2px;">
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                 <?php
                                 $comorbiditiesArray = [];
                                 $comorbidities_id = json_decode($getPatient->comorbidities_id);
@@ -180,16 +180,16 @@
                                 </span>
                             </td>
                             <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
-                                <span class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
+                                <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                                     <?=(($getPatient)?$getPatient->comorbidities_note:'')?>
-                                </span>
+                                </p>
                             </td>
                         </tr>
                     </table>
                 </div>
             <?php } }?>
             <div class="info-box">
-                <table>
+                <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td valign="top" style="width: 160px;">
                             <span class="label" style="width: 160px;">Doctor’s Name <span style="float: right; margin-right: 2px;">:</span></span>
@@ -209,10 +209,10 @@
                 </table>
             </div>
             <div class="info-box">
-                <table>
+                <table style="width: 100%; border-collapse: collapse;">
                     <tr>
-                        <td valign="middle" style="width: 200px;">
-                            <span class="label" style="width: 200px;">Polypoidal Choroidal Vasculopathy Status</span>
+                        <td valign="middle" style="width: 160px;">
+                            <span class="label" style="width: 160px;">Polypoidal Choroidal Vasculopathy Status</span>
                         </td>
                         <td valign="middle" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">: <?=$test_report->test_result?></p>
