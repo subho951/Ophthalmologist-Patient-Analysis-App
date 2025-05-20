@@ -62,7 +62,7 @@
             }
             .info-box table td {
             padding: 6px 0;
-            width: 50%;
+            /* width: 50%; */
             text-align: left;
             }
             canvas {
@@ -105,21 +105,21 @@
                             <span class="label" style="width: 160px;">Patient’s Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top">
-                            <span class="value highlight" style="width: 100%; text-align: left;"><?=(($getPatient)?$getPatient->name:'')?></span>
+                            <span class="value highlight" style="width: 100%; text-align: left; font-family: sans-serif;"><?=(($getPatient)?$getPatient->name:'')?></span>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
                             <span class="label" style="width: 160px;">Patient’s Age <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
-                        <td valign="top"><span class="value"  style="width: 100%;"><?=(($getPatient)?$getPatient->age:'')?></span></td>
+                        <td valign="top"><span class="value" style="width: 100%; text-align: left; font-family: sans-serif;"><?=(($getPatient)?$getPatient->age:'')?></span></td>
                     </tr>
                     <tr>
                         <td valign="top">
                         <span class="label" style="width: 160px;">Patient’s Gender <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top">
-                            <span class="value"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></span>
+                            <span class="value" style="width: 100%; text-align: left; font-family: sans-serif;"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></span>
                         </td>
                     </tr>
                     <tr>
