@@ -48,21 +48,25 @@
             .info-box p {
             margin: 5px 0;
             font-size: 13px;
+            font-family: sans-serif !important;
             }
             .label {
             display: inline-block;
             width: max-content;
+            font-family: sans-serif !important;
             }
             .value {
             display: inline-block;
             text-align: left;
             font-weight: 600;
             font-size: 14px;
+            font-family: sans-serif !important;
             }
             .info-box table td {
             padding: 6px 0;
             /* width: 50%; */
             text-align: left;
+            font-family: sans-serif !important;
             }
             canvas {
               display: block;
