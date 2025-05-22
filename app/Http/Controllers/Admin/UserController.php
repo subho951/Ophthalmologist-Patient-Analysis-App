@@ -374,7 +374,7 @@ class UserController extends Controller
                     'whatsapp_no'                       => $postData['whatsapp_no'],
                     'site_mail'                         => $postData['site_mail'],
                     'system_email'                      => $postData['system_email'],
-                    'site_url'                          => $postData['site_url'],
+                    'site_url'                          => env('APP_URL'),
                     'description'                       => $postData['description'],
                     'become_partner_text'               => $postData['become_partner_text'],
                     'copyright_statement'               => $postData['copyright_statement'],
