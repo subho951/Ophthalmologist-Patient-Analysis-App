@@ -81,7 +81,7 @@
             }
         </style>
     </head>
-    <body class="no-page-break">
+    <body class="no-page-break" style="background:red;">
         <?php if($test_report){?>
         <?php
             $getPatient            = Patient::where('id', '=', $test_report->patient_id)->first();
