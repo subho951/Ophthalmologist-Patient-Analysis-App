@@ -96,10 +96,10 @@
             <div class="report_number">
                 <p><?=$test_report->test_no?></p>
             </div>
-            <!-- <div class="metter_box"> -->
-                <!-- <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/uploads/test-report/'.$test_report->test_no.'.png'))); ?>" alt="" style="width: 100%; max-width: 200px; height: auto;"> -->
+            <div class="metter_box">
+                <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/uploads/test-report/'.$test_report->test_no.'.png'))); ?>" alt="" style="width: 100%; max-width: 200px; height: auto;">
                 <!-- <canvas id="gaugeCanvas" width="400" height="250"></canvas> -->
-            <!-- </div> -->
+            </div>
             <!-- <div class="status"><?=$test_report->test_result?></div> -->
             <div class="info-box">
                 <table valign="top" style="width: 100%; border-collapse: collapse;">
