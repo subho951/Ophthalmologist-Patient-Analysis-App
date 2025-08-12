@@ -2351,7 +2351,7 @@ class ApiController extends Controller
                         $dompdf                         = new Dompdf($options);
                         $html                           = $message;
                         $dompdf->loadHtml($html);
-                        $dompdf->setPaper('A4', 'landscape');
+                        $dompdf->setPaper('A4', 'portrait');
                         $dompdf->render();
                         $output                         = $dompdf->output();
                         // $dompdf->stream("document.pdf", array("Attachment" => true));die;

@@ -295,5 +295,5 @@
     }
 
     // Example usage
-    drawGauge(60);  // Change this to test different values
+    //drawGauge(60);  // Change this to test different values
 </script>
