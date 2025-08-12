@@ -81,7 +81,7 @@
             }
         </style>
     </head>
-    <body style="background:red;">
+    <body class="no-page-break">
         <?php if($test_report){?>
         <?php
             $getPatient            = Patient::where('id', '=', $test_report->patient_id)->first();
@@ -97,7 +97,7 @@
                 <p><?=$test_report->test_no?></p>
             </div>
             <div class="metter_box">
-                <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/uploads/test-report/'.$test_report->test_no.'.png'))); ?>" alt="" style="width: 100%; max-width: 200px; height: auto;">
+                <!-- <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/uploads/test-report/'.$test_report->test_no.'.png'))); ?>" alt="" style="width: 100%; max-width: 200px; height: auto;"> -->
                 <!-- <canvas id="gaugeCanvas" width="400" height="250"></canvas> -->
             </div>
             <!-- <div class="status"><?=$test_report->test_result?></div> -->
