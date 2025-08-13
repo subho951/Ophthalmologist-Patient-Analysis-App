@@ -149,7 +149,7 @@ class TestParameterController extends Controller
             $id                             = Helper::decoded($id);
             $model                          = TestParameterImage::find($id);
             $test_param_id                  = (($model)?$model->test_param_id:0);
-            TestParameter::where('id', '=', $id)->delete();
+            TestParameterImage::where('id', '=', $id)->delete();
             return redirect("admin/" . $this->data['controller_route'] . "/edit/" . Helper::encoded($test_param_id))->with('success_message', $this->data['title'].' Hint Info Image Deleted Successfully !!!');
         }
     /* delete */
