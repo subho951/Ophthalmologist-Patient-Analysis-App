@@ -27,6 +27,7 @@ use App\Models\Patient;
 use App\Models\Test;
 use App\Models\TestResultParameter;
 use App\Models\TestParameter;
+use App\Models\TestParameterImage;
 use App\Models\TestTab;
 
 use Auth;
@@ -1781,18 +1782,26 @@ class ApiController extends Controller
                             ];
                         }
                     }
+                    /* test parameter images */
+                        $hintImages     = [];
+                        $paramImages    = TestParameterImage::select('image')->where('test_param_id', '=', $param->id)->get();
+                        if($paramImages){ foreach($paramImages as $paramImage){
+                            $hintImages[]     = $paramImage->image;
+                        } }
+                    /* test parameter images */
                     $parameterArray[] = [
-                        'id'      => $param->id,
-                        'name'    => $param->name,
-                        'weight'  => $param->weight,
-                        'options' => $formattedOptions,
-                        'hints'    => $param->hints
+                        'id'                => $param->id,
+                        'name'              => $param->name,
+                        'weight'            => $param->weight,
+                        'options'           => $formattedOptions,
+                        'hints'             => $param->hints,
+                        'hint_images'       => $hintImages,
                     ];
                 }    
                 $apiResponse[] = [
-                    'tab_id'    => $tab->id,
-                    'tab_name'  => $tab->name,
-                    'parameters'=> $parameterArray
+                    'tab_id'        => $tab->id,
+                    'tab_name'      => $tab->name,
+                    'parameters'    => $parameterArray
                 ];
             }            
             http_response_code(200);
