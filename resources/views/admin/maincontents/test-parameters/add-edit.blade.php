@@ -58,18 +58,18 @@ $controllerRoute                = $module['controller_route'];
                  <input class="form-control" type="number" id="rank" name="rank" value="<?=$rank?>" min="1" required autofocus />
               </div>
 
-              <div class="mb-3 col-md-4">
+              <div class="mb-3 col-md-6">
                  <label for="hints" class="form-label">Hints <small class="text-danger">*</small></label>
                  <textarea class="form-control" id="hints" name="hints" rows="3"><?=$hints?></textarea>
               </div>
-              <div class="mb-3 col-md-4">
+              <div class="mb-3 col-md-3">
                 <label for="rank" class="form-label">Options <small class="text-danger">*</small></label>
                   <div>
                     <input type="checkbox" id="options1" name="options[]" value="1" required <?=((in_array(1, $options))?'checked':'')?>> <label for="options1">YES</label>
                     <input type="checkbox" id="options2" name="options[]" value="0" required <?=((in_array(0, $options))?'checked':'')?>> <label for="options2">NO</label>
                   </div>
               </div>
-              <div class="mb-3 col-md-4">
+              <div class="mb-3 col-md-3">
                 <label for="status" class="form-label d-block">Status <small class="text-danger">*</small></label>
                 <div class="form-check form-switch mt-0 ">
                   <input class="form-check-input" type="checkbox" name="status" role="switch" id="status" <?=(($status == 1)?'checked':'')?>>
