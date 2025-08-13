@@ -82,7 +82,7 @@ $controllerRoute                = $module['controller_route'];
 
               <div class="mb-3 col-md-6">
                 <label for="image" class="form-label d-block">Images <small class="text-danger">*</small></label>
-                <input class="form-control" type="file" id="image" name="image[]" />
+                <input class="form-control" type="file" id="image" name="image[]" multiple />
                 <small class="text-info">Press ctrl + select images to select multiple images</small>
               </div>
               <div class="mb-3 col-md-6">
