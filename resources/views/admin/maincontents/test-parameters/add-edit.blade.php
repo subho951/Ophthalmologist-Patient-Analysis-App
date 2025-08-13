@@ -93,7 +93,7 @@ $controllerRoute                = $module['controller_route'];
                   ?>
                     <div class="col-md-2">
                       <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block" height="100" width="100" />
-                      <a href="" class="btn btn-danger btn-sm"><i class="fa fa-danger"></i></a>
+                      <a href="" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image ?');"><i class="fa fa-trash"></i></a>
                     </div>
                   <?php } }?>
                 </div>
