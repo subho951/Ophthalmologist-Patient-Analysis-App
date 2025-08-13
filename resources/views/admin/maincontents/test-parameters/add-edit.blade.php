@@ -92,7 +92,8 @@ $controllerRoute                = $module['controller_route'];
                   if($paramImages){ foreach($paramImages as $paramImage){
                   ?>
                     <div class="col-md-2">
-                      <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block" height="100" width="100" style="border-radius: 50%;" id="uploadedAvatar" />
+                      <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block" height="100" width="100" />
+                      <a href="" class="btn btn-danger btn-sm"><i class="fa fa-danger"></i></a>
                     </div>
                   <?php } }?>
                 </div>
