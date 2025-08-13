@@ -145,6 +145,13 @@ class TestParameterController extends Controller
             TestParameter::where($this->data['primary_key'], '=', $id)->update($fields);
             return redirect("admin/" . $this->data['controller_route'] . "/list")->with('success_message', $this->data['title'].' Deleted Successfully !!!');
         }
+        public function deleteSingleImage(Request $request, $id){
+            $id                             = Helper::decoded($id);
+            $model                          = TestParameterImage::find($id);
+            $test_param_id                  = (($model)?$model->test_param_id:0);
+            TestParameter::where('id', '=', $id)->delete();
+            return redirect("admin/" . $this->data['controller_route'] . "/edit/" . Helper::encoded($test_param_id))->with('success_message', $this->data['title'].' Hint Info Image Deleted Successfully !!!');
+        }
     /* delete */
     /* change status */
         public function change_status(Request $request, $id){

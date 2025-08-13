@@ -110,6 +110,7 @@ Route::match(['get', 'post'], '/delete-account-update', 'App\Http\Controllers\Fr
                     Route::match(['get', 'post'], 'test-parameters/edit/{id}', 'TestParameterController@edit');
                     Route::get('test-parameters/delete/{id}', 'TestParameterController@delete');
                     Route::get('test-parameters/change-status/{id}', 'TestParameterController@change_status');
+                    Route::get('test-parameters/delete-single-image/{id}', 'TestParameterController@deleteSingleImage');
                 /* test parameters */
             /* masters */
             /* doctor */
