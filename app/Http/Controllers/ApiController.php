@@ -1786,7 +1786,7 @@ class ApiController extends Controller
                         $hintImages     = [];
                         $paramImages    = TestParameterImage::select('image')->where('test_param_id', '=', $param->id)->get();
                         if($paramImages){ foreach($paramImages as $paramImage){
-                            $hintImages[]     = $paramImage->image;
+                            $hintImages[]     = env('UPLOADS_URL').'/test-report/'. $paramImage->image;
                         } }
                     /* test parameter images */
                     $parameterArray[] = [
