@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Models\GeneralSetting;
 use App\Models\TestTab;
 use App\Models\TestParameter;
+use App\Models\TestParameterImage;
 
 use Auth;
 use Session;

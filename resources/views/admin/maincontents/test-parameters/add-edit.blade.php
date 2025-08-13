@@ -1,4 +1,5 @@
 <?php
+use App\Models\TestParameterImage;
 use App\Helpers\Helper;
 $controllerRoute                = $module['controller_route'];
 ?>
@@ -12,6 +13,7 @@ $controllerRoute                = $module['controller_route'];
     <?php
     if($row){
       $test_tab_id    = $row->test_tab_id;
+      $test_param_id  = $row->id;
       $name           = $row->name;
       $weight         = $row->weight;
       $hints          = $row->hints;
@@ -20,6 +22,7 @@ $controllerRoute                = $module['controller_route'];
       $status         = $row->status;
     } else {
       $test_tab_id    = '';
+      $test_param_id  = '';
       $name           = '';
       $weight         = '';
       $hints          = '';
@@ -74,6 +77,24 @@ $controllerRoute                = $module['controller_route'];
                 <div class="form-check form-switch mt-0 ">
                   <input class="form-check-input" type="checkbox" name="status" role="switch" id="status" <?=(($status == 1)?'checked':'')?>>
                   <label class="form-check-label" for="status">Active</label>
+                </div>
+              </div>
+
+              <div class="mb-3 col-md-6">
+                <label for="image" class="form-label d-block">Images <small class="text-danger">*</small></label>
+                <input class="form-control" type="file" id="image" name="image[]" />
+                <small class="text-info">Press ctrl + select images to select multiple images</small>
+              </div>
+              <div class="mb-3 col-md-6">
+                <div class="row">
+                  <?php
+                  $paramImages = TestParameterImage::select('image')->where('test_param_id', '=', $test_param_id)->get();
+                  if($paramImages){ foreach($paramImages as $paramImage){
+                  ?>
+                    <div class="col-md-2">
+                      <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block" height="100" width="100" style="border-radius: 50%;" id="uploadedAvatar" />
+                    </div>
+                  <?php } }?>
                 </div>
               </div>
            </div>
