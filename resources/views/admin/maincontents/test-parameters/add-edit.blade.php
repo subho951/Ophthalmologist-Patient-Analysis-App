@@ -88,7 +88,7 @@ $controllerRoute                = $module['controller_route'];
               <div class="mb-3 col-md-6">
                 <div class="row">
                   <?php
-                  $paramImages = TestParameterImage::select('image')->where('test_param_id', '=', $test_param_id)->get();
+                  $paramImages = TestParameterImage::select('id', 'image')->where('test_param_id', '=', $test_param_id)->get();
                   if($paramImages){ foreach($paramImages as $paramImage){
                   ?>
                     <div class="col-md-2">
