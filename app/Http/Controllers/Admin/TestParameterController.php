@@ -96,6 +96,15 @@ class TestParameterController extends Controller
                 if($this->validate($request, $rules)){
                     $checkData = TestParameter::where('name', 'LIKE', '%'.$postData['name'].'%')->where('status', '!=', 3)->where('id', '!=', $id)->first();
                     if(!$checkData){
+                        $image_array            = $request->file('image');
+                        if(!empty($image_array)){
+                            $uploadedFile       = $this->commonFileArrayUpload('test-report', $image_array, 'image');
+                            if(!empty($uploadedFile)){
+                                $images    = $uploadedFile;
+                            } else {
+                                $images    = [];
+                            }
+                        }
                         $fields = [
                             'test_tab_id'             => $postData['test_tab_id'],
                             'name'                    => $postData['name'],
@@ -106,6 +115,16 @@ class TestParameterController extends Controller
                             'status'                  => ((array_key_exists("status",$postData))?1:0),
                         ];
                         TestParameter::where($this->data['primary_key'], '=', $id)->update($fields);
+                        if(!empty($images)){
+                            for($i=0;$i<count($images);$i++){
+                                $fields2 = [
+                                    'test_tab_id'               => $postData['test_tab_id'],
+                                    'test_param_id'             => $id,
+                                    'image'                     => $images[$i],
+                                ];
+                                TestParameterImage::insert($fields2);
+                            }
+                        }
                         return redirect("admin/" . $this->data['controller_route'] . "/list")->with('success_message', $this->data['title'].' Updated Successfully !!!');
                     } else {
                         return redirect()->back()->with('error_message', $this->data['title'].' Already Exists !!!');
