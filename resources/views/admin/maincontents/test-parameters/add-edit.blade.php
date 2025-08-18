@@ -92,7 +92,7 @@ $controllerRoute                = $module['controller_route'];
                   if($paramImages){ foreach($paramImages as $paramImage){
                   ?>
                     <div class="col-md-2">
-                      <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block" height="100" width="100" />
+                      <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block w-100"  />
                       <a href="<?=url('admin/' . $controllerRoute . '/delete-single-image/'.Helper::encoded($paramImage->id))?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image ?');"><i class="fa fa-trash"></i></a>
                     </div>
                   <?php } }?>
