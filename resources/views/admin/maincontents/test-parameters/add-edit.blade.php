@@ -3,6 +3,19 @@ use App\Models\TestParameterImage;
 use App\Helpers\Helper;
 $controllerRoute                = $module['controller_route'];
 ?>
+<style>
+.testparmiter_img img {
+    width: auto;
+    max-width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+.testparmiter_img {
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+}
+</style>
 <div class="container-xxl flex-grow-1 container-p-y">
   <h4 class="py-3 mb-4">
     <span class="text-muted fw-light"><a href="<?=url('admin/dashboard')?>">Dashboard</a> /</span>
@@ -92,7 +105,9 @@ $controllerRoute                = $module['controller_route'];
                   if($paramImages){ foreach($paramImages as $paramImage){
                   ?>
                     <div class="col-md-2">
-                      <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block w-100"  />
+                      <div class="testparmiter_img">
+                        <img src="<?=env('UPLOADS_URL').'/test-report/'.$paramImage->image?>" alt="<?=$name?>" class="d-block w-100"  />
+                      </div>
                       <a href="<?=url('admin/' . $controllerRoute . '/delete-single-image/'.Helper::encoded($paramImage->id))?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image ?');"><i class="fa fa-trash"></i></a>
                     </div>
                   <?php } }?>
