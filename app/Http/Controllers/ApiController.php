@@ -2386,7 +2386,7 @@ class ApiController extends Controller
                         $dompdf->render();
                         $output                         = $dompdf->output();
                         // $dompdf->stream("document.pdf", array("Attachment" => true));die;
-                        $filename                       = $test_no.'.pdf';
+                        $filename                       = Helper::encoded($test_no).'.pdf';
                         $pdfFilePath                    = 'public/uploads/test-report/' . $filename;
                         file_put_contents($pdfFilePath, $output);
                         $test_report_pdf                = env('UPLOADS_URL').'test-report/' . $filename;
