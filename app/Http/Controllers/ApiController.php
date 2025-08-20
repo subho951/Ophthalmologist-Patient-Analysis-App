@@ -2293,6 +2293,10 @@ class ApiController extends Controller
                         $test_no                        = (($data['test_report'])?$data['test_report']->test_no:'');
 
                         // gauge meter image generate
+                            // Example test score
+                            $test_score = (($data['test_report'])?$data['test_report']->test_score:0); // dynamically set this value (from DB or input)
+
+                            // gauge meter image generate
                             header("Content-Type: image/png");
 
                             // Image dimensions
@@ -2328,8 +2332,23 @@ class ApiController extends Controller
                             $tick_y2 = $cy + ($radius - 10) * sin(deg2rad(270));
                             imageline($image, $tick_x1, $tick_y1, $tick_x2, $tick_y2, $black);
 
-                            // Needle (set angle here: 180 = far left, 270 = top, 360 = far right)
-                            $needle_angle = 250; // Adjust this to change the needle position
+                            // ---------------------------
+                            // DYNAMIC NEEDLE BASED ON TEST SCORE
+                            // ---------------------------
+
+                            // Map score to angle (180° = Negative, 360° = Positive)
+                            $min_score = 0;
+                            $max_score = 102; // assuming your test max score is 100
+                            $min_angle = 180;
+                            $max_angle = 360;
+
+                            // clamp score
+                            if ($test_score < $min_score) $test_score = $min_score;
+                            if ($test_score > $max_score) $test_score = $max_score;
+
+                            // scale score to angle
+                            $needle_angle = $min_angle + (($test_score - $min_score) / ($max_score - $min_score)) * ($max_angle - $min_angle);
+
                             $needle_length = $radius - 20;
                             $nx = $cx + $needle_length * cos(deg2rad($needle_angle));
                             $ny = $cy + $needle_length * sin(deg2rad($needle_angle));
@@ -2340,7 +2359,10 @@ class ApiController extends Controller
                             $font = 3;
                             imagestring($image, $font, 30, $cy, "Negative", $black);
                             imagestring($image, $font, $width - 50, $cy, "Positive", $black);
-                            imagestring($image, 5, $cx - 40, $cy + 20, "Negative", $black); // center label
+
+                            // Show Result Text
+                            $result_text = ($test_score < 44) ? "Negative" : "Positive";
+                            imagestring($image, 5, $cx - 40, $cy + 20, $result_text, $black);
 
                             // Save to directory
                             $directory = 'public/uploads/test-report/';
