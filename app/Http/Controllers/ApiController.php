@@ -2338,6 +2338,7 @@ class ApiController extends Controller
 
                             // Labels
                             $font = 3;
+                            echo $width;
                             imagestring($image, $font, 30, $cy, "Negative", $black);
                             imagestring($image, $font, $width - 90, $cy, "Positive", $black);
                             imagestring($image, 5, $cx - 40, $cy + 20, "Negative", $black); // center label
