@@ -1966,56 +1966,91 @@ class ApiController extends Controller
             $getTokenValue              = $this->tokenAuth($app_access_token);
             if($getTokenValue['status']){
                 $uId        = $getTokenValue['data'][1]; 
-                $dob = new DateTime($requestData['dob']);
-                $today = new DateTime();
-                $age = $today->diff($dob);    
+                $dob        = new DateTime($requestData['dob']);
+                $today      = new DateTime();
+                $age        = $today->diff($dob);    
                 
-                $formattedComorbidities = json_encode($requestData['comorbidities_id']);       
-                $fields = [
-                    'doctor_id'            => $uId,
-                    'name'                 => $requestData['patient_name'],
-                    'email'                => !empty($requestData['email']) ? $requestData['email'] : null,
-                    'dob'                  => $requestData['dob'],
-                    'age'                  => $age->y,
-                    'phone'               => $requestData['mobile'],
-                    'country'           => $requestData['country_id'],
-                    'state'             => $requestData['state_id'],
-                    'city'                 => $requestData['city'],
-                    'pincode'              => !empty($requestData['pincode']) ? $requestData['pincode'] : null,
-                    'gender'               => $requestData['gender'],
-                    'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $formattedComorbidities,
-                    'comorbidities_note'   => !empty($requestData['comorbidities_note']) ? $requestData['comorbidities_note'] : null,
-                    'doctor_name'          => $requestData['doctor_name'],                                      
-                    'created_at'           => date('Y-m-d H:i:s'),
-                ];         
-                $patient = Patient::insertGetId($fields);   
-                $comorbidities_id = json_decode($formattedComorbidities);
-                foreach($comorbidities_id as $comorbidity){
-                    $comorbidities = Comorbidity::where('id', '=', $comorbidity)->first();
-                    if($comorbidities){
-                        $comorbiditiesArray[]=[
-                            'id' => $comorbidities->id,
-                            'name' => $comorbidities->name
-                        ];                        
-                    }                    
+                $formattedComorbidities = json_encode($requestData['comorbidities_id']);
+                $checkPatientExist = Patient::where('name', '=', $requestData['patient_name'])->where('phone', '=', $requestData['mobile'])->first();
+                if(empty($checkPatientExist)){
+                    $fields = [
+                        'doctor_id'             => $uId,
+                        'name'                  => $requestData['patient_name'],
+                        'email'                 => !empty($requestData['email']) ? $requestData['email'] : null,
+                        'dob'                   => $requestData['dob'],
+                        'age'                   => $age->y,
+                        'phone'                 => $requestData['mobile'],
+                        'country'               => $requestData['country_id'],
+                        'state'                 => $requestData['state_id'],
+                        'city'                  => $requestData['city'],
+                        'pincode'               => !empty($requestData['pincode']) ? $requestData['pincode'] : null,
+                        'gender'                => $requestData['gender'],
+                        'eye'                   => $requestData['eye'],
+                        'comorbidities_id'      => $formattedComorbidities,
+                        'comorbidities_note'    => !empty($requestData['comorbidities_note']) ? $requestData['comorbidities_note'] : null,
+                        'doctor_name'           => $requestData['doctor_name'],                                      
+                        'created_at'            => date('Y-m-d H:i:s'),
+                    ];         
+                    $patient = Patient::insertGetId($fields);   
+                    $comorbidities_id = json_decode($formattedComorbidities);
+                    foreach($comorbidities_id as $comorbidity){
+                        $comorbidities = Comorbidity::where('id', '=', $comorbidity)->first();
+                        if($comorbidities){
+                            $comorbiditiesArray[]=[
+                                'id' => $comorbidities->id,
+                                'name' => $comorbidities->name
+                            ];                        
+                        }                    
+                    }
+
+                    $apiResponse = [
+                        'patient_id'           => $patient,
+                        'patient_name'         => $requestData['patient_name'],                    
+                        'dob'                  => $requestData['dob'], 
+                        'age'                  => $age->y,
+                        'mobile'               => $requestData['mobile'],
+                        'country_id'           => $requestData['country_id'],
+                        'state_id'             => $requestData['state_id'],
+                        'city'                 => $requestData['city'],                    
+                        'gender'               => $requestData['gender'],
+                        'eye'                  => $requestData['eye'],
+                        'comorbidities_id'     => $comorbiditiesArray,
+                        'comorbidities_note'   => $requestData['comorbidities_note'],
+                        'doctor_name'          => $requestData['doctor_name'],                    
+                        'created_by'           => $uId,
+                        'is_added_now'         => 1,
+                    ];
+                } else {
+                    $patient = $checkPatientExist->id;
+                    $comorbidities = [];
+                    $comorbidities_id = json_decode($checkPatientExist->comorbidities_id);
+                    if(!empty($comorbidities_id)){
+                        for($i=0;$i<count($comorbidities_id);$i++){
+                            $getcomorbidities = Comorbidity::where('id', '=', $comorbidities_id[$i])->first();
+                            $comorbidities[] = [
+                                'id'    => $comorbidities_id[$i],
+                                'name'  => (($getcomorbidities)?$getcomorbidities->name:''),
+                            ];
+                        }
+                    }
+                    $apiResponse = [
+                        'patient_id'           => $patient,
+                        'patient_name'         => $checkPatientExist->patient_name,                    
+                        'dob'                  => $checkPatientExist->dob, 
+                        'age'                  => $checkPatientExist->age,
+                        'mobile'               => $checkPatientExist->phone,
+                        'country_id'           => $checkPatientExist->country,
+                        'state_id'             => $checkPatientExist->state,
+                        'city'                 => $checkPatientExist->city,                    
+                        'gender'               => $checkPatientExist->gender,
+                        'eye'                  => $checkPatientExist->eye,
+                        'comorbidities_id'     => $comorbidities,
+                        'comorbidities_note'   => $checkPatientExist->comorbidities_note,
+                        'doctor_name'          => $checkPatientExist->doctor_name,                    
+                        'created_by'           => $uId,
+                        'is_added_now'         => 0,
+                    ];
                 }
-                $apiResponse = [
-                    'patient_id'           => $patient,
-                    'patient_name'         => $requestData['patient_name'],                    
-                    'dob'                  => $requestData['dob'], 
-                    'age'                  => $age->y,
-                    'mobile'               => $requestData['mobile'],
-                    'country_id'           => $requestData['country_id'],
-                    'state_id'             => $requestData['state_id'],
-                    'city'                 => $requestData['city'],                    
-                    'gender'               => $requestData['gender'],
-                    'eye'                  => $requestData['eye'],
-                    'comorbidities_id'     => $comorbiditiesArray,
-                    'comorbidities_note'   => $requestData['comorbidities_note'],
-                    'doctor_name'          => $requestData['doctor_name'],                    
-                    'created_by'            => $uId                    
-                ];  
                                
                 $apiStatus          = TRUE;
                 $apiMessage         = 'Patient added Successfully !!!';                
