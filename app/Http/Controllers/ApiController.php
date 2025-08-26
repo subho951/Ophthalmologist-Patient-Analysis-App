@@ -2408,7 +2408,7 @@ class ApiController extends Controller
                         'co-morbidities_id'             => $comorbiditiesArray,
                         'co-morbidities_note'           => $patientdetails->comorbidities_note,
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
-                        'diagnosis_date'                => date_format(date_create($diagnosis_date), "Y-m-d"),  
+                        'diagnosis_date'                => date_format(date_create($diagnosis_date), "d-m-Y"),  
                         'test_score'                    => $test_score,
                         'test_score_percentage'         => $test_score_percentage,
                         'test_result'                   => $test_result,                                                
@@ -2476,12 +2476,12 @@ class ApiController extends Controller
                         'co-morbidities_id'             => $comorbiditiesArray,
                         'co-morbidities_note'           => $patientdetails->comorbidities_note,
                         'doctor_name'                   => (($test_report)?$test_report->doctor_name:''),
-                        'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "Y-m-d"),  
+                        'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "d-m-Y"),  
                         'test_score'                  => $test_report->test_score,
                         'test_score_percentage'         => $test_report->test_score_percentage,   
                         'test_result'                   => $test_report->test_result,                                                
                         'test_report_pdf'               => $test_report->test_report_pdf,
-                        'test_report_date'             => date_format(date_create($test_report->created_at), "Y-m-d"),
+                        'test_report_date'             => date_format(date_create($test_report->created_at), "d-m-Y"),
             ];
             
             $apiStatus          = TRUE;
@@ -2553,7 +2553,7 @@ class ApiController extends Controller
                             'patient_name'          => $row->patient_name,                    
                             'patient_mobile'        => $row->patient_mobile,                    
                             'doctor_name'           => $row->doctor_name,
-                           'daignosis_date'         => $diagnosis_date->format('Y-m-d'),
+                           'daignosis_date'         => $diagnosis_date->format('d-m-Y'),
                            'test_score'          => $row->test_score,
                             'test_score_percentage' => $row->test_score_percentage,                            
                             'test_report_pdf'       => $row->test_report_pdf,                           
