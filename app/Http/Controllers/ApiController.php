@@ -2020,6 +2020,7 @@ class ApiController extends Controller
                         'created_by'           => $uId,
                         'is_added_now'         => 1,
                     ];
+                    $apiMessage         = 'Patient added Successfully !!!';
                 } else {
                     $patient = $checkPatientExist->id;
                     $comorbidities = [];
@@ -2050,10 +2051,9 @@ class ApiController extends Controller
                         'created_by'           => $uId,
                         'is_added_now'         => 0,
                     ];
-                }
-                               
+                    $apiMessage         = 'Patient already added !!!';
+                }            
                 $apiStatus          = TRUE;
-                $apiMessage         = 'Patient added Successfully !!!';                
             } else {
                 $apiStatus          = FALSE;
                 $apiMessage         = $getTokenValue['data'];
