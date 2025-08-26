@@ -2528,9 +2528,12 @@ class ApiController extends Controller
 
                 if (!empty($requestData['search_keyword'])) {
                     $search = $requestData['search_keyword'];
+                    // $query->where(function ($q) use ($search) {
+                    //     $q->where('tests.test_no', 'like', '%' . $search . '%')
+                    //     ->orWhere('patients.name', 'like', '%' . $search . '%');
+                    // });
                     $query->where(function ($q) use ($search) {
-                        $q->where('tests.test_no', 'like', '%' . $search . '%')
-                        ->orWhere('patients.name', 'like', '%' . $search . '%');
+                        $q->where('patients.name', 'like', '%' . $search . '%');
                     });
                 }
 
