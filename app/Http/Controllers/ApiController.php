@@ -2130,7 +2130,7 @@ class ApiController extends Controller
                             'patient_id'           => $row->id,
                             'patient_name'         => $row->name,                    
                             'doctor_name'          => $row->doctor_name,
-                            'dob'                  => $row->dob,
+                            'dob'                  => date_format(date_create($row->dob), "d-m-Y"),
                             'age'                  => $row->age, 
                             'eye'                  => $row->eye,
                             'gender'               => $row->gender,
@@ -2477,11 +2477,11 @@ class ApiController extends Controller
                         'co-morbidities_note'           => $patientdetails->comorbidities_note,
                         'doctor_name'                   => (($test_report)?$test_report->doctor_name:''),
                         'diagnosis_date'                => date_format(date_create($test_report->diagnosis_date), "d-m-Y"),  
-                        'test_score'                  => $test_report->test_score,
+                        'test_score'                    => $test_report->test_score,
                         'test_score_percentage'         => $test_report->test_score_percentage,   
                         'test_result'                   => $test_report->test_result,                                                
                         'test_report_pdf'               => $test_report->test_report_pdf,
-                        'test_report_date'             => date_format(date_create($test_report->created_at), "d-m-Y"),
+                        'test_report_date'              => date_format(date_create($test_report->created_at), "d-m-Y"),
             ];
             
             $apiStatus          = TRUE;
@@ -2546,18 +2546,18 @@ class ApiController extends Controller
                     foreach ($tests as $row) {     
                         $diagnosis_date = new DateTime($row->diagnosis_date);                                           
                         $apiResponse[] = [
-                            'doctor_id'             => $uId,
-                            'test_id'               => $row->id,
-                            'test_name'             => $row->test_no,
-                            'sl_no'                 => $row->sl_no,                            
-                            'patient_name'          => $row->patient_name,                    
-                            'patient_mobile'        => $row->patient_mobile,                    
-                            'doctor_name'           => $row->doctor_name,
-                           'daignosis_date'         => $diagnosis_date->format('d-m-Y'),
-                           'test_score'          => $row->test_score,
-                            'test_score_percentage' => $row->test_score_percentage,                            
-                            'test_report_pdf'       => $row->test_report_pdf,                           
-                           'test_result'            => $row->test_result,                           
+                            'doctor_id'                 => $uId,
+                            'test_id'                   => $row->id,
+                            'test_name'                 => $row->test_no,
+                            'sl_no'                     => $row->sl_no,                            
+                            'patient_name'              => $row->patient_name,                    
+                            'patient_mobile'            => $row->patient_mobile,                    
+                            'doctor_name'               => $row->doctor_name,
+                            'daignosis_date'            => date_format(date_create($diagnosis_date->format('Y-m-d')), "d-m-Y"),
+                            'test_score'                => $row->test_score,
+                            'test_score_percentage'     => $row->test_score_percentage,                            
+                            'test_report_pdf'           => $row->test_report_pdf,                           
+                           'test_result'                => $row->test_result,                           
                         ];                    
                     }
                 }                                
