@@ -105,7 +105,7 @@
                 <table valign="top" style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td valign="top" style="width: 160px;">
-                            <span class="label" style="width: 160px;">Patient’s Name <span style="float: right; margin-right: 2px;">:</span></span>
+                            <span class="label" style="width: 160px;">Patient's Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value highlight" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->name:'')?></p>
@@ -113,7 +113,7 @@
                     </tr>
                     <tr>
                         <td valign="top" style="width: 160px;">
-                            <span class="label" style="width: 160px;">Patient’s Age <span style="float: right; margin-right: 2px;">:</span></span>
+                            <span class="label" style="width: 160px;">Patient's Age <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->age:'')?></p>
@@ -121,7 +121,7 @@
                     </tr>
                     <tr>
                         <td valign="top" style="width: 160px;">
-                        <span class="label" style="width: 160px;">Patient’s Gender <span style="float: right; margin-right: 2px;">:</span></span>
+                        <span class="label" style="width: 160px;">Patient's Gender <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?(($getPatient->gender == 'F')?'Female':'Male'):'')?></p>
@@ -129,7 +129,7 @@
                     </tr>
                     <tr>
                         <td valign="top" style="width: 160px;">
-                            <span class="label" style="width: 160px;">Patient’s Contact No <span style="float: right; margin-right: 2px;">:</span></span>
+                            <span class="label" style="width: 160px;">Patient's Contact No <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=(($getPatient)?$getPatient->phone:'')?></p>
@@ -195,7 +195,7 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td valign="top" style="width: 160px;">
-                            <span class="label" style="width: 160px;">Doctor’s Name <span style="float: right; margin-right: 2px;">:</span></span>
+                            <span class="label" style="width: 160px;">Doctor's Name <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
                             <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=$test_report->doctor_name?></p>
@@ -206,7 +206,7 @@
                             <span class="label" style="width: 160px;">Diagnosis Date <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
-                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=date_format(date_create($test_report->diagnosis_date), "M d, Y")?></p>
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=date_format(date_create($test_report->diagnosis_date), "d/m/Y")?></p>
                         </td>
                     </tr>
                 </table>
