@@ -2413,6 +2413,7 @@ class ApiController extends Controller
                         'test_score_percentage'         => $test_score_percentage,
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
+                        'test_report_date'              => date_format(date_create($data['test_report']->created_at), "d/m/Y h:i A"),
                     ];
                     
                     $apiStatus          = TRUE;
