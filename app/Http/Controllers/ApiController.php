@@ -2574,7 +2574,8 @@ class ApiController extends Controller
                             'test_score'                    => $row->test_score,
                             'test_score_percentage'         => $row->test_score_percentage,                            
                             'test_report_pdf'               => $row->test_report_pdf,                           
-                            'test_result'                   => $row->test_result,                           
+                            'test_result'                   => $row->test_result,
+                            'test_report_date'              => date_format(date_create($row->created_at), "h:i A"),                         
                         ];                    
                     }
                 }                                
