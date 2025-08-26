@@ -2546,18 +2546,18 @@ class ApiController extends Controller
                     foreach ($tests as $row) {     
                         $diagnosis_date = new DateTime($row->diagnosis_date);                                           
                         $apiResponse[] = [
-                            'doctor_id'                 => $uId,
-                            'test_id'                   => $row->id,
-                            'test_name'                 => $row->test_no,
-                            'sl_no'                     => $row->sl_no,                            
-                            'patient_name'              => $row->patient_name,                    
-                            'patient_mobile'            => $row->patient_mobile,                    
-                            'doctor_name'               => $row->doctor_name,
-                            'daignosis_date'            => date_format(date_create($diagnosis_date->format('Y-m-d')), "d/m/Y"),
-                            'test_score'                => $row->test_score,
-                            'test_score_percentage'     => $row->test_score_percentage,                            
-                            'test_report_pdf'           => $row->test_report_pdf,                           
-                           'test_result'                => $row->test_result,                           
+                            'doctor_id'                     => $uId,
+                            'test_id'                       => $row->id,
+                            'test_name'                     => $row->test_no,
+                            'sl_no'                         => $row->sl_no,                            
+                            'patient_name'                  => $row->patient_name,                    
+                            'patient_mobile'                => $row->patient_mobile,                    
+                            'doctor_name'                   => $row->doctor_name,
+                            'daignosis_date'                => date_format(date_create($diagnosis_date->format('Y-m-d')), "d/m/Y"),
+                            'test_score'                    => $row->test_score,
+                            'test_score_percentage'         => $row->test_score_percentage,                            
+                            'test_report_pdf'               => $row->test_report_pdf,                           
+                            'test_result'                   => $row->test_result,                           
                         ];                    
                     }
                 }                                
