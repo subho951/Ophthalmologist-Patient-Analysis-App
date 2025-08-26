@@ -2424,12 +2424,12 @@ class ApiController extends Controller
                         'co-morbidities_id'             => $comorbiditiesArray,
                         'co-morbidities_note'           => $patientdetails->comorbidities_note,
                         'doctor_name'                   => (($patientdetails)?$patientdetails->doctor_name:''),
-                        'diagnosis_date'                => date_format(date_create($diagnosis_date), "d/m/Y"),  
+                        'diagnosis_date'                => date_format(date_create($diagnosis_date), "d/m/Y"),
                         'test_score'                    => $test_score,
                         'test_score_percentage'         => $test_score_percentage,
                         'test_result'                   => $test_result,                                                
                         'test_report_pdf'               => $test_report_pdf,
-                        'test_report_date'              => date_format(date_create($data['test_report']->created_at), "d/m/Y h:i A"),
+                        'test_report_date'              => date_format(date_create($data['test_report']->created_at), "h:i A"),
                     ];
                     
                     $apiStatus          = TRUE;
@@ -2498,7 +2498,7 @@ class ApiController extends Controller
                         'test_score_percentage'         => $test_report->test_score_percentage,   
                         'test_result'                   => $test_report->test_result,                                                
                         'test_report_pdf'               => $test_report->test_report_pdf,
-                        'test_report_date'              => date_format(date_create($test_report->created_at), "d/m/Y h:i A"),
+                        'test_report_date'              => date_format(date_create($test_report->created_at), "h:i A"),
             ];
             
             $apiStatus          = TRUE;
