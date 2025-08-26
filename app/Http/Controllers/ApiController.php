@@ -2316,11 +2316,27 @@ class ApiController extends Controller
                             $cy = $height * 0.8;
                             $radius = 120;
 
+                            // Percent split
+                            $red_percent = 44;
+                            $green_percent = 56;
+
+                            // Convert percentages to degrees (total = 180°)
+                            $red_angle = (180 * $red_percent) / 100;    // 79.2
+                            $green_angle = (180 * $green_percent) / 100; // 100.8
+
+                            // Draw red arc (Negative part)
+                            imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 
+                                        180, 180 + $red_angle, $red, IMG_ARC_PIE);
+
+                            // Draw green arc (Positive part)
+                            imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 
+                                        180 + $red_angle, 360, $green, IMG_ARC_PIE);
+
                             // Draw red (negative) arc
-                            imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 180, 270, $red, IMG_ARC_PIE);
+                            // imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 180, 270, $red, IMG_ARC_PIE);
 
                             // Draw green (positive) arc
-                            imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 270, 360, $green, IMG_ARC_PIE);
+                            // imagefilledarc($image, $cx, $cy, $radius * 2, $radius * 2, 270, 360, $green, IMG_ARC_PIE);
 
                             // Draw outline semicircle
                             imagearc($image, $cx, $cy, $radius * 2, $radius * 2, 180, 360, $black);
