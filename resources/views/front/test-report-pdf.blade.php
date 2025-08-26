@@ -206,7 +206,7 @@
                             <span class="label" style="width: 160px;">Test Date <span style="float: right; margin-right: 2px;">:</span></span>
                         </td>
                         <td valign="top" style="width: 100%; text-align: left; font-family: sans-serif; display: block;">
-                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=date_format(date_create($test_report->diagnosis_date), "d/m/Y h:i A")?></p>
+                            <p class="value" style="width: 100%; text-align: left; font-family: sans-serif; display: block;"><?=date_format(date_create($test_report->created_at), "d/m/Y h:i A")?></p>
                         </td>
                     </tr>
                 </table>
