@@ -35,7 +35,7 @@ class Controller extends BaseController
         $mailLibrary->Port          = $generalSetting->smtp_port;
         $mailLibrary->Username      = $generalSetting->smtp_username;
         $mailLibrary->Password      = $generalSetting->smtp_password;
-        $mailLibrary->SMTPSecure    = 'ssl';
+        $mailLibrary->SMTPSecure    = 'smtp';
         $mailLibrary->From          = $generalSetting->from_email;
         $mailLibrary->FromName      = $generalSetting->from_name;
         $mailLibrary->AddReplyTo($generalSetting->from_email, $generalSetting->from_name);
