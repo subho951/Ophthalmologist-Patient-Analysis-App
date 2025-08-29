@@ -29,7 +29,7 @@ class Controller extends BaseController
         $mailLibrary                = new PHPMailer(true);
         $mailLibrary->CharSet       = 'UTF-8';
         $mailLibrary->SMTPDebug     = 0;
-        //$mailLibrary->IsSMTP();
+        $mailLibrary->IsSMTP();
         $mailLibrary->Host          = $generalSetting->smtp_host;
         $mailLibrary->SMTPAuth      = true;
         $mailLibrary->Port          = $generalSetting->smtp_port;
