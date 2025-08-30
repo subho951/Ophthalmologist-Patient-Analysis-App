@@ -51,7 +51,7 @@ class DoctorController extends Controller
                     'phone'                         => 'required',
                 ];
                 if($this->validate($request, $rules)){
-                    $checkData = Doctor::where('name', 'LIKE', '%'.$postData['name'].'%')->where('status', '!=', 3)->where('id', '!=', $id)->first();
+                    $checkData = Doctor::where('name', 'LIKE', '%'.$postData['name'].'%')->where('status', '!=', 3)->first();
                     if(!$checkData){
                         /* profile image */
                             $imageFile      = $request->file('profile_image');
