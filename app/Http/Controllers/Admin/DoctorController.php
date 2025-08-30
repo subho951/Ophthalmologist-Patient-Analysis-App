@@ -38,8 +38,7 @@ class DoctorController extends Controller
     /* add */
         public function add(Request $request){
             $data['module']                 = $this->data;
-            $id                             = Helper::decoded($id);
-            $title                          = $this->data['title'].' Update';
+            $title                          = $this->data['title'].' Add';
             $page_name                      = 'doctor.add-edit';
             $data['row']                    = '';
             if($request->isMethod('post')){
