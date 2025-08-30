@@ -36,7 +36,7 @@ class DoctorController extends Controller
         }
     /* list */
     /* add */
-        public function add(Request $request, $id){
+        public function add(Request $request){
             $data['module']                 = $this->data;
             $id                             = Helper::decoded($id);
             $title                          = $this->data['title'].' Update';
