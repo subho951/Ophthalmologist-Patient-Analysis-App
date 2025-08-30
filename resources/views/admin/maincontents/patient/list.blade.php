@@ -15,7 +15,7 @@ $current_url          = url()->current();
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">
-            <a href="<?=url('admin/' . $controllerRoute . '/add/')?>" class="btn btn-outline-success btn-sm float-right">Add <?=$module['title']?></a>
+            <!-- <a href="<?=url('admin/' . $controllerRoute . '/add/')?>" class="btn btn-outline-success btn-sm float-right">Add <?=$module['title']?></a> -->
           </h5>
           <div class="dt-responsive table-responsive">
             <table id="simpletable" class="table table-striped table-bordered nowrap">
