@@ -115,7 +115,7 @@ Route::match(['get', 'post'], '/delete-account-update', 'App\Http\Controllers\Fr
             /* masters */
             /* doctor */
                 Route::get('doctors/list', 'DoctorController@list');
-                // Route::match(['get', 'post'], 'doctors/add', 'DoctorController@add');
+                Route::match(['get', 'post'], 'doctors/add', 'DoctorController@add');
                 Route::match(['get', 'post'], 'doctors/edit/{id}', 'DoctorController@edit');
                 Route::get('doctors/delete/{id}', 'DoctorController@delete');
                 Route::get('doctors/change-status/{id}', 'DoctorController@change_status');
