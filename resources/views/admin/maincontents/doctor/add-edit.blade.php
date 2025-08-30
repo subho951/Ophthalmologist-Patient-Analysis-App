@@ -44,19 +44,19 @@ $current_url = url()->current();
               </div>
               <div class="mb-3 col-md-6">
                  <label for="name" class="form-label">Name <small class="text-danger">*</small></label>
-                 <input class="form-control" type="text" id="name" name="name" value="<?=$name?>" required autofocus />
+                 <input class="form-control" type="text" id="name" name="name" value="<?=$name?>" required />
               </div>
               <div class="mb-3 col-md-6">
                  <label for="email" class="form-label">Email <small class="text-danger">*</small></label>
-                 <input class="form-control" type="email" id="email" name="email" value="<?=$email?>" required autofocus />
+                 <input class="form-control" type="email" id="email" name="email" value="<?=$email?>" required />
               </div>
               <div class="mb-3 col-md-6">
                  <label for="phone" class="form-label">Phone <small class="text-danger">*</small></label>
-                 <input class="form-control" type="text" id="phone" name="phone" value="<?=$phone?>" required autofocus />
+                 <input class="form-control" type="text" id="phone" name="phone" value="<?=$phone?>" required />
               </div>
               <div class="mb-3 col-md-6">
                  <label for="regn_no" class="form-label">Registration No. <small class="text-danger">*</small></label>
-                 <input class="form-control" type="text" id="regn_no" name="regn_no" value="<?=$regn_no?>" required autofocus />
+                 <input class="form-control" type="text" id="regn_no" name="regn_no" value="<?=$regn_no?>" required />
               </div>
               <div class="col-md-6">
                 <label for="status" class="form-label d-block">Status <small class="text-danger">*</small></label>

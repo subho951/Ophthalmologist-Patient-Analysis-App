@@ -35,6 +35,60 @@ class DoctorController extends Controller
             echo $this->admin_after_login_layout($title,$page_name,$data);
         }
     /* list */
+    /* add */
+        public function add(Request $request, $id){
+            $data['module']                 = $this->data;
+            $id                             = Helper::decoded($id);
+            $title                          = $this->data['title'].' Update';
+            $page_name                      = 'doctor.add-edit';
+            $data['row']                    = '';
+            if($request->isMethod('post')){
+                $postData = $request->all();
+                $rules = [
+                    'initials'                      => 'required',
+                    'name'                          => 'required',
+                    'regn_no'                       => 'required',
+                    'email'                         => 'required',
+                    'phone'                         => 'required',
+                ];
+                if($this->validate($request, $rules)){
+                    $checkData = Doctor::where('name', 'LIKE', '%'.$postData['name'].'%')->where('status', '!=', 3)->where('id', '!=', $id)->first();
+                    if(!$checkData){
+                        /* profile image */
+                            $imageFile      = $request->file('profile_image');
+                            if($imageFile != ''){
+                                $imageName      = $imageFile->getClientOriginalName();
+                                $uploadedFile   = $this->upload_single_file('profile_image', $imageName, 'doctor', 'image');
+                                if($uploadedFile['status']){
+                                    $profile_image = $uploadedFile['newFilename'];
+                                } else {
+                                    return redirect()->back()->with(['error_message' => $uploadedFile['message']]);
+                                }
+                            } else {
+                                $profile_image = '';
+                            }
+                        /* profile image */
+                        $fields = [
+                            'initials'                  => $postData['initials'],
+                            'name'                      => $postData['name'],
+                            'regn_no'                   => $postData['regn_no'],
+                            'email'                     => $postData['email'],
+                            'phone'                     => $postData['phone'],
+                            'profile_image'             => $profile_image,
+                            'status'                    => ((array_key_exists("status",$postData))?1:0),
+                        ];
+                        Doctor::insert($fields);
+                        return redirect("admin/" . $this->data['controller_route'] . "/list")->with('success_message', $this->data['title'].' Updated Successfully !!!');
+                    } else {
+                        return redirect()->back()->with('error_message', $this->data['title'].' Already Exists !!!');
+                    }
+                } else {
+                    return redirect()->back()->with('error_message', 'All Fields Required !!!');
+                }
+            }
+            echo $this->admin_after_login_layout($title,$page_name,$data);
+        }
+    /* add */
     /* edit */
         public function edit(Request $request, $id){
             $data['module']                 = $this->data;
